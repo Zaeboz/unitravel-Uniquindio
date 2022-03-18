@@ -1,0 +1,21 @@
+### Java ###
+*.class
+
+# Package Files #
+*.war
+*.ear
+
+### Gradle ###
+# Exclurde Folder List #
+build/
+
+# PDT-specific
+.buildpath
+
+### IntelliJ IDEA ###
+*.iml
+*.ipr
+*.iws
+.idea
+
+/bin
