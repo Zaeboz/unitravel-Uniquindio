@@ -23,7 +23,7 @@ public class HistorialPuntos implements Serializable {
     @Id
     @EqualsAndHashCode.Include
     @ToString.Include
-    private String codigo;
+    private Integer codigo;
 
     @Positive
     @NonNull

@@ -19,7 +19,7 @@ public class Foto implements Serializable {
     @Id
     @EqualsAndHashCode.Include
     @ToString.Include
-    private String codigo;
+    private Integer codigo;
 
     @Column(nullable = false)
     @ToString.Include

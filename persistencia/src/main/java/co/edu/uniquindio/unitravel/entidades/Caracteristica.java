@@ -17,7 +17,7 @@ public class Caracteristica implements Serializable {
     @Id
     @ToString.Include
     @EqualsAndHashCode.Include
-    private String codigo;
+    private Integer codigo;
 
     @Column(length = 100, nullable = false)
     @ToString.Include

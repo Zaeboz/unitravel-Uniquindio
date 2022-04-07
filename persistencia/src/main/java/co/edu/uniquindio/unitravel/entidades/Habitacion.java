@@ -20,7 +20,7 @@ public class Habitacion implements Serializable{
     @Id
     @EqualsAndHashCode.Include
     @ToString.Include
-    private int numero;
+    private String numero;
 
     @Positive
     @NonNull

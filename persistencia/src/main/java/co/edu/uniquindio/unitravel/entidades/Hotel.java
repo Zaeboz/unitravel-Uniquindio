@@ -19,7 +19,7 @@ public class Hotel implements Serializable {
 
     @Id
     @EqualsAndHashCode.Include
-    private String codigo;
+    private Integer codigo;
 
     @ToString.Include
     @Column(nullable = false, length = 100)

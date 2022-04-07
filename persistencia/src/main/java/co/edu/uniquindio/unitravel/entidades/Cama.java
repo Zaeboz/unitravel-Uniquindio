@@ -17,7 +17,7 @@ public class Cama implements Serializable {
     @Id
     @EqualsAndHashCode.Include
     @ToString.Include
-    private int codigo;
+    private Integer codigo;
 
     @Column(nullable = false, length = 50)
     @ToString.Include

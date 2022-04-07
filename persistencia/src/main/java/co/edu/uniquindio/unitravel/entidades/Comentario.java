@@ -18,7 +18,7 @@ public class Comentario implements Serializable {
 
     @Id
     @EqualsAndHashCode.Include
-    private String codigo;
+    private Integer codigo;
 
     @Column(length = 500, nullable = false)
     private String comentario;
