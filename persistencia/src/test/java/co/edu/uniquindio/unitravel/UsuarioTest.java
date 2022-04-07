@@ -7,10 +7,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -47,16 +50,35 @@ public class UsuarioTest {
         usuarioRepo.save(usuarioGuardado);
 
         Usuario usuarioBuscado = usuarioRepo.findById("92282").orElse(null);
+        assert usuarioBuscado != null;
         Assertions.assertEquals("abc123",usuarioBuscado.getPassword());
     }
 
     @Test
     @Sql("classpath:dataset.sql")
-    public void listar(){
+    public void listarUsuarios(){
         List<Usuario> usuarios = usuarioRepo.findAll();
-
         System.out.println(usuarios);
     }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void listarUsuariosNombre(){
+        List<Usuario> usuarios = usuarioRepo.findAllByNombre("Camila");
+        usuarios.forEach(System.out::println);
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void comprobarAutenticacion(){
+        Optional<Usuario> usuarioEncontrado = usuarioRepo.findByEmailAndPassword("juanenmanuel@gmail.com","123456");
+        System.out.println(usuarioEncontrado.orElse(null));
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void listarUsuariosSort(){
+        List<Usuario> usuarios = usuarioRepo.findAll(Sort.by("nombre").descending());
+        usuarios.forEach(System.out::println);
+    }
 }
-
-
