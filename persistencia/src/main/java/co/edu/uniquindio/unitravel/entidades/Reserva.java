@@ -8,7 +8,6 @@ import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -27,12 +26,12 @@ public class Reserva implements Serializable {
     @FutureOrPresent
     @Column(nullable = false)
     @ToString.Include
-    private Date fechaReserva;
+    private LocalDate fechaReserva;
 
     @FutureOrPresent
     @Column(nullable = false)
     @ToString.Include
-    private Date fechaInicio;
+    private LocalDate fechaInicio;
 
     @Future
     @Column(nullable = false)

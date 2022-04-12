@@ -10,7 +10,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
-import java.util.Optional;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -44,6 +43,13 @@ public class HotelTest {
     public void listarHotelesSort() {
         List<Hotel> hoteles = hotelRepo.findAll(Sort.by("numEstrellas").descending());
         hoteles.forEach(System.out::println);
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void obtenerNombreCiudad() {
+        String nombreCiudad = hotelRepo.obtenerNombreCiudad(1);
+        System.out.println(nombreCiudad);
     }
 }
 
