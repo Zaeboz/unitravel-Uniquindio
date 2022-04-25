@@ -11,18 +11,16 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 public class ReservaSilla implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    @ToString.Include
     private Integer codigo;
 
     @Column(nullable = false)
     @Positive
-    @ToString.Include
     private Float precio;
 
     @ManyToOne
@@ -30,4 +28,10 @@ public class ReservaSilla implements Serializable {
 
     @ManyToOne
     private Reserva reserva;
+
+    public ReservaSilla(Float precio, Silla silla, Reserva reserva) {
+        this.precio = precio;
+        this.silla = silla;
+        this.reserva = reserva;
+    }
 }

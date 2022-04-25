@@ -5,35 +5,41 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.Positive;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 public class Silla implements Serializable {
 
     @Id
     @EqualsAndHashCode.Include
-    @ToString.Include
     private String codigo;
 
     @Column(nullable = false)
-    @ToString.Include
     private String posicion;
 
     @Column(nullable = false)
     @Positive
     @NonNull
-    @ToString.Include
     private Double precio;
 
     @ManyToOne
     private Vuelo vuelo;
 
     @OneToMany(mappedBy = "silla")
+    @ToString.Exclude
     private List<ReservaSilla> reservasSillas;
+
+    public Silla(String codigo, String posicion, @NonNull Double precio,Vuelo vuelo) {
+        this.codigo = codigo;
+        this.posicion = posicion;
+        this.precio = precio;
+        this.vuelo = new Vuelo();
+        this.reservasSillas = new ArrayList<>();
+    }
 }

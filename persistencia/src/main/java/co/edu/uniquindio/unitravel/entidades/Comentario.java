@@ -18,10 +18,14 @@ public class Comentario implements Serializable {
 
     @Id
     @EqualsAndHashCode.Include
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer codigo;
 
     @Column(length = 500, nullable = false)
     private String comentario;
+
+    @Column(nullable = false)
+    private int calificacion;
 
     @FutureOrPresent(message = "La fecha debe ser mayor o igual a la actual")
     @Column(nullable = false)
@@ -32,4 +36,12 @@ public class Comentario implements Serializable {
 
     @ManyToOne
     private Hotel hotel;
+
+    public Comentario( String comentario, int calificacion, LocalDate fecha_calificacion, Usuario usuario, Hotel hotel) {
+        this.comentario = comentario;
+        this.calificacion = calificacion;
+        this.fecha_calificacion = fecha_calificacion;
+        this.usuario = usuario;
+        this.hotel = hotel;
+    }
 }

@@ -14,18 +14,24 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString(callSuper = true, onlyExplicitlyIncluded = true)
+@ToString
 public class Usuario extends Persona implements Serializable {
 
-    @ToString.Include
-    @ElementCollection
-    private List<String> telefono;
-
     @OneToMany(mappedBy = "usuario")
+    @ToString.Exclude
     private List<Comentario> comentarios;
 
     @OneToMany(mappedBy = "usuario")
+    @ToString.Exclude
+    private List<Telefono> telefonos ;
+
+    @OneToMany(mappedBy = "usuario")
+    @ToString.Exclude
     private List<Reserva> reservas;
+
+    @OneToMany(mappedBy = "usuario")
+    @ToString.Exclude
+    private List<HistorialPuntos> historialPuntos ;
 
     @ManyToOne
     private Ciudad ciudad;

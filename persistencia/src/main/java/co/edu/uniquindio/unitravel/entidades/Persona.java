@@ -1,20 +1,18 @@
 package co.edu.uniquindio.unitravel.entidades;
 
 import lombok.*;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
 import java.io.Serializable;
 
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @NoArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@AllArgsConstructor
-@MappedSuperclass
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Entity
 @ToString
+@AllArgsConstructor
 public class Persona implements Serializable {
 
    @Id
@@ -31,6 +29,5 @@ public class Persona implements Serializable {
 
    @Column(length = 50, nullable = false)
    private String password;
-
 
 }

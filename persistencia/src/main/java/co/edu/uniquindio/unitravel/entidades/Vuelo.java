@@ -1,32 +1,28 @@
 package co.edu.uniquindio.unitravel.entidades;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
+@NoArgsConstructor
 public class Vuelo implements Serializable {
 
     @Id
     @EqualsAndHashCode.Include
-    @ToString.Include
     private String codigo;
 
     @Column(nullable = false)
-    @ToString.Include
     private String estado;
 
     @Column(nullable = false)
-    @ToString.Include
     private String aerolinea;
 
     @ManyToOne
@@ -36,6 +32,15 @@ public class Vuelo implements Serializable {
     private Ciudad ciudadDestino;
 
     @OneToMany(mappedBy = "vuelo")
+    @ToString.Exclude
     private List<Silla> sillas;
 
+    public Vuelo(String codigo, String estado, String aerolinea, Ciudad ciudadOrigen, Ciudad ciudadDestino) {
+        this.codigo = codigo;
+        this.estado = estado;
+        this.aerolinea = aerolinea;
+        this.ciudadOrigen = ciudadOrigen;
+        this.ciudadDestino = ciudadDestino;
+        this.sillas = new ArrayList<>();
+    }
 }

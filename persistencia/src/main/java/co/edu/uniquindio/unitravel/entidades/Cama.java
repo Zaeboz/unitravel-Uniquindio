@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -11,18 +12,23 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 public class Cama implements Serializable {
 
     @Id
     @EqualsAndHashCode.Include
-    @ToString.Include
-    private Integer codigo;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int codigo;
 
     @Column(nullable = false, length = 50)
-    @ToString.Include
     private String tipo;
 
     @ManyToMany
+    @ToString.Exclude
     private List<Habitacion> habitaciones;
+
+    public Cama(String tipo) {
+        this.tipo = tipo;
+        this.habitaciones = new ArrayList<>();
+    }
 }

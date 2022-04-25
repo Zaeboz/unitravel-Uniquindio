@@ -1,7 +1,11 @@
 package co.edu.uniquindio.unitravel;
 
+import co.edu.uniquindio.unitravel.dto.ComentarioDTO;
+import co.edu.uniquindio.unitravel.dto.ReservasTotalesDTO;
 import co.edu.uniquindio.unitravel.entidades.Reserva;
+import co.edu.uniquindio.unitravel.entidades.Telefono;
 import co.edu.uniquindio.unitravel.entidades.Usuario;
+import co.edu.uniquindio.unitravel.repositorios.CiudadRepo;
 import co.edu.uniquindio.unitravel.repositorios.UsuarioRepo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -20,6 +24,9 @@ public class UsuarioTest {
 
     @Autowired
     private UsuarioRepo usuarioRepo;
+
+    @Autowired
+    private CiudadRepo ciudadRepo;
 
     @Test
     public void registrar(){
@@ -91,21 +98,29 @@ public class UsuarioTest {
     @Test
     @Sql("classpath:dataset.sql")
     public void listarComentarios(){
-        List<Object[]> comentariod = usuarioRepo.obtenerComentarios();
-        comentariod.forEach(c -> System.out.println(c[0] + "-" + c[1]));
+        List<ComentarioDTO> comentariod = usuarioRepo.obtenerComentarios();
+        comentariod.forEach(System.out::println);
     }
 
     @Test
     @Sql("classpath:dataset.sql")
     public void listarReservasTotales(){
-        List<Object[]> reservas = usuarioRepo.obtenerReservasTotales();
-        reservas.forEach(c -> System.out.println(c[0] + "-" + c[1]));
+        List<ReservasTotalesDTO> reservas = usuarioRepo.obtenerReservasTotales();
+        reservas.forEach(System.out::println);
     }
 
     @Test
     @Sql("classpath:dataset.sql")
-    public void listarUsuarioTelefono(){
-        List<String> usuarios = usuarioRepo.obtenerUsuariosTelefono();
+    public void listarTelefonosUsuario(){
+        List<Telefono> telefonos = usuarioRepo.obtenerTelefonosUsuario("1");
+        telefonos.forEach(System.out::println);
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void listarUsuariosPorCiudad(){
+        List<Usuario> usuarios = ciudadRepo.obtenerCiudadUsuario("Cali");
         usuarios.forEach(System.out::println);
     }
+
 }

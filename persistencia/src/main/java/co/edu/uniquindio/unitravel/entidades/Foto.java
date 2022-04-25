@@ -2,10 +2,7 @@ package co.edu.uniquindio.unitravel.entidades;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -13,16 +10,15 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 public class Foto implements Serializable {
 
     @Id
     @EqualsAndHashCode.Include
-    @ToString.Include
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer codigo;
 
     @Column(nullable = false)
-    @ToString.Include
     private String url;
 
     @ManyToOne
@@ -30,4 +26,8 @@ public class Foto implements Serializable {
 
     @ManyToOne
     private Hotel hotel;
+
+    public Foto(String url) {
+        this.url = url;
+    }
 }

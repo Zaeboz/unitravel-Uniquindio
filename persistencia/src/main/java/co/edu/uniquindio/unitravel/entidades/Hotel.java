@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.Positive;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,22 +15,20 @@ import java.util.Map;
 @Entity
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 public class Hotel implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Integer codigo;
 
-    @ToString.Include
     @Column(nullable = false, length = 100)
     private String nombre;
 
-    @ToString.Include
     @Column(nullable = false, length = 100)
     private String direccion;
 
-    @ToString.Include
     @Column(nullable = false, length = 100)
     private String telefono;
 
@@ -46,14 +45,31 @@ public class Hotel implements Serializable {
     private Ciudad ciudad;
 
     @OneToMany(mappedBy = "hotel")
+    @ToString.Exclude
     private List<Habitacion> habitaciones;
 
     @OneToMany(mappedBy = "hotel")
+    @ToString.Exclude
+    private List<HistorialPuntos> historialPuntos;
+
+    @OneToMany(mappedBy = "hotel")
+    @ToString.Exclude
     private List<Comentario> comentarios;
 
     @ManyToMany(mappedBy = "hoteles")
+    @ToString.Exclude
     private List<Caracteristica> caracteristicas;
 
-    @OneToMany(mappedBy = "hotel")
-    private List<Foto> fotosHotel;
+    public Hotel(String nombre, String direccion, String telefono, @NonNull int numEstrellas, AdministradorHotel administradorHotel, Ciudad ciudad) {
+        this.nombre = nombre;
+        this.direccion = direccion;
+        this.telefono = telefono;
+        this.numEstrellas = numEstrellas;
+        this.administradorHotel = administradorHotel;
+        this.ciudad = ciudad;
+        this.habitaciones = new ArrayList<>();
+        this.historialPuntos = new ArrayList<>();
+        this.comentarios = new ArrayList<>();
+        this.caracteristicas = new ArrayList<>();
+    }
 }

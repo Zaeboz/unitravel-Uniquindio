@@ -1,6 +1,9 @@
 package co.edu.uniquindio.unitravel.repositorios;
 
+import co.edu.uniquindio.unitravel.dto.ComentarioDTO;
+import co.edu.uniquindio.unitravel.dto.ReservasTotalesDTO;
 import co.edu.uniquindio.unitravel.entidades.Reserva;
+import co.edu.uniquindio.unitravel.entidades.Telefono;
 import co.edu.uniquindio.unitravel.entidades.Usuario;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +19,8 @@ public interface UsuarioRepo extends JpaRepository<Usuario, String> {
 
     List<Usuario> findAllByNombre(String nombre);
 
+    Usuario findByEmail(String email);
+
     Optional<Usuario> findByEmailAndPassword(String correo, String password);
 
     Page<Usuario> findAll(Pageable pageable);
@@ -23,12 +28,12 @@ public interface UsuarioRepo extends JpaRepository<Usuario, String> {
     @Query("select r from Usuario u, IN (u.reservas) r where u.email = :email")
     List<Reserva> obtenerListaReservas(String email);
 
-    @Query("select u.email, c from Usuario u left join u.comentarios  c")
-    List<Object[]> obtenerComentarios();
+    @Query("select new co.edu.uniquindio.unitravel.dto.ComentarioDTO(u.email, c) from Usuario u left join u.comentarios  c")
+    List<ComentarioDTO> obtenerComentarios();
 
-    @Query("select u from Usuario u left join u.reservas r")
-    List<Object[]> obtenerReservasTotales();
+    @Query("select new co.edu.uniquindio.unitravel.dto.ReservasTotalesDTO(u,r) from Usuario u left join u.reservas r")
+    List<ReservasTotalesDTO> obtenerReservasTotales();
 
-    @Query("select distinct t from Usuario u join u.telefono t ")
-    List<String> obtenerUsuariosTelefono();
+    @Query("SELECT t from Telefono t left join t.usuario u where u.cedula = :cedula")
+    List<Telefono> obtenerTelefonosUsuario(String cedula);
 }
