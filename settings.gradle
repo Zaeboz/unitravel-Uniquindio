@@ -1,4 +1,3 @@
 rootProject.name = 'unitravel'
-include 'persistencia'
-include 'persistencia'
+include 'negocio'
 
