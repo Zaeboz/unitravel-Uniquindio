@@ -1,5 +1,7 @@
 package co.edu.uniquindio.unitravel.servicios;
 
+import co.edu.uniquindio.unitravel.entidades.Comentario;
+import co.edu.uniquindio.unitravel.entidades.Hotel;
 import co.edu.uniquindio.unitravel.entidades.Reserva;
 import co.edu.uniquindio.unitravel.entidades.Usuario;
 import co.edu.uniquindio.unitravel.repositorios.TelefonoRepo;
@@ -22,24 +24,16 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
-    public Usuario registrarUsuario(Usuario usuario) {
+    public Usuario registrarUsuario(Usuario usuario) throws Exception {
 
         Usuario buscado = obtenerUsuario(usuario.getCedula());
         if(buscado != null){
-            throw new RuntimeException("El usuario ya existe");
+            throw new Exception("El usuario ya existe");
         }
 
         Usuario usuarioEmail = buscarPorEmail(usuario.getEmail());
         if(usuarioEmail != null){
-            throw new RuntimeException("El correo del usaurio ya esta registrado");
-        }
-
-        if(usuario.getNombre() == null || usuario.getNombre().isEmpty()){
-            throw new RuntimeException("El nombre del usuario no puede estar vacio");
-        }
-
-        if(usuario.getPassword() == null || usuario.getPassword().isEmpty()){
-            throw new RuntimeException("La contraseña del usuario no puede estar vacia");
+            throw new Exception("El correo del usaurio ya esta registrado");
         }
 
         return usuarioRepo.save(usuario);
@@ -51,17 +45,24 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
-    public Usuario actualizarUsuario(Usuario usuario) {
+    public Usuario actualizarUsuario(Usuario usuario) throws Exception{
         Usuario buscado = obtenerUsuario(usuario.getCedula());
         if(buscado == null){
-            throw new RuntimeException("El usuario no existe");
+            throw new Exception("El usuario no existe");
         }
         return usuarioRepo.save(usuario);
     }
 
     @Override
-    public Usuario obtenerUsuario(String codigo) {
-        return usuarioRepo.findByCedula(codigo).orElse(null);
+    public Usuario obtenerUsuario(String codigo) throws Exception {
+
+        Optional<Usuario> usuario = usuarioRepo.findById(codigo);
+
+        if (usuario.isEmpty()){
+            throw new Exception("El usuario no existe");
+        }
+
+        return usuario.get();
     }
 
     @Override
@@ -70,52 +71,92 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
-    public void eliminarUsuario(String codigo) {
+    public void eliminarUsuario(String codigo) throws Exception {
         Usuario usuario = obtenerUsuario(codigo);
 
         if (usuario == null) {
-            throw new RuntimeException("El usuario no existe");
+            throw new Exception("El usuario no existe");
         }
         usuarioRepo.delete(usuario);
     }
 
     @Override
-    public Usuario validarLogin(String email, String contrasena) throws Exception {
-
-        Optional<Usuario> usuario = usuarioRepo.findByEmailAndPassword(email, contrasena);
-
-        if(usuario.isEmpty()){
-            throw new Exception("Los datos de autenticacion son incorrectos");
-        }
-
-        return usuario.get();
-    }
-
-    @Override
-    public List<Reserva> listarReservasUsuario(String cedula) {
+    public List<Reserva> listarReservasUsuario(String cedula) throws Exception {
         Usuario usuario = obtenerUsuario(cedula);
         if(usuario == null){
-            throw new RuntimeException("El usuario no existe");
+            throw new Exception("El usuario no existe");
         }
         return usuario.getReservas();
     }
 
     @Override
-    public String recuperarContrasena(String email) {
+    public String recuperarContrasena(String email) throws Exception{
         Usuario usuario = buscarPorEmail(email);
         if(usuario == null){
-            throw new RuntimeException("El usuario no existe");
+            throw new Exception("El usuario no existe");
         }
         //Se debe de mandar un email al usuario con la nueva contrasena
         return RandomStringUtils.randomAlphanumeric(10);
     }
 
     @Override
-    public void cambiarContrasena(String email, String contrasena) throws Exception {
-        Usuario usuario = validarLogin(email, contrasena);
-        usuario.setPassword(contrasena);
-        //Se debe de mandar un email al usuario notificando el cambio de contrasena
-        usuarioRepo.save(usuario);
+    public Comentario registrarComentario(Comentario c) throws Exception {
+        return null;
+    }
+
+    @Override
+    public void actualizarComentario(Comentario c, int idComentario) throws Exception {
+
+    }
+
+    @Override
+    public void eliminarComentario(int id) throws Exception {
+
+    }
+
+    @Override
+    public void responderComentario(String respuesta, int idComentario) throws Exception {
+
+    }
+
+    @Override
+    public Comentario obtenerComentario(int id) throws Exception {
+        return null;
+    }
+
+    @Override
+    public List<Comentario> listarComentarios() {
+        return null;
+    }
+
+    @Override
+    public Reserva hacerReserva(Reserva r) throws Exception {
+        return null;
+    }
+
+    @Override
+    public void eliminarReserva(int id) throws Exception {
+
+    }
+
+    @Override
+    public Reserva modificarReserva() throws Exception {
+        return null;
+    }
+
+    @Override
+    public Reserva obtenerReserva(int id) throws Exception {
+        return null;
+    }
+
+    @Override
+    public List<Reserva> obtenerReservas(String emailU) {
+        return null;
+    }
+
+    @Override
+    public List<Hotel> buscarHotelesCiudad(String nombreCiudad) throws Exception {
+        return null;
     }
 
     /*@Override

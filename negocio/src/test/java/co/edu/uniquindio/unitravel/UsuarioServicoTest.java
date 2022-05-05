@@ -3,6 +3,7 @@ package co.edu.uniquindio.unitravel;
 import co.edu.uniquindio.unitravel.entidades.Reserva;
 import co.edu.uniquindio.unitravel.entidades.Telefono;
 import co.edu.uniquindio.unitravel.entidades.Usuario;
+import co.edu.uniquindio.unitravel.servicios.EmailService;
 import co.edu.uniquindio.unitravel.servicios.UsuarioServicio;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,11 +16,13 @@ import java.util.List;
 
 @SpringBootTest
 @Transactional
-
 public class UsuarioServicoTest {
 
     @Autowired
     private UsuarioServicio usuarioServicio;
+
+    @Autowired
+    private EmailService emailService;
 
     @Test
     @Sql("classpath:dataset.sql")
@@ -100,13 +103,7 @@ public class UsuarioServicoTest {
 
     @Test
     @Sql("classpath:dataset.sql")
-    public void cambiarContrasenaTest() {
-        try {
-            Usuario u = usuarioServicio.obtenerUsuario("1");
-            usuarioServicio.cambiarContrasena(u.getCedula(), "123456");
-            Assertions.assertNotNull(u);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void enviarCorreoTest() {
+        boolean estado = emailService.enviarEmail("Prueba", "Este es un mensaje", "sebastian.quinteroo@uqvirtual.edu.co");
     }
 }
