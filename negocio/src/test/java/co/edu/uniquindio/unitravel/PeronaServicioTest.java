@@ -61,9 +61,9 @@ public class PeronaServicioTest {
 
             personaServicio.cambiarPassword(usuario.getEmail(),"clave123");
 
-            String mensaje = "Cambias tu contraseña a clave123";
+            String mensaje = "Cambias tu contraseña " + usuario.getPassword();
 
-            emailService.enviarEmail("Cambio de contraseña", mensaje, "caveesoteri@gmail.com");
+            emailService.enviarEmail("Cambio de contraseña", mensaje, "sebastianquinteroosorio2104@gmail.com");
 
         } catch (Exception e) {
             e.printStackTrace();
