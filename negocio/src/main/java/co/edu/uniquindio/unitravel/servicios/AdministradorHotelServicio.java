@@ -1,8 +1,11 @@
 package co.edu.uniquindio.unitravel.servicios;
 
+import co.edu.uniquindio.unitravel.dto.HotelMayorCalificacionDTO;
 import co.edu.uniquindio.unitravel.entidades.Cama;
 import co.edu.uniquindio.unitravel.entidades.Habitacion;
 import co.edu.uniquindio.unitravel.entidades.Hotel;
+import co.edu.uniquindio.unitravel.entidades.Usuario;
+
 import java.util.List;
 
 public interface AdministradorHotelServicio {
@@ -16,6 +19,18 @@ public interface AdministradorHotelServicio {
     Hotel obtenerHotel(int id) throws Exception;
 
     List<Hotel> listarHoteles(String idAdmin);
+
+    List<Usuario> usuariosComentarios(int idHotel);
+
+    List<Hotel> obtenerHotelesPorEstrellas(int estrellas);
+
+    String obtenerNombreCiudadHotel(int idHotel) throws Exception;
+
+    int obtenerCantidadComentario(int idHotel);
+
+    int obtenerCalificacionPromedio(int idHotel);
+
+    List<HotelMayorCalificacionDTO> obtenerHotelMayorCalificacion(int idCiudad);
 
     List<Hotel> listarHotelesPorCiudad(String nombreCiudad);
 

@@ -21,10 +21,6 @@ public interface UsuarioRepo extends JpaRepository<Usuario, String> {
 
     Optional<Usuario> findByEmail(String email);
 
-    Optional<Usuario> findByCedula(String cedula);
-
-    Optional<Usuario> findByEmailAndPassword(String correo, String password);
-
     Page<Usuario> findAll(Pageable pageable);
 
     @Query("select r from Usuario u, IN (u.reservas) r where u.email = :email")

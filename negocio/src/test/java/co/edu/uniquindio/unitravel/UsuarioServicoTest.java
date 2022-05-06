@@ -1,8 +1,9 @@
 package co.edu.uniquindio.unitravel;
 
-import co.edu.uniquindio.unitravel.entidades.Reserva;
-import co.edu.uniquindio.unitravel.entidades.Telefono;
-import co.edu.uniquindio.unitravel.entidades.Usuario;
+import co.edu.uniquindio.unitravel.dto.ComentarioDTO;
+import co.edu.uniquindio.unitravel.dto.ReservasTotalesDTO;
+import co.edu.uniquindio.unitravel.entidades.*;
+import co.edu.uniquindio.unitravel.servicios.AdministradorServicio;
 import co.edu.uniquindio.unitravel.servicios.EmailService;
 import co.edu.uniquindio.unitravel.servicios.UsuarioServicio;
 import org.junit.jupiter.api.Assertions;
@@ -20,6 +21,9 @@ public class UsuarioServicoTest {
 
     @Autowired
     private UsuarioServicio usuarioServicio;
+
+    @Autowired
+    private AdministradorServicio administradorServicio;
 
     @Autowired
     private EmailService emailService;
@@ -76,7 +80,6 @@ public class UsuarioServicoTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //Implementar cascade para que se elimine de todo lado
     }
 
     @Test
@@ -92,10 +95,55 @@ public class UsuarioServicoTest {
 
     @Test
     @Sql("classpath:dataset.sql")
-    public void recuperarContrasenaTest() {
+    public void enviarCorreoTest() {
+        emailService.enviarEmail("Prueba", "Este es un mensaje", "juane.gutierrezs@uqvirtual.edu.co");
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void listarUsuariosTest() {
+        List<Usuario> lista = usuarioServicio.obtenerUsuarios();
+        lista.forEach(System.out::println);
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void listarUsuariosCiudadTest(){
+        List<Usuario> lista = usuarioServicio.obtenerUsuariosCiudad("Bogota");
+        lista.forEach(System.out::println);
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void listarHotelesPorCiudadTest() {
+
         try {
-            String nuevaContrasena = usuarioServicio.recuperarContrasena("juanenmanuel@gmail.com");
-            Assertions.assertNotNull(nuevaContrasena);
+            Ciudad ciudad= administradorServicio.obtenerCiudad(2);
+
+            List<Hotel> hoteles = usuarioServicio.buscarHotelesCiudad(ciudad.getNombre());
+
+            hoteles.forEach(System.out::println);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void listarUsuariosPorNombreTest() {
+
+       List<Usuario> lista=usuarioServicio.listarPorNombre("Camila");
+       lista.forEach(System.out::println);
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void listarReservasUTest() {
+
+        try {
+            List<Reserva> lista = usuarioServicio.listarReservas("juanenmanuel@gmail.com");
+            lista.forEach(System.out::println);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -103,7 +151,29 @@ public class UsuarioServicoTest {
 
     @Test
     @Sql("classpath:dataset.sql")
-    public void enviarCorreoTest() {
-        boolean estado = emailService.enviarEmail("Prueba", "Este es un mensaje", "sebastian.quinteroo@uqvirtual.edu.co");
+    public void obtenerComentariosTest() {
+
+        List<ComentarioDTO> lista = usuarioServicio.obtenerComentarios();
+        lista.forEach(System.out::println);
     }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void obtenerReservasTotalesTest() {
+        List<ReservasTotalesDTO> lista = usuarioServicio.obtenerReservasTotales();
+        lista.forEach(System.out::println);
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void obtenerTelefonosUsuarioTest() {
+        try {
+            List<Telefono> lista = usuarioServicio.obtenerTelefonosU("1");
+            lista.forEach(System.out::println);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }

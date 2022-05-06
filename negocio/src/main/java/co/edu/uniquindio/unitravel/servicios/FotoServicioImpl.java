@@ -67,6 +67,30 @@ public class FotoServicioImpl implements FotoServicio {
     }
 
     @Override
+    public String obtenerUrlHabitacion(int idHabitacion) throws Exception {
+
+        String url = fotoRepo.obtenerUrlImagenHabitacion(idHabitacion);
+
+        if (url == null){
+            throw new Exception("La url no es valida");
+        }
+
+        return url;
+    }
+
+    @Override
+    public String obtenerUrlHotel(int idHotel) throws Exception {
+
+        String url = fotoRepo.obtenerUrlImagenHotel(idHotel);
+
+        if (url == null){
+            throw new Exception("La url no es valida");
+        }
+
+        return url;
+    }
+
+    @Override
     public List<Foto> listarImagenes() {
         return fotoRepo.findAll();
     }

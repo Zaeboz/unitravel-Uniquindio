@@ -1,10 +1,7 @@
 package co.edu.uniquindio.unitravel.servicios;
 
 import co.edu.uniquindio.unitravel.entidades.*;
-import co.edu.uniquindio.unitravel.repositorios.AdministradorHotelRepo;
-import co.edu.uniquindio.unitravel.repositorios.CiudadRepo;
-import co.edu.uniquindio.unitravel.repositorios.SillaRepo;
-import co.edu.uniquindio.unitravel.repositorios.VueloRepo;
+import co.edu.uniquindio.unitravel.repositorios.*;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -15,16 +12,28 @@ public class AdministradorServicioImpl implements AdministradorServicio{
     private final AdministradorHotelRepo administradorHotelRepo;
     private final CiudadRepo ciudadRepo;
     private final SillaRepo sillaRepo;
-
     private final VueloRepo vueloRepo;
+    private final AdministradorRepo administradorRepo;
 
-    public AdministradorServicioImpl(AdministradorHotelRepo administradorHotelRepo, CiudadRepo ciudadRepo, SillaRepo sillaRepo, VueloRepo vueloRepo) {
+    public AdministradorServicioImpl(AdministradorHotelRepo administradorHotelRepo, CiudadRepo ciudadRepo, SillaRepo sillaRepo, VueloRepo vueloRepo, AdministradorRepo administradorRepo) {
         this.administradorHotelRepo = administradorHotelRepo;
         this.ciudadRepo = ciudadRepo;
         this.sillaRepo = sillaRepo;
         this.vueloRepo = vueloRepo;
+        this.administradorRepo = administradorRepo;
     }
 
+    @Override
+    public Administrador obtenerAdministradorEmail(String email) throws Exception {
+
+        Optional<Administrador> administrador = administradorRepo.findByEmail(email);
+
+        if (administrador.isEmpty()){
+            throw new Exception("El administrador no existe");
+        }
+
+        return administrador.get();
+    }
 
     @Override
     public AdministradorHotel registrarAdminHotel(AdministradorHotel a) throws Exception {
@@ -127,6 +136,11 @@ public class AdministradorServicioImpl implements AdministradorServicio{
         }
 
         return ciudad.get();
+    }
+
+    @Override
+    public List<Hotel> obtenerHoteles(String nombreCiudad){
+        return ciudadRepo.obtenerHoteles(nombreCiudad);
     }
 
     @Override
@@ -238,5 +252,17 @@ public class AdministradorServicioImpl implements AdministradorServicio{
     @Override
     public List<Vuelo> listarVuelos() {
         return vueloRepo.findAll();
+    }
+
+    @Override
+    public List<Vuelo> obtenerVuelosPorCiudad(String nombreCiudad) throws Exception {
+
+        Ciudad ciudad = ciudadRepo.findByNombre(nombreCiudad);
+
+        if (ciudad == null){
+            throw new Exception("La ciudad no existe");
+        }
+
+        return vueloRepo.obtenerVuelos(ciudad.getNombre());
     }
 }

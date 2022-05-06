@@ -33,11 +33,13 @@ public class FotoServicioTest {
 
             Foto foto = new Foto("addasda");
             foto.setHotel(hotel);
+            hotel.getImagenes().add(foto);
 
             Habitacion habitacion = administradorHotelServicio.obtenerHabitacion(1);
 
             Foto foto1 = new Foto("addasdadadsad");
             foto.setHabitacion(habitacion);
+            habitacion.getImagenes().add(foto1);
 
             Foto imagenRegistrada= fotoServicio.registrarImagen(foto);
             Foto imageRegistrada = fotoServicio.registrarImagen(foto1);
@@ -85,6 +87,34 @@ public class FotoServicioTest {
             Assertions.assertNull(imagenBorrada);
 
         }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void obtenerUrlImagenHotelTest(){
+
+        try {
+            String url = fotoServicio.obtenerUrlHotel(1);
+
+            Assertions.assertNotNull(url);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void obtenerUrlImagenHabitacionTest(){
+
+        try {
+            String url = fotoServicio.obtenerUrlHabitacion(1);
+
+            Assertions.assertNotNull(url);
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

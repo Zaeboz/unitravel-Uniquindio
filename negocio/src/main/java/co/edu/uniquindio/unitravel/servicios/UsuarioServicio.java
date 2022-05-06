@@ -1,9 +1,8 @@
 package co.edu.uniquindio.unitravel.servicios;
 
-import co.edu.uniquindio.unitravel.entidades.Comentario;
-import co.edu.uniquindio.unitravel.entidades.Hotel;
-import co.edu.uniquindio.unitravel.entidades.Reserva;
-import co.edu.uniquindio.unitravel.entidades.Usuario;
+import co.edu.uniquindio.unitravel.dto.ComentarioDTO;
+import co.edu.uniquindio.unitravel.dto.ReservasTotalesDTO;
+import co.edu.uniquindio.unitravel.entidades.*;
 
 import java.util.List;
 
@@ -13,6 +12,16 @@ public interface UsuarioServicio {
 
     Usuario buscarPorEmail(String email);
 
+    List<Usuario> listarPorNombre(String nombre);
+
+    List<Reserva> listarReservas(String email) throws Exception;
+
+    List<ComentarioDTO> obtenerComentarios();
+
+    List<ReservasTotalesDTO> obtenerReservasTotales();
+
+    List<Telefono> obtenerTelefonosU(String cedula) throws Exception;
+
     Usuario actualizarUsuario(Usuario usuario) throws Exception;
 
     Usuario obtenerUsuario(String codigo) throws Exception;
@@ -21,21 +30,9 @@ public interface UsuarioServicio {
 
     List<Usuario> obtenerUsuarios();
 
+    List<Usuario> obtenerUsuariosCiudad(String nombreCiudad);
+
     List<Reserva> listarReservasUsuario(String cedula) throws Exception;
-
-    String recuperarContrasena(String email) throws Exception;
-
-    Comentario registrarComentario(Comentario c) throws  Exception;
-
-    void actualizarComentario(Comentario c,int idComentario) throws  Exception;
-
-    void eliminarComentario(int id) throws  Exception;
-
-    void responderComentario(String respuesta, int idComentario) throws Exception;
-
-    Comentario obtenerComentario(int id) throws  Exception;
-
-    List<Comentario> listarComentarios();
 
     Reserva hacerReserva(Reserva r) throws Exception;
 

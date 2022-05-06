@@ -14,6 +14,10 @@ public interface FotoServicio {
 
     Foto obtenerImagen(int id) throws Exception;
 
+    String obtenerUrlHabitacion(int idHabitacion) throws Exception;
+
+    String obtenerUrlHotel(int idHotel) throws Exception;
+
     List<Foto> listarImagenes() ;
 
 }

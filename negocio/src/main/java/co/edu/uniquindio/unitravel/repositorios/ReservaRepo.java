@@ -7,8 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ReservaRepo extends JpaRepository<Reserva, Integer> {
 
-     /*
-    @Query("select new co.edu.uniquindio.unitravel.dto.ReservaDTO(r.usuario.nombre, r.fechaReserva, h.habitacion) from Reserva r join r.reservaHabitaciones h where h.habitacion.hotel.codigo = :idHotel and r.fechaInicio < :fecha")
-    List<ReservaDTO> obtenerReservasPorHotel(Integer idHotel, LocalDate fecha);
-      */
+
 }

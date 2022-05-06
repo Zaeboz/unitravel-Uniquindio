@@ -29,15 +29,15 @@ public class Ciudad implements Serializable {
     @ToString.Exclude
     private List<Hotel> hoteles;
 
-    @OneToMany(mappedBy = "ciudadOrigen")
+    @OneToMany(mappedBy = "ciudadOrigen",cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Vuelo> vuelosOrigen;
 
-    @OneToMany(mappedBy = "ciudadDestino")
+    @OneToMany(mappedBy = "ciudadDestino",cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Vuelo> vuelosDestino;
 
-    @OneToMany(mappedBy = "ciudad")
+    @OneToMany(mappedBy = "ciudad",cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Usuario> usuarios;
 

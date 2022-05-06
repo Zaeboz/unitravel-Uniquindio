@@ -92,6 +92,14 @@ public class ComentarioServicioTest {
 
     @Test
     @Sql("classpath:dataset.sql")
+    public void listarComentariosCalificacionTest(){
+
+        List<Comentario> lista = comentarioServicio.obtenerListaPorCalificacion(2);
+        lista.forEach(System.out::println);
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
     public void listarComentariosTest(){
 
         List<Comentario> comentarios = comentarioServicio.listarComentarios();

@@ -1,12 +1,11 @@
 package co.edu.uniquindio.unitravel.servicios;
 
+import co.edu.uniquindio.unitravel.dto.HotelMayorCalificacionDTO;
 import co.edu.uniquindio.unitravel.entidades.Cama;
 import co.edu.uniquindio.unitravel.entidades.Habitacion;
 import co.edu.uniquindio.unitravel.entidades.Hotel;
-import co.edu.uniquindio.unitravel.repositorios.AdministradorHotelRepo;
-import co.edu.uniquindio.unitravel.repositorios.CamaRepo;
-import co.edu.uniquindio.unitravel.repositorios.HabitacionRepo;
-import co.edu.uniquindio.unitravel.repositorios.HotelRepo;
+import co.edu.uniquindio.unitravel.entidades.Usuario;
+import co.edu.uniquindio.unitravel.repositorios.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,12 +19,14 @@ public class AdministradorHotelServicioImpl implements AdministradorHotelServici
     private final AdministradorHotelRepo administradorHotelRepo;
     private final HabitacionRepo habitacionRepo;
     private final CamaRepo camaRepo;
+    private final ComentarioRepo comentarioRepo;
 
-    public AdministradorHotelServicioImpl(HotelRepo hotelRepo, AdministradorHotelRepo administradorHotelRepo, HabitacionRepo habitacionRepo, CamaRepo camaRepo) {
+    public AdministradorHotelServicioImpl(HotelRepo hotelRepo, AdministradorHotelRepo administradorHotelRepo, HabitacionRepo habitacionRepo, CamaRepo camaRepo, ComentarioRepo comentarioRepo) {
         this.hotelRepo = hotelRepo;
         this.administradorHotelRepo = administradorHotelRepo;
         this.habitacionRepo = habitacionRepo;
         this.camaRepo = camaRepo;
+        this.comentarioRepo = comentarioRepo;
     }
 
 
@@ -79,6 +80,43 @@ public class AdministradorHotelServicioImpl implements AdministradorHotelServici
     @Override
     public List<Hotel> listarHoteles(String idAdmin) {
         return administradorHotelRepo.obtenerHotelesAdmin(idAdmin);
+    }
+
+    @Override
+    public List<Usuario> usuariosComentarios(int idHotel) {
+        return comentarioRepo.usuariosComentarios(idHotel) ;
+    }
+
+    @Override
+    public List<Hotel> obtenerHotelesPorEstrellas(int estrellas) {
+        return hotelRepo.obtenerHotelesEstrellas(estrellas);
+    }
+
+    @Override
+    public String obtenerNombreCiudadHotel(int idHotel) throws Exception{
+
+        String nombre = hotelRepo.obtenerNombreCiudad(idHotel);
+
+        if (nombre==null){
+            throw new Exception("No es valida");
+        }
+
+        return nombre;
+    }
+
+    @Override
+    public int obtenerCantidadComentario(int idHotel) {
+        return hotelRepo.obtenerCantidadComentarios(idHotel);
+    }
+
+    @Override
+    public int obtenerCalificacionPromedio(int idHotel) {
+        return hotelRepo.obtenerCalificacionPromedio(idHotel);
+    }
+
+    @Override
+    public List<HotelMayorCalificacionDTO> obtenerHotelMayorCalificacion(int idCiudad) {
+        return hotelRepo.obtenerHotelMayorCalificacion(idCiudad);
     }
 
     @Override

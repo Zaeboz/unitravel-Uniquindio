@@ -1,14 +1,15 @@
 package co.edu.uniquindio.unitravel.servicios;
 
-import co.edu.uniquindio.unitravel.entidades.Comentario;
+import co.edu.uniquindio.unitravel.dto.ComentarioDTO;
+import co.edu.uniquindio.unitravel.dto.ReservasTotalesDTO;
 import co.edu.uniquindio.unitravel.entidades.Hotel;
 import co.edu.uniquindio.unitravel.entidades.Reserva;
+import co.edu.uniquindio.unitravel.entidades.Telefono;
 import co.edu.uniquindio.unitravel.entidades.Usuario;
-import co.edu.uniquindio.unitravel.repositorios.TelefonoRepo;
+import co.edu.uniquindio.unitravel.repositorios.CiudadRepo;
+import co.edu.uniquindio.unitravel.repositorios.HotelRepo;
 import co.edu.uniquindio.unitravel.repositorios.UsuarioRepo;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -16,11 +17,13 @@ import java.util.Optional;
 public class UsuarioServicioImpl implements UsuarioServicio {
 
     private final UsuarioRepo usuarioRepo;
-    private final TelefonoRepo telefonoRepo;
+    private final HotelRepo hotelRepo;
+    private final CiudadRepo ciudadRepo;
 
-    public UsuarioServicioImpl(UsuarioRepo usuarioRepo, TelefonoRepo telefonoRepo) {
+    public UsuarioServicioImpl(UsuarioRepo usuarioRepo, HotelRepo hotelRepo, CiudadRepo ciudadRepo) {
         this.usuarioRepo = usuarioRepo;
-        this.telefonoRepo = telefonoRepo;
+        this.hotelRepo = hotelRepo;
+        this.ciudadRepo = ciudadRepo;
     }
 
     @Override
@@ -42,6 +45,45 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     @Override
     public Usuario buscarPorEmail(String email){
         return usuarioRepo.findByEmail(email).orElse(null);
+    }
+
+    @Override
+    public List<Usuario> listarPorNombre(String nombre){
+        return usuarioRepo.findAllByNombre(nombre);
+    }
+
+    @Override
+    public List<Reserva> listarReservas(String email) throws Exception {
+
+        Usuario usuario = buscarPorEmail(email);
+
+        if (usuario== null){
+            throw new Exception("El usuario no existe");
+        }
+
+        return usuarioRepo.obtenerListaReservas(usuario.getEmail());
+    }
+
+    @Override
+    public List<ComentarioDTO> obtenerComentarios() {
+        return usuarioRepo.obtenerComentarios();
+    }
+
+    @Override
+    public List<ReservasTotalesDTO> obtenerReservasTotales() {
+        return usuarioRepo.obtenerReservasTotales();
+    }
+
+    @Override
+    public List<Telefono> obtenerTelefonosU(String cedula) throws Exception {
+
+        Usuario usuario = obtenerUsuario(cedula);
+
+        if (usuario == null){
+            throw new Exception("El usuario no existe");
+        }
+
+        return usuarioRepo.obtenerTelefonosUsuario(usuario.getCedula());
     }
 
     @Override
@@ -71,6 +113,11 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
+    public List<Usuario> obtenerUsuariosCiudad(String nombreCiudad){
+        return ciudadRepo.obtenerCiudadUsuario(nombreCiudad);
+    }
+
+    @Override
     public void eliminarUsuario(String codigo) throws Exception {
         Usuario usuario = obtenerUsuario(codigo);
 
@@ -87,46 +134,6 @@ public class UsuarioServicioImpl implements UsuarioServicio {
             throw new Exception("El usuario no existe");
         }
         return usuario.getReservas();
-    }
-
-    @Override
-    public String recuperarContrasena(String email) throws Exception{
-        Usuario usuario = buscarPorEmail(email);
-        if(usuario == null){
-            throw new Exception("El usuario no existe");
-        }
-        //Se debe de mandar un email al usuario con la nueva contrasena
-        return RandomStringUtils.randomAlphanumeric(10);
-    }
-
-    @Override
-    public Comentario registrarComentario(Comentario c) throws Exception {
-        return null;
-    }
-
-    @Override
-    public void actualizarComentario(Comentario c, int idComentario) throws Exception {
-
-    }
-
-    @Override
-    public void eliminarComentario(int id) throws Exception {
-
-    }
-
-    @Override
-    public void responderComentario(String respuesta, int idComentario) throws Exception {
-
-    }
-
-    @Override
-    public Comentario obtenerComentario(int id) throws Exception {
-        return null;
-    }
-
-    @Override
-    public List<Comentario> listarComentarios() {
-        return null;
     }
 
     @Override
@@ -156,15 +163,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
     @Override
     public List<Hotel> buscarHotelesCiudad(String nombreCiudad) throws Exception {
-        return null;
+        return hotelRepo.obtenerHotelesCiudad(nombreCiudad);
     }
-
-    /*@Override
-    public Reserva enviarDetalleReserva(String cedula, Reserva reserva) {
-
-        //Este servicio se implementa cuando ya podamos enviar mensajes a un correo
-
-    }*/
-
 
 }

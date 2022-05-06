@@ -7,7 +7,6 @@ import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
@@ -52,13 +51,17 @@ public class Hotel implements Serializable {
     @ToString.Exclude
     private List<HistorialPuntos> historialPuntos;
 
-    @OneToMany(mappedBy = "hotel")
+    @OneToMany(mappedBy = "hotel",cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Comentario> comentarios;
 
-    @ManyToMany(mappedBy = "hoteles")
+    @ManyToMany(mappedBy = "hoteles",cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Caracteristica> caracteristicas;
+
+    @OneToMany(mappedBy = "hotel",fetch=FetchType.EAGER,cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<Foto> imagenes;
 
     public Hotel(String nombre, String direccion, String telefono, @NonNull int numEstrellas, AdministradorHotel administradorHotel, Ciudad ciudad) {
         this.nombre = nombre;
@@ -71,5 +74,6 @@ public class Hotel implements Serializable {
         this.historialPuntos = new ArrayList<>();
         this.comentarios = new ArrayList<>();
         this.caracteristicas = new ArrayList<>();
+        this.imagenes = new ArrayList<>();
     }
 }

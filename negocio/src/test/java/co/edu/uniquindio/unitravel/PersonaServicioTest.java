@@ -12,13 +12,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
-
 import javax.transaction.Transactional;
 
 
 @SpringBootTest
 @Transactional
-public class PeronaServicioTest {
+public class PersonaServicioTest {
 
     @Autowired
     private PersonaServicio personaServicio;
@@ -63,7 +62,7 @@ public class PeronaServicioTest {
 
             String mensaje = "Cambias tu contraseña " + usuario.getPassword();
 
-            emailService.enviarEmail("Cambio de contraseña", mensaje, "sebastianquinteroosorio2104@gmail.com");
+            emailService.enviarEmail("Cambio de contraseña", mensaje, "juane.gutierrezs@uqvirtual.edu.co");
 
         } catch (Exception e) {
             e.printStackTrace();

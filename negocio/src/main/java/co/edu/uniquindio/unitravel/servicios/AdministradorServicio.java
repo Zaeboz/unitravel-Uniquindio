@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface AdministradorServicio {
 
+    Administrador obtenerAdministradorEmail(String email) throws Exception;
+
     AdministradorHotel registrarAdminHotel(AdministradorHotel a) throws Exception;
 
     void modificarAdminHotel(AdministradorHotel a,String id) throws Exception;
@@ -23,6 +25,8 @@ public interface AdministradorServicio {
     void eliminarCiudad(int id) throws Exception;
 
     Ciudad obtenerCiudad(int id) throws Exception;
+
+    List<Hotel> obtenerHoteles(String nombreCiudad);
 
     List<Ciudad> listarCiudades();
 
@@ -46,5 +50,6 @@ public interface AdministradorServicio {
 
     List<Vuelo> listarVuelos();
 
+    List<Vuelo> obtenerVuelosPorCiudad(String nombreCiudad) throws Exception;
 
 }

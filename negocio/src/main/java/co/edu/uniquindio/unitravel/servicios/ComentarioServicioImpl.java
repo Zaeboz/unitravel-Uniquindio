@@ -82,6 +82,11 @@ public class ComentarioServicioImpl implements ComentarioServicio{
     }
 
     @Override
+    public List<Comentario> obtenerListaPorCalificacion(int calificacion) {
+        return comentarioRepo.obtenerListaPorCalificacion(calificacion);
+    }
+
+    @Override
     public List<Comentario> listarComentarios() {
         return comentarioRepo.findAll();
     }

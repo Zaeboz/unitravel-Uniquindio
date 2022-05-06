@@ -1,9 +1,6 @@
 package co.edu.uniquindio.unitravel;
 
-import co.edu.uniquindio.unitravel.entidades.AdministradorHotel;
-import co.edu.uniquindio.unitravel.entidades.Ciudad;
-import co.edu.uniquindio.unitravel.entidades.Silla;
-import co.edu.uniquindio.unitravel.entidades.Vuelo;
+import co.edu.uniquindio.unitravel.entidades.*;
 import co.edu.uniquindio.unitravel.servicios.AdministradorServicio;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -22,6 +19,19 @@ public class AdministradorServicioTest {
     private AdministradorServicio administradorServicio;
 
     @Test
+    @Sql("classpath:dataset.sql")
+    public void obtenerAdministrador(){
+
+        try {
+            Administrador administrador = administradorServicio.obtenerAdministradorEmail("admin1@gmailcom");
+
+            Assertions.assertNotNull(administrador);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void registrarAdministradorHotelTest() {
 
         AdministradorHotel administradorHotel = new AdministradorHotel("1","Mauricio","m@gmail.com","mauro");
@@ -36,7 +46,7 @@ public class AdministradorServicioTest {
 
     @Test
     @Sql("classpath:dataset.sql")
-    public void actualizarAdministradorHotelTest() throws Exception {
+    public void actualizarAdministradorHotelTest(){
         try {
             AdministradorHotel a = administradorServicio.obtenerAdminHotel("4");
 
@@ -58,9 +68,9 @@ public class AdministradorServicioTest {
             AdministradorHotel administradorEncontrado = administradorServicio.obtenerAdminHotel("4");
 
             administradorServicio.eliminarAdminHotel(administradorEncontrado.getCedula());
-            AdministradorHotel admministradorBorrado = administradorServicio.obtenerAdminHotel("4");
+            AdministradorHotel administradorBorrado = administradorServicio.obtenerAdminHotel("4");
 
-            Assertions.assertNull(admministradorBorrado);
+            Assertions.assertNull(administradorBorrado);
 
         }catch (Exception e){
             e.printStackTrace();
@@ -143,6 +153,14 @@ public class AdministradorServicioTest {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void listarHotelesCiudadTest(){
+
+        List<Hotel> lista = administradorServicio.obtenerHoteles("Bogota");
+        lista.forEach(System.out::println);
     }
 
     @Test
@@ -295,7 +313,18 @@ public class AdministradorServicioTest {
         lista.forEach(System.out::println);
     }
 
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void listarVuelosPorCiudadTest(){
 
+        try {
+            List<Vuelo> lista = administradorServicio.obtenerVuelosPorCiudad("Bogota");
+            lista.forEach(System.out::println);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
 
 }

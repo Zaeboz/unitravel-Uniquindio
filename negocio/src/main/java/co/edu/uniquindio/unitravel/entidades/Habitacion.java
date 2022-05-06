@@ -1,8 +1,6 @@
 package co.edu.uniquindio.unitravel.entidades;
 
 import lombok.*;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.Positive;
@@ -44,7 +42,7 @@ public class Habitacion implements Serializable{
 
     @OneToMany(mappedBy = "habitacion")
     @ToString.Exclude
-    private List<Foto> fotosHabitacion;
+    private List<Foto> imagenes;
 
     public Habitacion(@NonNull double precio, @NonNull int capacidad, Hotel hotel) {
         this.precio = precio;
@@ -52,6 +50,6 @@ public class Habitacion implements Serializable{
         this.hotel = hotel;
         this.caracteristicas = new ArrayList<>();
         this.camas = new ArrayList<>();
-        this.fotosHabitacion = new ArrayList<>();
+        this.imagenes = new ArrayList<>();
     }
 }

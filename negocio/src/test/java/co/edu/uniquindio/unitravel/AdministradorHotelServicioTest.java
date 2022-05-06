@@ -1,5 +1,6 @@
 package co.edu.uniquindio.unitravel;
 
+import co.edu.uniquindio.unitravel.dto.HotelMayorCalificacionDTO;
 import co.edu.uniquindio.unitravel.entidades.*;
 import co.edu.uniquindio.unitravel.servicios.AdministradorHotelServicio;
 import co.edu.uniquindio.unitravel.servicios.AdministradorServicio;
@@ -74,6 +75,60 @@ public class AdministradorHotelServicioTest {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void listarUsuariosComentarioTest() {
+
+        List<Usuario> lista = administradorHotelServicio.usuariosComentarios(1);
+        lista.forEach(System.out::println);
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void listarHotelesEstrellasTest() {
+
+        List<Hotel> lista = administradorHotelServicio.obtenerHotelesPorEstrellas(2);
+        lista.forEach(System.out::println);
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void obtenerNombreCiudadTest() {
+        try {
+            String nombre= administradorHotelServicio.obtenerNombreCiudadHotel(1);
+
+            Assertions.assertNotNull(nombre);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void obtenerCalificacionPromedioTest() {
+
+        int calificacionPromedio = administradorHotelServicio.obtenerCalificacionPromedio(1);
+
+        System.out.println(calificacionPromedio);
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void obtenerCantidadComentariosTest() {
+
+        int cantidadComentarios = administradorHotelServicio.obtenerCantidadComentario(1);
+
+        System.out.println(cantidadComentarios);
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void obtenerHotelMayorCalificacionTest() {
+
+        List<HotelMayorCalificacionDTO> lista = administradorHotelServicio.obtenerHotelMayorCalificacion(1);
+        lista.forEach(System.out::println);
     }
 
     @Test

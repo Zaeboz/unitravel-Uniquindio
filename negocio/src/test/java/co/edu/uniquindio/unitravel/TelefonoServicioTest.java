@@ -52,6 +52,8 @@ public class TelefonoServicioTest {
             Telefono telefonoEncontrado = telefonoServicio.obtenerTelefono(1);
             telefonoEncontrado.setNumero("322");
 
+            telefonoServicio.actualizarTelefono(telefonoEncontrado,telefonoEncontrado.getCodigo());
+
             Telefono buscado = telefonoServicio.obtenerTelefono(1);
 
             Assertions.assertEquals("322",buscado.getNumero());
