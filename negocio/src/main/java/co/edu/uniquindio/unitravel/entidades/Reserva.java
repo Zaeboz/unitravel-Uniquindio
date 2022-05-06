@@ -35,8 +35,7 @@ public class Reserva implements Serializable {
     @Column(nullable = false)
     private LocalDate fechaFin;
 
-    @Column(nullable = false)
-    @NonNull
+    @Column
     @Positive
     private double precioTotal;
 
@@ -59,7 +58,7 @@ public class Reserva implements Serializable {
     @ToString.Exclude
     private List<ReservaSilla> reservaSillas;
 
-    public Reserva(LocalDate fechaReserva, LocalDate fechaInicio, LocalDate fechaFin, @NonNull double precioTotal, String estado, @NonNull int cantidadPersonas, Usuario usuario) {
+    public Reserva(LocalDate fechaReserva, LocalDate fechaInicio, LocalDate fechaFin, double precioTotal, String estado, @NonNull int cantidadPersonas, Usuario usuario) {
         this.fechaReserva = fechaReserva;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;

@@ -1,5 +1,6 @@
 package co.edu.uniquindio.unitravel.servicios;
 
+<<<<<<< HEAD
 import co.edu.uniquindio.unitravel.dto.ComentarioDTO;
 import co.edu.uniquindio.unitravel.dto.ReservasTotalesDTO;
 import co.edu.uniquindio.unitravel.entidades.Hotel;
@@ -10,6 +11,14 @@ import co.edu.uniquindio.unitravel.repositorios.CiudadRepo;
 import co.edu.uniquindio.unitravel.repositorios.HotelRepo;
 import co.edu.uniquindio.unitravel.repositorios.UsuarioRepo;
 import org.springframework.stereotype.Service;
+=======
+import co.edu.uniquindio.unitravel.entidades.*;
+import co.edu.uniquindio.unitravel.repositorios.*;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+>>>>>>> 968f295acb75cbcbabc904f949c88660b9ec07a6
 import java.util.List;
 import java.util.Optional;
 
@@ -20,10 +29,26 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     private final HotelRepo hotelRepo;
     private final CiudadRepo ciudadRepo;
 
+<<<<<<< HEAD
     public UsuarioServicioImpl(UsuarioRepo usuarioRepo, HotelRepo hotelRepo, CiudadRepo ciudadRepo) {
         this.usuarioRepo = usuarioRepo;
         this.hotelRepo = hotelRepo;
         this.ciudadRepo = ciudadRepo;
+=======
+    private final ComentarioRepo comentarioRepo;
+
+    private final ReservaRepo reservaRepo;
+    private final HotelRepo hotelRepo;
+    private final HabitacionRepo habitacionRepo;
+
+    public UsuarioServicioImpl(UsuarioRepo usuarioRepo, TelefonoRepo telefonoRepo, ComentarioRepo comentarioRepo, ReservaRepo reservaRepo, HotelRepo hotelRepo, HabitacionRepo habitacionRepo) {
+        this.usuarioRepo = usuarioRepo;
+        this.telefonoRepo = telefonoRepo;
+        this.comentarioRepo = comentarioRepo;
+        this.reservaRepo = reservaRepo;
+        this.hotelRepo = hotelRepo;
+        this.habitacionRepo = habitacionRepo;
+>>>>>>> 968f295acb75cbcbabc904f949c88660b9ec07a6
     }
 
     @Override
@@ -96,6 +121,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
+<<<<<<< HEAD
     public Usuario obtenerUsuario(String codigo) throws Exception {
 
         Optional<Usuario> usuario = usuarioRepo.findById(codigo);
@@ -134,11 +160,131 @@ public class UsuarioServicioImpl implements UsuarioServicio {
             throw new Exception("El usuario no existe");
         }
         return usuario.getReservas();
+=======
+    public Usuario validarLogin(String email, String contrasena) throws Exception {
+
+        Optional<Usuario> usuario = usuarioRepo.findByEmailAndPassword(email, contrasena);
+
+        if(usuario.isEmpty()){
+            throw new Exception("Los datos de autenticacion son incorrectos");
+        }
+
+        return usuario.get();
+    }
+
+    @Override
+    public void actualizarConstrasena(String email, String contrasena) throws Exception {
+        Usuario usuario = validarLogin(email, contrasena);
+        if(usuario == null){
+            throw new Exception("El usuario no existe");
+        }
+        usuario.setPassword(contrasena);
+        usuarioRepo.save(usuario);
+    }
+
+    @Override
+    public Comentario registrarComentario(Comentario c) throws Exception {
+        Usuario usuario = obtenerUsuario(c.getUsuario().getCedula());
+        if(usuario == null){
+            throw new Exception("El usuario no existe");
+        }
+        if(c.getComentario().isEmpty()){
+            throw new Exception("El comentario no puede estar vacio");
+        }
+        if(c.getCalificacion() < 0 || c.getCalificacion() >= 5){
+            throw new Exception("La calificacion debe estar entre 0 y 5");
+        }
+        return comentarioRepo.save(c);
+    }
+
+    @Override
+    public Comentario actualizarComentario(Comentario c, int idComentario) throws Exception {
+        Comentario comentario = obtenerComentario(idComentario);
+        if(comentario == null){
+            throw new Exception("El comentario no existe");
+        }
+        return registrarComentario(c);
+    }
+
+    @Override
+    public void eliminarComentario(int id) throws Exception {
+        Comentario comentario = obtenerComentario(id);
+        if(comentario == null){
+            throw new Exception("El comentario no existe");
+        }
+        comentarioRepo.delete(comentario);
+    }
+
+    @Override
+    public void responderComentario(String respuesta, int idComentario) throws Exception {
+        Comentario comentario = obtenerComentario(idComentario);
+        if(comentario == null){
+            throw new Exception("El comentario no existe");
+        }
+        if(respuesta.isEmpty()){
+            throw new Exception("La respuesta no puede estar vacia");
+        }
+        comentario.setRespuesta(respuesta);
+        comentarioRepo.save(comentario);
+    }
+
+    @Override
+    public Comentario obtenerComentario(int id) throws Exception {
+        Comentario comentario = comentarioRepo.findById(id).orElse(null);
+        if(comentario == null){
+            throw new Exception("El comentario no existe");
+        }
+        return comentario;
+    }
+
+    @Override
+    public List<Comentario> listarComentarios() {
+        return comentarioRepo.findAll();
+>>>>>>> 968f295acb75cbcbabc904f949c88660b9ec07a6
     }
 
     @Override
     public Reserva hacerReserva(Reserva r) throws Exception {
-        return null;
+        Usuario usuario = obtenerUsuario(r.getUsuario().getCedula());
+        Reserva reserva = obtenerReserva(r.getCodigo());
+        if(usuario == null){
+            throw new Exception("El usuario no existe");
+        }
+        if(r.getFechaFin().isAfter(r.getFechaInicio())){
+            throw new Exception("La fecha fin debe ser mayor a la fecha inicio");
+        }
+        if(r.getFechaInicio().isBefore(LocalDate.now())){
+            throw new Exception("La fecha inicio debe ser mayor o igual a la fecha actual");
+        }
+        if(r.getFechaInicio().isAfter(r.getFechaFin())){
+            throw new Exception("La fecha inicio debe ser menor a la fecha fin");
+        }
+        if(r.getCantidadPersonas()<= 0){
+            throw new Exception("La cantidad de personas debe ser mayor a 0");
+        }
+        if(reserva != null){
+            throw new Exception("La reserva ya existe");
+        }
+
+        Object[] totales = reservaRepo.obtenerTotalPorReserva(r.getUsuario().getCedula(), r.getCodigo());
+        Double totalHotel = (Double) totales[0];
+        double total;
+        if(totales[1] != null){
+            Double totalVuelo = (Double) totales[1];
+            total = totalHotel + totalHotel*0.05 + totalVuelo +totalVuelo*0.05;
+        } else {
+            total = totalHotel + totalHotel*0.05;
+        }
+        assert false;
+        total = total*reserva.getCantidadPersonas();
+        assert false;
+        reserva.setPrecioTotal(total);
+        return reservaRepo.save(reserva);
+    }
+
+    @Override
+    public List<Habitacion> listarHabitacionesDisponibles(LocalDate fechaInicio, LocalDate fechaFin) throws Exception {
+        return reservaRepo.obtenerReservaHabitaciones(fechaInicio, fechaFin);
     }
 
     @Override
@@ -166,4 +312,25 @@ public class UsuarioServicioImpl implements UsuarioServicio {
         return hotelRepo.obtenerHotelesCiudad(nombreCiudad);
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+    public List<Hotel> buscarHotelesNombre(String nombre) throws Exception {
+        return hotelRepo.obtenerHotelesPorNombre(nombre);
+    }
+
+
+    @Override
+    public Habitacion buscarHabitacion(int codigo) throws Exception {
+        return habitacionRepo.findById(codigo).orElse(null);
+    }
+    /*@Override
+    public Reserva enviarDetalleReserva(String cedula, Reserva reserva) {
+
+        //Este servicio se implementa cuando ya podamos enviar mensajes a un correo
+
+    }*/
+
+
+>>>>>>> 968f295acb75cbcbabc904f949c88660b9ec07a6
 }

@@ -2,8 +2,11 @@ package co.edu.uniquindio.unitravel.entidades;
 
 import lombok.*;
 import javax.persistence.*;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.Positive;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Entity
 @NoArgsConstructor
@@ -21,7 +24,15 @@ public class ReservaHabitacion implements Serializable {
     @Column(nullable = false)
     @Positive
     @NonNull
-    private Float precio;
+    private Double precio;
+
+    @FutureOrPresent
+    @Column(nullable = false)
+    private LocalDate fechaInicio;
+
+    @Future
+    @Column(nullable = false)
+    private LocalDate fechaFin;
 
     @ManyToOne
     private Reserva reserva;
@@ -29,7 +40,7 @@ public class ReservaHabitacion implements Serializable {
     @ManyToOne
     private Habitacion habitacion;
 
-    public ReservaHabitacion(@NonNull Float precio, Reserva reserva, Habitacion habitacion) {
+    public ReservaHabitacion(@NonNull Double precio, Reserva reserva, Habitacion habitacion) {
         this.precio = precio;
         this.reserva = reserva;
         this.habitacion = habitacion;
