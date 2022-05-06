@@ -1,22 +1,15 @@
 package co.edu.uniquindio.unitravel;
 
-<<<<<<< HEAD
+
 import co.edu.uniquindio.unitravel.dto.ComentarioDTO;
 import co.edu.uniquindio.unitravel.dto.ReservasTotalesDTO;
 import co.edu.uniquindio.unitravel.entidades.*;
-import co.edu.uniquindio.unitravel.servicios.AdministradorServicio;
-=======
-import co.edu.uniquindio.unitravel.entidades.*;
-import co.edu.uniquindio.unitravel.servicios.AdministradorHotelServicio;
->>>>>>> 968f295acb75cbcbabc904f949c88660b9ec07a6
-import co.edu.uniquindio.unitravel.servicios.EmailService;
-import co.edu.uniquindio.unitravel.servicios.UsuarioServicio;
+import co.edu.uniquindio.unitravel.servicios.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
-
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
@@ -185,8 +178,6 @@ public class UsuarioServicoTest {
 
     }
 
-<<<<<<< HEAD
-=======
     @Test
     @Sql("classpath:dataset.sql")
     public void obtenerUsuariosTest() {
@@ -200,17 +191,10 @@ public class UsuarioServicoTest {
 
     @Test
     @Sql("classpath:dataset.sql")
-    public void registrarComentarioTest() {
-        try {
-            Usuario u = usuarioServicio.obtenerUsuario("1");
-            Hotel h = hotelServicio.obtenerHotel(1);
-            LocalDate fecha = LocalDate.now();
-            Comentario comentario = new Comentario("Excelente hotel",5,fecha,u,h);
-            Comentario guardado = usuarioServicio.registrarComentario(comentario);
-            Assertions.assertNotNull(guardado);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void obtenerHotelesNombreTest() {
+
+        List<Hotel> lista = usuarioServicio.buscarHotelesNombre("Hotel el mirador");
+        lista.forEach(System.out::println);
     }
 
     @Test
@@ -230,5 +214,94 @@ public class UsuarioServicoTest {
             e.printStackTrace();
         }
     }
->>>>>>> 968f295acb75cbcbabc904f949c88660b9ec07a6
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void obtenerReservasTest() {
+
+        List<Reserva> lista = usuarioServicio.obtenerReservas("juanenmanuel@gmail.com");
+        lista.forEach(System.out::println);
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void actualizarComentarioTest() {
+
+        try {
+            Comentario comentario = usuarioServicio.obtenerComentario(1);
+            comentario.setComentario("Vacío");
+
+            usuarioServicio.actualizarComentario(comentario,comentario.getCodigo());
+
+            Comentario buscado = usuarioServicio.obtenerComentario(1);
+
+            Assertions.assertEquals("Vacío",buscado.getComentario());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void eliminarComentarioTest() {
+
+        try {
+
+            Comentario  comentario = usuarioServicio.obtenerComentario(1);
+            usuarioServicio.eliminarComentario(comentario.getCodigo());
+
+            Comentario buscado = usuarioServicio.obtenerComentario(1);
+
+            Assertions.assertNull(buscado);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void listarComentariosTest() {
+
+        List<Comentario> lista = usuarioServicio.listarComentarios();
+        lista.forEach(System.out::println);
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void listarHabitacionesDisponiblesTest() {
+
+        try {
+            LocalDate fechaInicio = LocalDate.now().plusDays(1);
+            LocalDate fechaFin = LocalDate.now().plusDays(4);
+
+            List<Habitacion> lista = usuarioServicio.listarHabitacionesDisponibles(fechaInicio,fechaFin);
+
+            lista.forEach(System.out::println);
+        } catch (Exception e) {
+           e.printStackTrace();
+        }
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void eliminarReservaTest() {
+
+        try {
+            Reserva reserva= usuarioServicio.obtenerReserva(1);
+
+            usuarioServicio.eliminarReserva(reserva.getCodigo());
+
+            Reserva buscada = usuarioServicio.obtenerReserva(1);
+
+            Assertions.assertNull(buscada);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

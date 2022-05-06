@@ -3,6 +3,9 @@ package co.edu.uniquindio.unitravel.servicios;
 import co.edu.uniquindio.unitravel.entidades.*;
 import co.edu.uniquindio.unitravel.repositorios.*;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +24,7 @@ public class ComentarioServicioImpl implements ComentarioServicio{
     @Override
     public Comentario registrarComentario(Comentario c) throws Exception {
        try {
-          // c.setFecha_calificacion(new );
+            c.setFecha_calificacion(LocalDate.now(ZoneId.of("America/Bogota")));
            return comentarioRepo.save(c);
        }catch (Exception e){
            throw new Exception(e.getMessage());
@@ -36,7 +39,7 @@ public class ComentarioServicioImpl implements ComentarioServicio{
 
         if(comentarioObtenido != null){
             comentarioObtenido.setComentario(c.getComentario());
-           // comentarioObtenido.setFecha_calificacion();
+            comentarioObtenido.setFecha_calificacion(LocalDate.now(ZoneId.of("America/Bogota")));
             comentarioObtenido.setCalificacion(c.getCalificacion());
 
             comentarioRepo.save(comentarioObtenido);

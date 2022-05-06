@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +22,7 @@ public interface UsuarioRepo extends JpaRepository<Usuario, String> {
 
     Page<Usuario> findAll(Pageable pageable);
 
-    @Query("select r from Usuario u, IN (u.reservas) r where u.email = :email")
+    @Query("select r from Usuario u join u.reservas r where u.email = :email")
     List<Reserva> obtenerListaReservas(String email);
 
     @Query("select new co.edu.uniquindio.unitravel.dto.ComentarioDTO(u.email, c) from Usuario u left join u.comentarios  c")

@@ -1,6 +1,5 @@
 package co.edu.uniquindio.unitravel.servicios;
 
-<<<<<<< HEAD
 import co.edu.uniquindio.unitravel.dto.ComentarioDTO;
 import co.edu.uniquindio.unitravel.dto.ReservasTotalesDTO;
 import co.edu.uniquindio.unitravel.entidades.Hotel;
@@ -11,14 +10,9 @@ import co.edu.uniquindio.unitravel.repositorios.CiudadRepo;
 import co.edu.uniquindio.unitravel.repositorios.HotelRepo;
 import co.edu.uniquindio.unitravel.repositorios.UsuarioRepo;
 import org.springframework.stereotype.Service;
-=======
 import co.edu.uniquindio.unitravel.entidades.*;
 import co.edu.uniquindio.unitravel.repositorios.*;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
->>>>>>> 968f295acb75cbcbabc904f949c88660b9ec07a6
 import java.util.List;
 import java.util.Optional;
 
@@ -28,27 +22,19 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     private final UsuarioRepo usuarioRepo;
     private final HotelRepo hotelRepo;
     private final CiudadRepo ciudadRepo;
-
-<<<<<<< HEAD
-    public UsuarioServicioImpl(UsuarioRepo usuarioRepo, HotelRepo hotelRepo, CiudadRepo ciudadRepo) {
-        this.usuarioRepo = usuarioRepo;
-        this.hotelRepo = hotelRepo;
-        this.ciudadRepo = ciudadRepo;
-=======
     private final ComentarioRepo comentarioRepo;
-
     private final ReservaRepo reservaRepo;
-    private final HotelRepo hotelRepo;
     private final HabitacionRepo habitacionRepo;
+    private final TelefonoRepo telefonoRepo;
 
-    public UsuarioServicioImpl(UsuarioRepo usuarioRepo, TelefonoRepo telefonoRepo, ComentarioRepo comentarioRepo, ReservaRepo reservaRepo, HotelRepo hotelRepo, HabitacionRepo habitacionRepo) {
+    public UsuarioServicioImpl(UsuarioRepo usuarioRepo, TelefonoRepo telefonoRepo, CiudadRepo ciudadRepo, ComentarioRepo comentarioRepo, ReservaRepo reservaRepo, HotelRepo hotelRepo, HabitacionRepo habitacionRepo) {
         this.usuarioRepo = usuarioRepo;
+        this.ciudadRepo = ciudadRepo;
         this.telefonoRepo = telefonoRepo;
         this.comentarioRepo = comentarioRepo;
         this.reservaRepo = reservaRepo;
         this.hotelRepo = hotelRepo;
         this.habitacionRepo = habitacionRepo;
->>>>>>> 968f295acb75cbcbabc904f949c88660b9ec07a6
     }
 
     @Override
@@ -121,7 +107,6 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
-<<<<<<< HEAD
     public Usuario obtenerUsuario(String codigo) throws Exception {
 
         Optional<Usuario> usuario = usuarioRepo.findById(codigo);
@@ -156,30 +141,10 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     @Override
     public List<Reserva> listarReservasUsuario(String cedula) throws Exception {
         Usuario usuario = obtenerUsuario(cedula);
-        if(usuario == null){
+        if (usuario == null) {
             throw new Exception("El usuario no existe");
         }
         return usuario.getReservas();
-=======
-    public Usuario validarLogin(String email, String contrasena) throws Exception {
-
-        Optional<Usuario> usuario = usuarioRepo.findByEmailAndPassword(email, contrasena);
-
-        if(usuario.isEmpty()){
-            throw new Exception("Los datos de autenticacion son incorrectos");
-        }
-
-        return usuario.get();
-    }
-
-    @Override
-    public void actualizarConstrasena(String email, String contrasena) throws Exception {
-        Usuario usuario = validarLogin(email, contrasena);
-        if(usuario == null){
-            throw new Exception("El usuario no existe");
-        }
-        usuario.setPassword(contrasena);
-        usuarioRepo.save(usuario);
     }
 
     @Override
@@ -216,19 +181,6 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
-    public void responderComentario(String respuesta, int idComentario) throws Exception {
-        Comentario comentario = obtenerComentario(idComentario);
-        if(comentario == null){
-            throw new Exception("El comentario no existe");
-        }
-        if(respuesta.isEmpty()){
-            throw new Exception("La respuesta no puede estar vacia");
-        }
-        comentario.setRespuesta(respuesta);
-        comentarioRepo.save(comentario);
-    }
-
-    @Override
     public Comentario obtenerComentario(int id) throws Exception {
         Comentario comentario = comentarioRepo.findById(id).orElse(null);
         if(comentario == null){
@@ -240,7 +192,6 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     @Override
     public List<Comentario> listarComentarios() {
         return comentarioRepo.findAll();
->>>>>>> 968f295acb75cbcbabc904f949c88660b9ec07a6
     }
 
     @Override
@@ -290,6 +241,13 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     @Override
     public void eliminarReserva(int id) throws Exception {
 
+        Reserva r = obtenerReserva(id);
+
+        if (r!=null){
+            reservaRepo.delete(r);
+        }else{
+            throw new Exception("La reserva no existe");
+        }
     }
 
     @Override
@@ -299,38 +257,46 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
     @Override
     public Reserva obtenerReserva(int id) throws Exception {
-        return null;
+
+        Optional<Reserva> r = reservaRepo.findById(id);
+
+        if (r.isEmpty()){
+            throw new Exception("La reserva no existe");
+        }
+
+        return r.get();
     }
 
     @Override
     public List<Reserva> obtenerReservas(String emailU) {
-        return null;
+        return usuarioRepo.obtenerListaReservas(emailU);
     }
 
     @Override
     public List<Hotel> buscarHotelesCiudad(String nombreCiudad) throws Exception {
-        return hotelRepo.obtenerHotelesCiudad(nombreCiudad);
+
+        Ciudad ciudad = ciudadRepo.findByNombre(nombreCiudad);
+
+        if (ciudad==null){
+            throw new Exception("La ciudad no existe");
+        }
+        return hotelRepo.obtenerHotelesCiudad(ciudad.getNombre());
     }
 
-<<<<<<< HEAD
-=======
     @Override
-    public List<Hotel> buscarHotelesNombre(String nombre) throws Exception {
+    public List<Hotel> buscarHotelesNombre(String nombre){
+
         return hotelRepo.obtenerHotelesPorNombre(nombre);
     }
 
-
     @Override
     public Habitacion buscarHabitacion(int codigo) throws Exception {
-        return habitacionRepo.findById(codigo).orElse(null);
+
+        Optional<Habitacion> habitacion = habitacionRepo.findById(codigo);
+
+        if (habitacion.isEmpty()){
+            throw new Exception("La habitación no existe");
+        }
+        return habitacion.get();
     }
-    /*@Override
-    public Reserva enviarDetalleReserva(String cedula, Reserva reserva) {
-
-        //Este servicio se implementa cuando ya podamos enviar mensajes a un correo
-
-    }*/
-
-
->>>>>>> 968f295acb75cbcbabc904f949c88660b9ec07a6
 }

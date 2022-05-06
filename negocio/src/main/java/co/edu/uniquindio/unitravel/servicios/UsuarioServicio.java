@@ -1,12 +1,8 @@
 package co.edu.uniquindio.unitravel.servicios;
 
-<<<<<<< HEAD
 import co.edu.uniquindio.unitravel.dto.ComentarioDTO;
 import co.edu.uniquindio.unitravel.dto.ReservasTotalesDTO;
-=======
->>>>>>> 968f295acb75cbcbabc904f949c88660b9ec07a6
 import co.edu.uniquindio.unitravel.entidades.*;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -26,19 +22,20 @@ public interface UsuarioServicio {
 
     List<Telefono> obtenerTelefonosU(String cedula) throws Exception;
 
-<<<<<<< HEAD
+
     Usuario actualizarUsuario(Usuario usuario) throws Exception;
 
     Usuario obtenerUsuario(String codigo) throws Exception;
-=======
-    Usuario validarLogin(String email, String contrasena) throws Exception;
-
-    void actualizarConstrasena(String email, String contrasena) throws Exception;
 
     Comentario registrarComentario(Comentario c) throws  Exception;
 
     public Comentario actualizarComentario(Comentario c, int idComentario) throws Exception;
->>>>>>> 968f295acb75cbcbabc904f949c88660b9ec07a6
+
+    void eliminarComentario(int id) throws Exception;
+
+    Comentario obtenerComentario(int id) throws Exception;
+
+    List<Comentario> listarComentarios();
 
     void eliminarUsuario(String codigo) throws Exception;
 
@@ -63,7 +60,7 @@ public interface UsuarioServicio {
     List<Hotel> buscarHotelesCiudad(String nombreCiudad) throws Exception;
 
 
-    List<Hotel> buscarHotelesNombre(String nombre) throws Exception;
+    List<Hotel> buscarHotelesNombre(String nombre);
 
     Habitacion buscarHabitacion(int codigo) throws Exception;
 }
