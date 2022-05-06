@@ -42,4 +42,7 @@ public interface HotelRepo extends JpaRepository<Hotel, Integer> {
 
     @Query("select h from Habitacion h where h.hotel.codigo =:idHotel")
     List<Habitacion> obtenerHabitacionesHotel(int idHotel);
+
+    @Query("select h from Hotel h where h.nombre like concat('%',:nombre,'%')")
+    List<Hotel> obtenerHotelesPorNombre(String nombre);
 }

@@ -1,10 +1,8 @@
 package co.edu.uniquindio.unitravel.servicios;
 
-import co.edu.uniquindio.unitravel.entidades.Comentario;
-import co.edu.uniquindio.unitravel.entidades.Hotel;
-import co.edu.uniquindio.unitravel.entidades.Reserva;
-import co.edu.uniquindio.unitravel.entidades.Usuario;
+import co.edu.uniquindio.unitravel.entidades.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface UsuarioServicio {
@@ -25,9 +23,13 @@ public interface UsuarioServicio {
 
     String recuperarContrasena(String email) throws Exception;
 
+    Usuario validarLogin(String email, String contrasena) throws Exception;
+
+    void actualizarConstrasena(String email, String contrasena) throws Exception;
+
     Comentario registrarComentario(Comentario c) throws  Exception;
 
-    void actualizarComentario(Comentario c,int idComentario) throws  Exception;
+    public Comentario actualizarComentario(Comentario c, int idComentario) throws Exception;
 
     void eliminarComentario(int id) throws  Exception;
 
@@ -37,7 +39,9 @@ public interface UsuarioServicio {
 
     List<Comentario> listarComentarios();
 
-    Reserva hacerReserva(Reserva r) throws Exception;
+    public Reserva hacerReserva(Reserva r) throws Exception;
+
+    List<Habitacion> listarHabitacionesDisponibles (LocalDate fechaInicio, LocalDate fechaFin) throws Exception;
 
     void eliminarReserva(int id) throws Exception;
 
@@ -50,5 +54,7 @@ public interface UsuarioServicio {
     List<Hotel> buscarHotelesCiudad(String nombreCiudad) throws Exception;
 
 
+    List<Hotel> buscarHotelesNombre(String nombre) throws Exception;
 
+    Habitacion buscarHabitacion(int codigo) throws Exception;
 }

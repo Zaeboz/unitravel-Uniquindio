@@ -31,6 +31,9 @@ public class Silla implements Serializable {
     @ManyToOne
     private Vuelo vuelo;
 
+    @Column
+    private boolean reservada;
+
     @OneToMany(mappedBy = "silla")
     @ToString.Exclude
     private List<ReservaSilla> reservasSillas;

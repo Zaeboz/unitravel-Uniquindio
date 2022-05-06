@@ -24,6 +24,9 @@ public class Comentario implements Serializable {
     @Column(length = 500, nullable = false)
     private String comentario;
 
+    @Column(length = 500)
+    private String respuesta;
+
     @Column(nullable = false)
     private int calificacion;
 
