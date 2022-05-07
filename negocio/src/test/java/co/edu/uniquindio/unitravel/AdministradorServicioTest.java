@@ -180,7 +180,7 @@ public class AdministradorServicioTest {
 
             Vuelo vuelo= administradorServicio.obtenerVuelo("1");
 
-            Silla silla = new Silla("1A","Fila 1",20.999,vuelo);
+            Silla silla = new Silla("Fila 1",20.999,vuelo);
 
             Silla sillaRegistrada = administradorServicio.crearSilla(silla);
 

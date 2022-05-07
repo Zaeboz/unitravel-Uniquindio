@@ -47,10 +47,6 @@ public class Hotel implements Serializable {
     @ToString.Exclude
     private List<Habitacion> habitaciones;
 
-    @OneToMany(mappedBy = "hotel")
-    @ToString.Exclude
-    private List<HistorialPuntos> historialPuntos;
-
     @OneToMany(mappedBy = "hotel",cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Comentario> comentarios;
@@ -71,7 +67,6 @@ public class Hotel implements Serializable {
         this.administradorHotel = administradorHotel;
         this.ciudad = ciudad;
         this.habitaciones = new ArrayList<>();
-        this.historialPuntos = new ArrayList<>();
         this.comentarios = new ArrayList<>();
         this.caracteristicas = new ArrayList<>();
         this.imagenes = new ArrayList<>();

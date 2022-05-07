@@ -40,8 +40,10 @@ public class ReservaHabitacion implements Serializable {
     @ManyToOne
     private Habitacion habitacion;
 
-    public ReservaHabitacion(@NonNull Double precio, Reserva reserva, Habitacion habitacion) {
+    public ReservaHabitacion(@NonNull Double precio, LocalDate fechaInicio, LocalDate fechaFin, Reserva reserva, Habitacion habitacion) {
         this.precio = precio;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
         this.reserva = reserva;
         this.habitacion = habitacion;
     }

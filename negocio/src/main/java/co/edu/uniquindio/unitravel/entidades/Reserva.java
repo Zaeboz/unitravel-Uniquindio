@@ -58,6 +58,10 @@ public class Reserva implements Serializable {
     @ToString.Exclude
     private List<ReservaSilla> reservaSillas;
 
+    @OneToMany(mappedBy = "reserva")
+    @ToString.Exclude
+    private List<HistorialPuntos> historialPuntos;
+
     public Reserva(LocalDate fechaReserva, LocalDate fechaInicio, LocalDate fechaFin, double precioTotal, String estado, @NonNull int cantidadPersonas, Usuario usuario) {
         this.fechaReserva = fechaReserva;
         this.fechaInicio = fechaInicio;

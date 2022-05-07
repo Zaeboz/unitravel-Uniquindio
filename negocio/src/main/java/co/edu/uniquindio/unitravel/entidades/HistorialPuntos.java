@@ -27,6 +27,9 @@ public class HistorialPuntos implements Serializable {
     @Column(nullable = false)
     private int puntos;
 
+    @Column
+    String estado;
+
     @FutureOrPresent
     @NonNull
     @Column(nullable = false)
@@ -41,13 +44,13 @@ public class HistorialPuntos implements Serializable {
     private Usuario usuario;
 
     @ManyToOne
-    private Hotel hotel;
+    private Reserva reserva;
 
-    public HistorialPuntos(@NonNull int puntos, @NonNull LocalDate fechaPuntos, @NonNull LocalDate fechaVencimiento, Usuario usuario, Hotel hotel) {
+    public HistorialPuntos(@NonNull int puntos, @NonNull LocalDate fechaPuntos, @NonNull LocalDate fechaVencimiento, Usuario usuario, Reserva reserva) {
         this.puntos = puntos;
         this.fechaPuntos = fechaPuntos;
         this.fechaVencimiento = fechaVencimiento;
         this.usuario = usuario;
-        this.hotel = hotel;
+        this.reserva = reserva;
     }
 }

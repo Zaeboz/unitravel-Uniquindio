@@ -21,7 +21,7 @@ public class ReservaSilla implements Serializable {
 
     @Column(nullable = false)
     @Positive
-    private Float precio;
+    private Double precio;
 
     @ManyToOne
     private Silla silla;
@@ -29,7 +29,7 @@ public class ReservaSilla implements Serializable {
     @ManyToOne
     private Reserva reserva;
 
-    public ReservaSilla(Float precio, Silla silla, Reserva reserva) {
+    public ReservaSilla(Double precio, Silla silla, Reserva reserva) {
         this.precio = precio;
         this.silla = silla;
         this.reserva = reserva;

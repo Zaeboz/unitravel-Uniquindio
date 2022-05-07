@@ -25,16 +25,18 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     private final ComentarioRepo comentarioRepo;
     private final ReservaRepo reservaRepo;
     private final HabitacionRepo habitacionRepo;
-    private final TelefonoRepo telefonoRepo;
+    private final HistorialPuntosRepo historialPuntosRepo;
+    private final ReservaHabitacionRepo reservaHabitacionRepo;
 
-    public UsuarioServicioImpl(UsuarioRepo usuarioRepo, TelefonoRepo telefonoRepo, CiudadRepo ciudadRepo, ComentarioRepo comentarioRepo, ReservaRepo reservaRepo, HotelRepo hotelRepo, HabitacionRepo habitacionRepo) {
+    public UsuarioServicioImpl(UsuarioRepo usuarioRepo, CiudadRepo ciudadRepo, ComentarioRepo comentarioRepo, ReservaRepo reservaRepo, HotelRepo hotelRepo, HabitacionRepo habitacionRepo, HistorialPuntosRepo historialPuntosRepo, ReservaHabitacionRepo reservaHabitacionRepo) {
         this.usuarioRepo = usuarioRepo;
         this.ciudadRepo = ciudadRepo;
-        this.telefonoRepo = telefonoRepo;
         this.comentarioRepo = comentarioRepo;
         this.reservaRepo = reservaRepo;
         this.hotelRepo = hotelRepo;
         this.habitacionRepo = habitacionRepo;
+        this.historialPuntosRepo = historialPuntosRepo;
+        this.reservaHabitacionRepo = reservaHabitacionRepo;
     }
 
     @Override
@@ -64,7 +66,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
-    public List<Reserva> listarReservas(String email) throws Exception {
+    public List<Reserva> listarReservasCorreo(String email) throws Exception {
 
         Usuario usuario = buscarPorEmail(email);
 
@@ -221,8 +223,8 @@ public class UsuarioServicioImpl implements UsuarioServicio {
         Double totalHotel = (Double) totales[0];
         double total;
         if(totales[1] != null){
-            Double totalVuelo = (Double) totales[1];
-            total = totalHotel + totalHotel*0.05 + totalVuelo +totalVuelo*0.05;
+            double totalVuelo = (Double) totales[1];
+            total = (totalHotel + totalHotel*0.05) + totalVuelo +totalVuelo*0.05;
         } else {
             total = totalHotel + totalHotel*0.05;
         }
@@ -234,8 +236,16 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
-    public List<Habitacion> listarHabitacionesDisponibles(LocalDate fechaInicio, LocalDate fechaFin) throws Exception {
-        return reservaRepo.obtenerReservaHabitaciones(fechaInicio, fechaFin);
+    public List<Habitacion> listarHabitacionesDisponibles(LocalDate fechaInicio, LocalDate fechaFin, String ciudad) throws Exception {
+        Ciudad c = obtenerCiudad(ciudad);
+        if(c == null){
+            throw new Exception("La ciudad no existe");
+        }
+        return reservaRepo.obtenerReservaHabitaciones(fechaInicio, fechaFin, ciudad);
+    }
+
+    private Ciudad obtenerCiudad(String ciudad) {
+        return ciudadRepo.findByNombre(ciudad);
     }
 
     @Override
@@ -251,8 +261,25 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
-    public Reserva modificarReserva() throws Exception {
-        return null;
+    public Reserva modificarReserva(String cedula, Reserva r) throws Exception {
+        Usuario usuario = obtenerUsuario(cedula);
+        if(usuario == null){
+            throw new Exception("El usuario no existe");
+        }
+        if(r.getFechaFin().isAfter(r.getFechaInicio())){
+            throw new Exception("La fecha fin debe ser mayor a la fecha inicio");
+        }
+        if(r.getFechaInicio().isBefore(LocalDate.now())){
+            throw new Exception("La fecha inicio debe ser mayor o igual a la fecha actual");
+        }
+        if(r.getFechaInicio().isAfter(r.getFechaFin())){
+            throw new Exception("La fecha inicio debe ser menor a la fecha fin");
+        }
+        if(r.getCantidadPersonas()<= 0){
+            throw new Exception("La cantidad de personas debe ser mayor a 0");
+        }
+
+        return reservaRepo.save(r);
     }
 
     @Override
@@ -298,5 +325,93 @@ public class UsuarioServicioImpl implements UsuarioServicio {
             throw new Exception("La habitación no existe");
         }
         return habitacion.get();
+    }
+
+    @Override
+    public List<HistorialPuntos> listarPuntosUsuario(String cedula) throws Exception {
+        Usuario u = obtenerUsuario(cedula);
+        if(u == null){
+            throw new Exception("El usuario no existe");
+        }
+        List<HistorialPuntos> puntos = historialPuntosRepo.findByCedula(cedula);
+        if (puntos.isEmpty()){
+            throw new Exception("El usuario no tiene puntos");
+        }
+        return puntos;
+    }
+
+    @Override
+    public List<HistorialPuntos> listarPuntosActivos(String cedula) throws Exception {
+        Usuario u = obtenerUsuario(cedula);
+        if(u == null){
+            throw new Exception("El usuario no existe");
+        }
+        List<HistorialPuntos> puntos = historialPuntosRepo.puntosDiponibles(u.getCedula());
+        if (puntos.isEmpty()){
+            throw new Exception("El usuario no tiene puntos");
+        }
+        return puntos;
+    }
+
+    @Override
+    public List<HistorialPuntos> listarPuntosVencidos(String cedula) throws Exception {
+        Usuario u = obtenerUsuario(cedula);
+        if(u == null){
+            throw new Exception("El usuario no existe");
+        }
+        List<HistorialPuntos> puntos = historialPuntosRepo.puntosVencidos(u.getCedula());
+        if (puntos.isEmpty()){
+            throw new Exception("El usuario no tiene puntos");
+        }
+        return puntos;
+    }
+
+    @Override
+    public HistorialPuntos agregarPuntos(String cedula, Reserva r) throws Exception {
+        Usuario u = obtenerUsuario(cedula);
+        if(u == null){
+            throw new Exception("El usuario no existe");
+        }
+
+        int puntos = (int) (r.getPrecioTotal()*0.01);
+        HistorialPuntos hp = new HistorialPuntos(puntos,LocalDate.now(),LocalDate.now().plusDays(30),u,r);
+
+        return historialPuntosRepo.save(hp);
+    }
+
+    @Override
+    public ReservaHabitacion obtenerReservaHabitacion(int id) throws Exception {
+        Optional<ReservaHabitacion> r = reservaHabitacionRepo.findById(id);
+        if (r.isEmpty()){
+            throw new Exception("La reserva no existe");
+        }
+        return r.get();
+    }
+
+    @Override
+    public ReservaHabitacion reservarHabitacion(Reserva r, Habitacion h) throws Exception {
+        Habitacion habitacionReservada = buscarHabitacion(h.getCodigo());
+        if(habitacionReservada == null){
+            throw new Exception("La habitación no existe");
+        }
+        int noches = r.getFechaFin().getDayOfYear()-r.getFechaInicio().getDayOfYear();
+        double precio = habitacionReservada.getPrecio()*noches;
+        ReservaHabitacion rh = new ReservaHabitacion(precio,r.getFechaInicio(),r.getFechaFin(),r,habitacionReservada);
+
+        return reservaHabitacionRepo.save(rh);
+    }
+
+    @Override
+    public ReservaHabitacion modificarReservaHabitacion(ReservaHabitacion rh, Habitacion h) throws Exception {
+        Habitacion habitacionReservada = buscarHabitacion(h.getCodigo());
+        ReservaHabitacion reservaHabitacion = obtenerReservaHabitacion(rh.getCodigo());
+        if(habitacionReservada == null){
+            throw new Exception("La habitación no existe");
+        }
+        if(reservaHabitacion == null){
+            throw new Exception("La reserva no existe");
+        }
+        reservaHabitacion.setHabitacion(h);
+        return reservaHabitacionRepo.save(reservaHabitacion);
     }
 }

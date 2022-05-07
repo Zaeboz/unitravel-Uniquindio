@@ -15,10 +15,10 @@ public interface ReservaRepo extends JpaRepository<Reserva, Integer> {
     List<ReservaDTO> obtenerReservasPorHotel(Integer idHotel, LocalDate fecha);
       */
 
-    @Query("select distinct rh.habitacion from ReservaHabitacion rh where not (:fecha1 > rh.fechaInicio and :fecha2 < rh.fechaFin)")
-    List<Habitacion> obtenerReservaHabitaciones(LocalDate fecha1, LocalDate fecha2);
+    @Query("select distinct rh.habitacion from ReservaHabitacion rh where not (:fecha1 > rh.fechaInicio and :fecha2 < rh.fechaFin) and rh.habitacion.hotel.ciudad.nombre = :ciudad")
+    List<Habitacion> obtenerReservaHabitaciones(LocalDate fecha1, LocalDate fecha2, String ciudad);
 
-    @Query("select (select sum(rh.precio) from ReservaHabitacion rh where rh.reserva = r group by r), (select sum(rs.precio) from ReservaSilla rs where rs.reserva = r group by r) from Reserva r where r.usuario.cedula = :cedula and r.codigo = :codigoReserva")
+    @Query("select (select sum(rh.precio) from ReservaHabitacion rh where rh.reserva = r group by r), (select sum(rs.precio) from ReservaSilla rs where rs.reserva = r group by r) from Reserva r  where r.usuario.cedula = :cedula and r.codigo = :codigoReserva")
     Object[] obtenerTotalPorReserva(String cedula, Integer codigoReserva);
 
 }

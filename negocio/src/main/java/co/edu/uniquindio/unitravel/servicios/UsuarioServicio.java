@@ -14,7 +14,7 @@ public interface UsuarioServicio {
 
     List<Usuario> listarPorNombre(String nombre);
 
-    List<Reserva> listarReservas(String email) throws Exception;
+    List<Reserva> listarReservasCorreo(String email) throws Exception;
 
     List<ComentarioDTO> obtenerComentarios();
 
@@ -22,14 +22,13 @@ public interface UsuarioServicio {
 
     List<Telefono> obtenerTelefonosU(String cedula) throws Exception;
 
-
     Usuario actualizarUsuario(Usuario usuario) throws Exception;
 
     Usuario obtenerUsuario(String codigo) throws Exception;
 
     Comentario registrarComentario(Comentario c) throws  Exception;
 
-    public Comentario actualizarComentario(Comentario c, int idComentario) throws Exception;
+    Comentario actualizarComentario(Comentario c, int idComentario) throws Exception;
 
     void eliminarComentario(int id) throws Exception;
 
@@ -45,13 +44,13 @@ public interface UsuarioServicio {
 
     List<Reserva> listarReservasUsuario(String cedula) throws Exception;
 
-    public Reserva hacerReserva(Reserva r) throws Exception;
+    Reserva hacerReserva(Reserva r) throws Exception;
 
-    List<Habitacion> listarHabitacionesDisponibles (LocalDate fechaInicio, LocalDate fechaFin) throws Exception;
+    List<Habitacion> listarHabitacionesDisponibles (LocalDate fechaInicio, LocalDate fechaFin, String ciudad) throws Exception;
 
     void eliminarReserva(int id) throws Exception;
 
-    Reserva modificarReserva() throws Exception;
+    Reserva modificarReserva(String cedula, Reserva r) throws Exception;
 
     Reserva obtenerReserva(int id) throws Exception;
 
@@ -63,4 +62,18 @@ public interface UsuarioServicio {
     List<Hotel> buscarHotelesNombre(String nombre);
 
     Habitacion buscarHabitacion(int codigo) throws Exception;
+
+    List<HistorialPuntos> listarPuntosUsuario(String cedula) throws Exception;
+
+    List<HistorialPuntos> listarPuntosActivos(String cedula) throws Exception;
+
+    List<HistorialPuntos> listarPuntosVencidos(String cedula) throws Exception;
+
+    HistorialPuntos agregarPuntos(String cedula, Reserva r) throws Exception;
+
+    ReservaHabitacion obtenerReservaHabitacion(int id) throws Exception;
+
+    ReservaHabitacion reservarHabitacion(Reserva r, Habitacion h) throws Exception;
+
+    ReservaHabitacion modificarReservaHabitacion(ReservaHabitacion rh, Habitacion h) throws Exception;
 }

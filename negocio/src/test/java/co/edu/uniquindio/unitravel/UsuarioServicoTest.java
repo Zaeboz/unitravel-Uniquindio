@@ -105,14 +105,14 @@ public class UsuarioServicoTest {
     @Sql("classpath:dataset.sql")
     public void listarUsuariosTest() {
         List<Usuario> lista = usuarioServicio.obtenerUsuarios();
-        lista.forEach(System.out::println);
+        Assertions.assertNotNull(lista);
     }
 
     @Test
     @Sql("classpath:dataset.sql")
     public void listarUsuariosCiudadTest(){
         List<Usuario> lista = usuarioServicio.obtenerUsuariosCiudad("Bogota");
-        lista.forEach(System.out::println);
+        Assertions.assertNotNull(lista);
     }
 
     @Test
@@ -124,10 +124,10 @@ public class UsuarioServicoTest {
 
             List<Hotel> hoteles = usuarioServicio.buscarHotelesCiudad(ciudad.getNombre());
 
-            hoteles.forEach(System.out::println);
+            Assertions.assertNotNull(hoteles);
 
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
@@ -136,7 +136,7 @@ public class UsuarioServicoTest {
     public void listarUsuariosPorNombreTest() {
 
        List<Usuario> lista=usuarioServicio.listarPorNombre("Camila");
-       lista.forEach(System.out::println);
+       Assertions.assertNotNull(lista);
     }
 
     @Test
@@ -144,8 +144,8 @@ public class UsuarioServicoTest {
     public void listarReservasUTest() {
 
         try {
-            List<Reserva> lista = usuarioServicio.listarReservas("juanenmanuel@gmail.com");
-            lista.forEach(System.out::println);
+            List<Reserva> lista = usuarioServicio.listarReservasCorreo("juanenmanuel@gmail.com");
+            Assertions.assertNotNull(lista);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -156,14 +156,29 @@ public class UsuarioServicoTest {
     public void obtenerComentariosTest() {
 
         List<ComentarioDTO> lista = usuarioServicio.obtenerComentarios();
-        lista.forEach(System.out::println);
+        Assertions.assertNotNull(lista);
     }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void registrarComentarioTest() {
+        try {
+            Usuario u = usuarioServicio.obtenerUsuario("1");
+            Hotel h = hotelServicio.obtenerHotel(1);
+            Comentario comentario = new Comentario("Me encanta el hotel", 4, LocalDate.now(), u, h);
+            Assertions.assertNotNull(usuarioServicio.registrarComentario(comentario));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
 
     @Test
     @Sql("classpath:dataset.sql")
     public void obtenerReservasTotalesTest() {
         List<ReservasTotalesDTO> lista = usuarioServicio.obtenerReservasTotales();
-        lista.forEach(System.out::println);
+        Assertions.assertNotNull(lista);
     }
 
     @Test
@@ -171,7 +186,7 @@ public class UsuarioServicoTest {
     public void obtenerTelefonosUsuarioTest() {
         try {
             List<Telefono> lista = usuarioServicio.obtenerTelefonosU("1");
-            lista.forEach(System.out::println);
+            Assertions.assertNotNull(lista);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -194,7 +209,7 @@ public class UsuarioServicoTest {
     public void obtenerHotelesNombreTest() {
 
         List<Hotel> lista = usuarioServicio.buscarHotelesNombre("Hotel el mirador");
-        lista.forEach(System.out::println);
+        Assertions.assertNotNull(lista);
     }
 
     @Test
@@ -207,12 +222,24 @@ public class UsuarioServicoTest {
             Usuario u = usuarioServicio.obtenerUsuario("1");
             Reserva reserva = new Reserva(fecha,fechaInicio,fechaFin,0,"en proceso",3,u);
             Habitacion habitacion = usuarioServicio.buscarHabitacion(1);
-            ReservaHabitacion rh = new ReservaHabitacion(habitacion.getPrecio(),reserva,habitacion);
+            ReservaHabitacion rh = new ReservaHabitacion(habitacion.getPrecio(),LocalDate.now(),LocalDate.now().plusDays(3),reserva,habitacion);
+            reserva.getReservaHabitaciones().add(rh);
+            Vuelo vuelo= administradorServicio.obtenerVuelo("1");
+            Silla silla = new Silla("Fila 1",20.999,vuelo);
+            ReservaSilla rs = new ReservaSilla(silla.getPrecio(),silla,reserva);
+            reserva.getReservaSillas().add(rs);
             Reserva guardado = usuarioServicio.hacerReserva(reserva);
             Assertions.assertNotNull(guardado);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void buscarHabitacionTest() throws Exception {
+        Habitacion habitacion = usuarioServicio.buscarHabitacion(1);
+        Assertions.assertNotNull(habitacion);
     }
 
     @Test
@@ -220,7 +247,7 @@ public class UsuarioServicoTest {
     public void obtenerReservasTest() {
 
         List<Reserva> lista = usuarioServicio.obtenerReservas("juanenmanuel@gmail.com");
-        lista.forEach(System.out::println);
+        Assertions.assertNotNull(lista);
     }
 
     @Test
@@ -266,7 +293,7 @@ public class UsuarioServicoTest {
     public void listarComentariosTest() {
 
         List<Comentario> lista = usuarioServicio.listarComentarios();
-        lista.forEach(System.out::println);
+        Assertions.assertNotNull(lista);
     }
 
     @Test
@@ -276,10 +303,10 @@ public class UsuarioServicoTest {
         try {
             LocalDate fechaInicio = LocalDate.now().plusDays(1);
             LocalDate fechaFin = LocalDate.now().plusDays(4);
+            String ciudad = "Bogota";
 
-            List<Habitacion> lista = usuarioServicio.listarHabitacionesDisponibles(fechaInicio,fechaFin);
-
-            lista.forEach(System.out::println);
+            List<Habitacion> lista = usuarioServicio.listarHabitacionesDisponibles(fechaInicio,fechaFin,ciudad);
+            Assertions.assertNotNull(lista);
         } catch (Exception e) {
            e.printStackTrace();
         }
@@ -302,6 +329,83 @@ public class UsuarioServicoTest {
             e.printStackTrace();
         }
     }
+    
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void modificarReservaTest() {
+        try {
+            Reserva reserva= usuarioServicio.obtenerReserva(1);
+            reserva.setFechaInicio(LocalDate.now().plusDays(1));
+            reserva.setFechaFin(LocalDate.now().plusDays(4));
+            Reserva actualizada = usuarioServicio.modificarReserva(reserva.getUsuario().getCedula(),reserva);
+            Assertions.assertNotNull(actualizada);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void listarPuntosUsuarioTest() {
 
+        try {
+            Usuario u = usuarioServicio.obtenerUsuario("1");
+            List<HistorialPuntos> puntos = usuarioServicio.listarPuntosUsuario(u.getCedula());
+            Assertions.assertNotNull(puntos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void listarPuntosActivosTest() {
+
+        try {
+            Usuario u = usuarioServicio.obtenerUsuario("1");
+            List<HistorialPuntos> puntos = usuarioServicio.listarPuntosActivos(u.getCedula());
+            Assertions.assertNotNull(puntos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void listarPuntosVencidosTest() {
+
+        try {
+            Usuario u = usuarioServicio.obtenerUsuario("1");
+            List<HistorialPuntos> puntos = usuarioServicio.listarPuntosVencidos(u.getCedula());
+            Assertions.assertNotNull(puntos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void agregarPuntosTest() {
+
+        try {
+            Usuario u = usuarioServicio.obtenerUsuario("1");
+            Reserva r = usuarioServicio.obtenerReserva(1);
+            usuarioServicio.agregarPuntos(u.getCedula(),r);
+            List<HistorialPuntos> puntos = usuarioServicio.listarPuntosUsuario(u.getCedula());
+            Assertions.assertNotNull(puntos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void obtenerReservaHabitacionTest() {
+        try {
+            ReservaHabitacion r = usuarioServicio.obtenerReservaHabitacion(1);
+            Assertions.assertNotNull(r);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

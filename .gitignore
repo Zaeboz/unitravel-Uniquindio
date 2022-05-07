@@ -19,3 +19,6 @@ build/
 .idea
 
 /bin
+/.gradle/
+/negocio/src/main/resources/
+/negocio/src/test/resources/
