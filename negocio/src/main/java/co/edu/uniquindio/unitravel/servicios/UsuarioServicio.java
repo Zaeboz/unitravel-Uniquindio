@@ -75,5 +75,7 @@ public interface UsuarioServicio {
 
     ReservaHabitacion reservarHabitacion(Reserva r, Habitacion h) throws Exception;
 
-    ReservaHabitacion modificarReservaHabitacion(ReservaHabitacion rh, Habitacion h) throws Exception;
+    void modificarReservaHabitacion(ReservaHabitacion rh, Habitacion h) throws Exception;
+
+    ReservaSilla registrarReservaSilla(int idReserva,Silla silla,String idVuelo) throws Exception;
 }

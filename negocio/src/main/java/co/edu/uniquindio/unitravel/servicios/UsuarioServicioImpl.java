@@ -27,8 +27,10 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     private final HabitacionRepo habitacionRepo;
     private final HistorialPuntosRepo historialPuntosRepo;
     private final ReservaHabitacionRepo reservaHabitacionRepo;
+    private final VueloRepo vueloRepo;
+    private final ReservaSillaRepo reservaSillaRepo;
 
-    public UsuarioServicioImpl(UsuarioRepo usuarioRepo, CiudadRepo ciudadRepo, ComentarioRepo comentarioRepo, ReservaRepo reservaRepo, HotelRepo hotelRepo, HabitacionRepo habitacionRepo, HistorialPuntosRepo historialPuntosRepo, ReservaHabitacionRepo reservaHabitacionRepo) {
+    public UsuarioServicioImpl(UsuarioRepo usuarioRepo, CiudadRepo ciudadRepo, ComentarioRepo comentarioRepo, ReservaRepo reservaRepo, HotelRepo hotelRepo, HabitacionRepo habitacionRepo, HistorialPuntosRepo historialPuntosRepo, ReservaHabitacionRepo reservaHabitacionRepo, VueloRepo vueloRepo, ReservaSillaRepo reservaSillaRepo) {
         this.usuarioRepo = usuarioRepo;
         this.ciudadRepo = ciudadRepo;
         this.comentarioRepo = comentarioRepo;
@@ -37,6 +39,8 @@ public class UsuarioServicioImpl implements UsuarioServicio {
         this.habitacionRepo = habitacionRepo;
         this.historialPuntosRepo = historialPuntosRepo;
         this.reservaHabitacionRepo = reservaHabitacionRepo;
+        this.vueloRepo = vueloRepo;
+        this.reservaSillaRepo = reservaSillaRepo;
     }
 
     @Override
@@ -402,7 +406,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
-    public ReservaHabitacion modificarReservaHabitacion(ReservaHabitacion rh, Habitacion h) throws Exception {
+    public void modificarReservaHabitacion(ReservaHabitacion rh, Habitacion h) throws Exception {
         Habitacion habitacionReservada = buscarHabitacion(h.getCodigo());
         ReservaHabitacion reservaHabitacion = obtenerReservaHabitacion(rh.getCodigo());
         if(habitacionReservada == null){
@@ -412,6 +416,32 @@ public class UsuarioServicioImpl implements UsuarioServicio {
             throw new Exception("La reserva no existe");
         }
         reservaHabitacion.setHabitacion(h);
-        return reservaHabitacionRepo.save(reservaHabitacion);
+        reservaHabitacionRepo.save(reservaHabitacion);
+    }
+
+    @Override
+    public ReservaSilla registrarReservaSilla(int idReserva,Silla silla,String idVuelo) throws Exception{
+
+        Optional<Vuelo> v = vueloRepo.findById(idVuelo);
+        Reserva r = obtenerReserva(idReserva);
+
+        if (r!=null){
+            if (r.getEstado().equals("Disponible")){
+                if (v.isEmpty()){
+                    throw new Exception("El vuelo no existe");
+                }else{
+                    if (v.get().getSillas().contains(silla)){
+                        ReservaSilla reservaSilla = new ReservaSilla(silla.getPrecio(),silla,r);
+                        return reservaSillaRepo.save(reservaSilla);
+                    }
+                }
+            }else {
+                throw new Exception("La reserva no esta disponible");
+            }
+        }else {
+            throw new Exception("La reserva no existe");
+        }
+
+        return null;
     }
 }

@@ -28,7 +28,8 @@ public class UsuarioServicoTest {
     private EmailService emailService;
 
     @Autowired
-    AdministradorHotelServicio hotelServicio;
+    private AdministradorHotelServicio hotelServicio;
+
 
     @Test
     @Sql("classpath:dataset.sql")
@@ -408,4 +409,60 @@ public class UsuarioServicoTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void reservaHabitacion(){
+
+        try {
+            Habitacion habitacion = hotelServicio.obtenerHabitacion(1);
+            Reserva r = usuarioServicio.obtenerReserva(1);
+
+            ReservaHabitacion rh = usuarioServicio.reservarHabitacion(r,habitacion);
+
+            Assertions.assertNotNull(rh);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void modificarReservaHabitacion(){
+
+        try {
+            Habitacion habitacion = hotelServicio.obtenerHabitacion(1);
+            ReservaHabitacion rhEncontrada= usuarioServicio.obtenerReservaHabitacion(1);
+
+            rhEncontrada.setPrecio(20.009);
+
+            usuarioServicio.modificarReservaHabitacion(rhEncontrada,habitacion);
+
+            ReservaHabitacion buscada= usuarioServicio.obtenerReservaHabitacion(1);
+
+            Assertions.assertEquals(20.009,buscada.getPrecio());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql")
+    public void registrarReservaSilla(){
+
+        try {
+            Reserva r = usuarioServicio.obtenerReserva(1);
+            Vuelo v = administradorServicio.obtenerVuelo("1");
+            Silla s= administradorServicio.obtenerSilla("1");
+
+            ReservaSilla rs = usuarioServicio.registrarReservaSilla(r.getCodigo(),s,v.getCodigo());
+
+            Assertions.assertNotNull(rs);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
