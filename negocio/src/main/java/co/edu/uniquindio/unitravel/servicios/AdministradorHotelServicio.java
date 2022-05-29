@@ -1,10 +1,7 @@
 package co.edu.uniquindio.unitravel.servicios;
 
 import co.edu.uniquindio.unitravel.dto.HotelMayorCalificacionDTO;
-import co.edu.uniquindio.unitravel.entidades.Cama;
-import co.edu.uniquindio.unitravel.entidades.Habitacion;
-import co.edu.uniquindio.unitravel.entidades.Hotel;
-import co.edu.uniquindio.unitravel.entidades.Usuario;
+import co.edu.uniquindio.unitravel.entidades.*;
 
 import java.util.List;
 
@@ -58,5 +55,9 @@ public interface AdministradorHotelServicio {
 
     List<Cama> listarCamasHabitacion(int idHabitacion) throws Exception;
 
+    Ciudad obtenerCiudad(int id) throws Exception;
 
+    AdministradorHotel obtenerAdminHotel(String codigo) throws Exception;
+
+    Foto guardarFoto(Foto f) throws Exception;
 }

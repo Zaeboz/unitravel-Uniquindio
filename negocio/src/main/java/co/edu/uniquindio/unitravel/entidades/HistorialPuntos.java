@@ -28,7 +28,7 @@ public class HistorialPuntos implements Serializable {
     private int puntos;
 
     @Column
-    String estado;
+    private String estado;
 
     @FutureOrPresent
     @NonNull

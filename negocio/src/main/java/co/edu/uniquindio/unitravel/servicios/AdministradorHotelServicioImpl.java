@@ -1,10 +1,7 @@
 package co.edu.uniquindio.unitravel.servicios;
 
 import co.edu.uniquindio.unitravel.dto.HotelMayorCalificacionDTO;
-import co.edu.uniquindio.unitravel.entidades.Cama;
-import co.edu.uniquindio.unitravel.entidades.Habitacion;
-import co.edu.uniquindio.unitravel.entidades.Hotel;
-import co.edu.uniquindio.unitravel.entidades.Usuario;
+import co.edu.uniquindio.unitravel.entidades.*;
 import co.edu.uniquindio.unitravel.repositorios.*;
 import org.springframework.stereotype.Service;
 
@@ -20,24 +17,41 @@ public class AdministradorHotelServicioImpl implements AdministradorHotelServici
     private final HabitacionRepo habitacionRepo;
     private final CamaRepo camaRepo;
     private final ComentarioRepo comentarioRepo;
+    private final CiudadRepo ciudadRepo;
+    private final FotoRepo fotoRepo;
 
-    public AdministradorHotelServicioImpl(HotelRepo hotelRepo, AdministradorHotelRepo administradorHotelRepo, HabitacionRepo habitacionRepo, CamaRepo camaRepo, ComentarioRepo comentarioRepo) {
+    public AdministradorHotelServicioImpl(HotelRepo hotelRepo, AdministradorHotelRepo administradorHotelRepo, HabitacionRepo habitacionRepo, CamaRepo camaRepo, ComentarioRepo comentarioRepo, CiudadRepo ciudadRepo, FotoRepo fotoRepo) {
         this.hotelRepo = hotelRepo;
         this.administradorHotelRepo = administradorHotelRepo;
         this.habitacionRepo = habitacionRepo;
         this.camaRepo = camaRepo;
         this.comentarioRepo = comentarioRepo;
+        this.ciudadRepo = ciudadRepo;
+        this.fotoRepo = fotoRepo;
     }
 
 
     @Override
     public Hotel crearHotel(Hotel hotel) throws Exception {
 
-        Hotel buscado = obtenerHotel(hotel.getCodigo());
-        if(buscado != null){
-            throw new Exception("El hotel ya existe");
+        List <Foto> fotos = new ArrayList<>();
+        if(hotel.getCiudad() == null){
+            throw new Exception("El hotel no tiene ciudad");
         }
-
+        if(hotel.getDireccion() == null){
+            throw new Exception("El hotel no tiene direccion");
+        }
+        if(hotel.getNombre() == null){
+            throw new Exception("El hotel no tiene nombre");
+        }
+        if(hotel.getTelefono() == null){
+            throw new Exception("El hotel no tiene telefono");
+        }
+        for(Foto foto: hotel.getImagenes()){
+            foto.setHotel(hotel);
+            fotos.add(foto);
+        }
+        hotel.setImagenes(fotos);
         return hotelRepo.save(hotel);
     }
 
@@ -255,5 +269,24 @@ public class AdministradorHotelServicioImpl implements AdministradorHotelServici
         }
 
         return camas;
+    }
+
+    @Override
+    public Ciudad obtenerCiudad(int id) throws Exception {
+        return ciudadRepo.findById(id).orElse(null);
+    }
+
+    @Override
+    public AdministradorHotel obtenerAdminHotel(String codigo) throws Exception {
+        return administradorHotelRepo.findById(codigo).orElse(null);
+    }
+
+    @Override
+    public Foto guardarFoto(Foto f) throws Exception {
+
+        if(f.getUrl().equals("")){
+            throw new Exception("La foto no tiene url asociada");
+        }
+        return fotoRepo.save(f);
     }
 }

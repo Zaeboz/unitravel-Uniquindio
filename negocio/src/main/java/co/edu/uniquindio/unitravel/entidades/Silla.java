@@ -17,8 +17,8 @@ import java.util.List;
 public class Silla implements Serializable {
 
     @Id
+    @Column(length = 5)
     @EqualsAndHashCode.Include
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String codigo;
 
     @Column(nullable = false)
@@ -31,9 +31,6 @@ public class Silla implements Serializable {
 
     @ManyToOne
     private Vuelo vuelo;
-
-    @Column
-    private boolean reservada;
 
     @OneToMany(mappedBy = "silla")
     @ToString.Exclude

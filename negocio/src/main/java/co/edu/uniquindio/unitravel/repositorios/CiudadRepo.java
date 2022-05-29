@@ -22,6 +22,7 @@ public interface CiudadRepo extends JpaRepository<Ciudad, Integer> {
 
     Ciudad findByNombre(String nombre);
 
+    //agrupen por ciudad
     @Query("select c from Ciudad c join c.hoteles h join h.habitaciones hh join ReservaHabitacion rh where (rh.fechaFin > :fechaInicio and rh.fechaInicio < :fechaFin) order by count(rh) desc")
     List<Ciudad> obtenerCiudadesMasReservadas(LocalDate fechaInicio, LocalDate fechaFin);
 
