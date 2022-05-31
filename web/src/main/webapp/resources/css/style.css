@@ -46,3 +46,14 @@ body .ui-dataview .ui-dataview-content{
 .item-ciudad{
     text-align: center;
 }
+
+.item-ciudad img{
+    width: 100%;
+    height: 100%;
+}
+
+.img-ciudad{
+    width: 100%;
+    height: 210px;
+    overflow: hidden;
+}

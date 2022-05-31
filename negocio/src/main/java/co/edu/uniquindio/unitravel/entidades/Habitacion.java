@@ -5,6 +5,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,11 +25,11 @@ public class Habitacion implements Serializable{
     private Integer codigo;
 
     @Positive
-    @NonNull
+    @Min(50000)
     private double precio;
 
     @Positive
-    @NonNull
+    @Min(value = 1, message = "La capacidad de la habitacion debe ser mayor a 0")
     private int capacidad;
 
     @ManyToOne
@@ -46,7 +47,7 @@ public class Habitacion implements Serializable{
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<String> imagenes = new ArrayList<String>();
 
-    public Habitacion(@NonNull double precio, @NonNull int capacidad, Hotel hotel) {
+    public Habitacion( double precio, int capacidad, Hotel hotel) {
         this.precio = precio;
         this.capacidad = capacidad;
         this.hotel = hotel;

@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -23,11 +24,11 @@ public class HistorialPuntos implements Serializable {
     private Integer codigo;
 
     @Positive
-    @NonNull
     @Column(nullable = false)
+    @Min(value = 1, message = "El puntaje debe ser mayor a 0")
     private int puntos;
 
-    @Column
+    @Column(nullable = false, length = 20)
     private String estado;
 
     @FutureOrPresent

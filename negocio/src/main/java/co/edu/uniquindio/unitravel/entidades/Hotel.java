@@ -5,7 +5,9 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,17 +27,22 @@ public class Hotel implements Serializable {
     private Integer codigo;
 
     @Column(nullable = false, length = 100)
+    @Size(max = 100, min = 5, message = "El nombre del hotel debe tener entre 5 y 100 caracteres")
+    @NotBlank(message = "El nombre del hotel no puede estar vacio")
     private String nombre;
 
     @Column(nullable = false, length = 100)
+    @Size(max = 100, min = 10, message = "La direccion del hotel debe tener entre 10 y 100 caracteres")
+    @NotBlank(message = "La direccion del hotel no puede estar vacia")
     private String direccion;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 10)
+    @Size(max = 10, min = 7, message = "El telefono del hotel debe tener entre 7 y 10 caracteres")
+    @NotBlank(message = "El telefono del hotel no puede estar vacio")
     private String telefono;
 
     @Positive
     @ToString.Include
-    @NonNull
     @Column(nullable = false)
     private int numEstrellas;
 
@@ -62,9 +69,12 @@ public class Hotel implements Serializable {
     private List<String> imagenes = new ArrayList<String>();
 
     @Lob
+    @Column(nullable = false)
+    @Size(max = 10000, min = 10, message = "La descripcion del hotel debe tener entre 10 y 10000 caracteres")
+    @NotBlank(message = "La descripcion del hotel no puede estar vacia")
     private String descripcion;
 
-    public Hotel(String nombre, String direccion, String telefono, @NonNull int numEstrellas, AdministradorHotel administradorHotel, Ciudad ciudad) {
+    public Hotel(String nombre, String direccion, String telefono, int numEstrellas, AdministradorHotel administradorHotel, Ciudad ciudad) {
         this.nombre = nombre;
         this.direccion = direccion;
         this.telefono = telefono;

@@ -3,6 +3,7 @@ package co.edu.uniquindio.unitravel.entidades;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class Cama implements Serializable {
     private int codigo;
 
     @Column(nullable = false, length = 50)
+    @Size(max = 50, message = "El nombre de la cama no puede tener mas de 50 caracteres")
     private String tipo;
 
     @ManyToMany(mappedBy = "camas")

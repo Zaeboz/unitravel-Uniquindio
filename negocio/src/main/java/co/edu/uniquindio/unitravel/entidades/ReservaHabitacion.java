@@ -23,7 +23,6 @@ public class ReservaHabitacion implements Serializable {
 
     @Column(nullable = false)
     @Positive
-    @NonNull
     private Double precio;
 
     @FutureOrPresent

@@ -93,15 +93,15 @@ public class HotelBean implements Serializable{
                     return "registro_exitoso?faces-redirect=true";
                 } else {
                     FacesMessage ms = new FacesMessage(FacesMessage.SEVERITY_WARN, "Error", "Debe subir al menos una imagen");
-                    FacesContext.getCurrentInstance().addMessage(null, ms);
+                    FacesContext.getCurrentInstance().addMessage("msj_bean", ms);
                 }
             }else{
                 FacesMessage ms = new FacesMessage(FacesMessage.SEVERITY_WARN, "Error", "El hotel debe tener al menos una habitación");
-                FacesContext.getCurrentInstance().addMessage(null, ms);
+                FacesContext.getCurrentInstance().addMessage("msj_bean", ms);
             }
         } catch (Exception e) {
             FacesMessage ms = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage());
-            FacesContext.getCurrentInstance().addMessage(null, ms);
+            FacesContext.getCurrentInstance().addMessage("msj_bean", ms);
         }
         return null;
     }
@@ -143,7 +143,7 @@ public class HotelBean implements Serializable{
             imagenesHabitacion = new ArrayList<>();
         } else {
             FacesMessage ms = new FacesMessage(FacesMessage.SEVERITY_WARN, "Alerta", "Debe subir al menos una imagen");
-            FacesContext.getCurrentInstance().addMessage(null, ms);
+            FacesContext.getCurrentInstance().addMessage("msj_bean", ms);
         }
     }
 }

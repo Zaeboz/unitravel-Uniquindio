@@ -81,15 +81,20 @@
 
     <div id="contenido" class="fondo-c">
         <div class="container">
-            <p>Lista de ciudades</p>
+            <h2 class="m-3">Ciudades recomendadas</h2>
 
             <p:carousel value="#{inicioBean.ciudades}" var="ciudad" numVisible="3" circular="true" autoplayInterval="3000">
-                <div class="card m-5 item-ciudad">
-                    <p>#{ciudad.nombre}</p>
+                <div class="card m-2 item-ciudad">
+                    <a href="hoteles_destino.xhtml?ciudad=#{ciudad.nombre}">
+                        <div class="img-ciudad">
+                            <img src="#{ciudad.urlImagen}" alt="Imagen ciudad"/>
+                        </div>
+                        <p>#{ciudad.nombre}</p>
+                    </a>
                 </div>
             </p:carousel>
 
-            <p>Hoteles recomendados</p>
+            <h2 class="m-3">Hoteles destacados</h2>
             <h:form>
 
                 <p:dataView id="lista-h" var="hotel" value="#{inicioBean.hoteles}"

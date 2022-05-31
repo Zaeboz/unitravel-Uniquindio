@@ -3,7 +3,9 @@ package co.edu.uniquindio.unitravel.entidades;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +23,14 @@ public class Silla implements Serializable {
     @EqualsAndHashCode.Include
     private String codigo;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 5)
+    @NotBlank
+    @Size(max = 5, min = 5, message = "El codigo debe tener 5 caracteres")
     private String posicion;
 
     @Column(nullable = false)
     @Positive
-    @NonNull
+
     private Double precio;
 
     @ManyToOne

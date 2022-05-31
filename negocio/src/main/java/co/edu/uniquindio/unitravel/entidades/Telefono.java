@@ -3,6 +3,8 @@ package co.edu.uniquindio.unitravel.entidades;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
@@ -18,7 +20,9 @@ public class Telefono implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int codigo;
 
-    @Column(length = 200)
+    @Column(length = 10)
+    @NotBlank
+    @Size(max = 10, min = 7, message = "El numero debe tener entre 7 y 10 digitos")
     private String numero;
 
     @ManyToOne

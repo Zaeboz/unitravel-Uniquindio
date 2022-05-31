@@ -1,6 +1,9 @@
-INSERT INTO CIUDAD VALUES (1,'Bogota');
-INSERT INTO CIUDAD VALUES (2,'Cali');
-INSERT INTO CIUDAD VALUES (3,'Medellin');
+INSERT INTO CIUDAD VALUES (1,'Bogota','https://travelyourmemories.com/wp-content/uploads/2021/02/Bogota-city-e1619438095328.jpg');
+INSERT INTO CIUDAD VALUES (2,'Cali','https://i0.wp.com/passporterapp.com/es/blog/wp-content/uploads/2021/09/que-ver-en-cali-.jpg?fit=1740%2C1080&ssl=1');
+INSERT INTO CIUDAD VALUES (3,'Medellin','https://www.semana.com/resizer/2noyXlnQe0xA-d-VdDa6-acgYhk=/1200x675/filters:format(jpg):quality(50)//cloudfront-us-east-1.images.arcpublishing.com/semana/KI2722K53VBFVN7BR7OMCXSPWM.jpg');
+INSERT INTO CIUDAD VALUES (4,'Cartagena','https://denomades.s3.us-west-2.amazonaws.com/blog/wp-content/uploads/2020/05/11141948/ca-times.brightspotcdn.com_.jpg');
+INSERT INTO CIUDAD VALUES (5,'Barranquilla','https://dynamic-media-cdn.tripadvisor.com/media/photo-o/09/a2/58/15/plaza-san-nicolas.jpg?w=700&h=-1&s=1');
+INSERT INTO CIUDAD VALUES (6,'San Andres','https://media.staticontent.com/media/pictures/ecc404e8-9a99-46b0-a56a-ead992b5166e');
 
 INSERT INTO USUARIO VALUES ('1','juanenmanuel@gmail.com','Juan Enmanuel','123456','1');
 INSERT INTO USUARIO VALUES ('2','camila@gmail.com','Camila','123456','2');
@@ -18,9 +21,9 @@ INSERT INTO TELEFONO VALUES (1,'1','1');
 INSERT INTO TELEFONO VALUES (2,'2','2');
 INSERT INTO TELEFONO VALUES (3,'3','3');
 
-INSERT INTO HOTEL VALUES (1,'Carrera 19#10N-43','Hotel el mirador','4','3103591148','4',1);
-INSERT INTO HOTEL VALUES (2,'Calle 23#12-33','Hotel el cielo','3','3103591149','5',2);
-INSERT INTO HOTEL VALUES (3,'Carrera 10#56-17','Hotel decameron Bogota','5','3103591147','6',3);
+INSERT INTO HOTEL VALUES (1,'','Carrera 19#10N-43','Hotel el mirador','4','3103591148','4',1);
+INSERT INTO HOTEL VALUES (2,'','Calle 23#12-33','Hotel el cielo','3','3103591149','5',2);
+INSERT INTO HOTEL VALUES (3,'','Carrera 10#56-17','Hotel decameron Bogota','5','3103591147','6',3);
 
 INSERT INTO HABITACION VALUES (1,4,400000,1);
 INSERT INTO HABITACION VALUES (2,3,300000,1);

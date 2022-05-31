@@ -3,6 +3,8 @@ package co.edu.uniquindio.unitravel.entidades;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +25,12 @@ public class Ciudad implements Serializable {
 
     @Column(nullable = false, length = 50)
     @EqualsAndHashCode.Include
+    @Size(max = 50, message = "El nombre de la ciudad no puede tener mas de 50 caracteres")
+    @NotBlank(message = "El nombre de la ciudad no puede estar vacio")
     private String nombre;
+
+    @Column(nullable = false)
+    private String urlImagen;
 
     @OneToMany(mappedBy = "ciudad")
     @ToString.Exclude

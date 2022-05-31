@@ -4,6 +4,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -43,8 +44,8 @@ public class Reserva implements Serializable {
     private String estado;
 
     @Column(nullable = false)
-    @NonNull
     @Positive
+    @Min(value = 1, message = "El numero de personas debe ser mayor a 0")
     private int cantidadPersonas;
 
     @ManyToOne
@@ -62,7 +63,7 @@ public class Reserva implements Serializable {
     @ToString.Exclude
     private List<HistorialPuntos> historialPuntos;
 
-    public Reserva(LocalDate fechaReserva, LocalDate fechaInicio, LocalDate fechaFin, double precioTotal, String estado, @NonNull int cantidadPersonas, Usuario usuario) {
+    public Reserva(LocalDate fechaReserva, LocalDate fechaInicio, LocalDate fechaFin, double precioTotal, String estado, int cantidadPersonas, Usuario usuario) {
         this.fechaReserva = fechaReserva;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;

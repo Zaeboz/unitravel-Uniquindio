@@ -3,6 +3,8 @@ package co.edu.uniquindio.unitravel.entidades;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +24,9 @@ public class Vuelo implements Serializable {
     @Column(nullable = false)
     private String estado;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
+    @NotBlank(message = "El nombre de la aerolinea es obligatorio")
+    @Size(max = 50, message = "El nombre de la aerolinea no puede tener mas de 50 caracteres")
     private String aerolinea;
 
     @ManyToOne

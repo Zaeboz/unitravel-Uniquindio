@@ -43,10 +43,10 @@ public class UsuarioBean implements Serializable {
             usuarioServicio.registrarUsuario(usuario);
 
             FacesMessage msj = new FacesMessage(FacesMessage.SEVERITY_INFO, "Aletar", "Usuario registrado exitosamente");
-            FacesContext.getCurrentInstance().addMessage(null, msj);
+            FacesContext.getCurrentInstance().addMessage("msj_bean", msj);
         }catch (Exception e){
             FacesMessage msj = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Aletar", e.getMessage());
-            FacesContext.getCurrentInstance().addMessage(null, msj);
+            FacesContext.getCurrentInstance().addMessage("msj_bean", msj);
         }
     }
 }
