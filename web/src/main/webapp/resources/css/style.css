@@ -25,5 +25,24 @@
 }
 
 #busqueda_h .ui-inputtext{
-    width: 300px;
+    width: 400px;
+}
+
+.contenedor-btn{
+    width: 400px;
+}
+
+#crear_hotel_f .ui-inputfield.ui-widget, #crear_hotel_f .ui-selectonemenu.ui-widget{
+    width: 400px;
+}
+
+.imagen-hotel{
+    width: 100%;
+}
+body .ui-dataview .ui-dataview-content{
+    background: none;
+}
+
+.item-ciudad{
+    text-align: center;
 }

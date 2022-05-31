@@ -30,6 +30,9 @@ public class UsuarioServicoTest {
     @Autowired
     private AdministradorHotelServicio hotelServicio;
 
+    @Autowired
+    private UnitravelServicio unitravelServicio;
+
 
     @Test
     @Sql("classpath:dataset.sql")
@@ -165,7 +168,7 @@ public class UsuarioServicoTest {
     public void registrarComentarioTest() {
         try {
             Usuario u = usuarioServicio.obtenerUsuario("1");
-            Hotel h = hotelServicio.obtenerHotel(1);
+            Hotel h = unitravelServicio.obtenerHotel(1);
             Comentario comentario = new Comentario("Me encanta el hotel", 4, LocalDate.now(), u, h);
             Assertions.assertNotNull(usuarioServicio.registrarComentario(comentario));
         } catch (Exception e) {

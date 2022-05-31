@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.FutureOrPresent;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -32,7 +33,7 @@ public class Comentario implements Serializable {
 
     @FutureOrPresent(message = "La fecha debe ser mayor o igual a la actual")
     @Column(nullable = false)
-    private LocalDate fecha_calificacion;
+    private LocalDateTime fecha_calificacion;
 
     @ManyToOne
     private Usuario usuario;
@@ -40,10 +41,10 @@ public class Comentario implements Serializable {
     @ManyToOne
     private Hotel hotel;
 
-    public Comentario( String comentario, int calificacion, LocalDate fecha_calificacion, Usuario usuario, Hotel hotel) {
+    public Comentario( String comentario, int calificacion, Usuario usuario, Hotel hotel) {
         this.comentario = comentario;
         this.calificacion = calificacion;
-        this.fecha_calificacion = fecha_calificacion;
+        this.fecha_calificacion = LocalDateTime.now();
         this.usuario = usuario;
         this.hotel = hotel;
     }

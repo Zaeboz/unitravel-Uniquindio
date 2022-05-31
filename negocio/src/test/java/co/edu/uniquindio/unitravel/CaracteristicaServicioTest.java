@@ -23,7 +23,7 @@ public class CaracteristicaServicioTest {
 
         try {
 
-            Caracteristica caracteristica = new Caracteristica("Diversión");
+            Caracteristica caracteristica = new Caracteristica("Diversión",1);
 
             Caracteristica caracteristicaRegistrada = caracterirsticaServicio.crearCaracteristica(caracteristica);
 

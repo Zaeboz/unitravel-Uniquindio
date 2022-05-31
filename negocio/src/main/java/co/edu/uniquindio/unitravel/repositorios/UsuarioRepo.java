@@ -33,4 +33,5 @@ public interface UsuarioRepo extends JpaRepository<Usuario, String> {
 
     @Query("SELECT t from Telefono t left join t.usuario u where u.cedula = :cedula")
     List<Telefono> obtenerTelefonosUsuario(String cedula);
+    Optional<Usuario> findByEmailAndPassword(String correo, String password);
 }

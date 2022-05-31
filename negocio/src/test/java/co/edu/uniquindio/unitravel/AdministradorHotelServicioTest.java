@@ -2,8 +2,10 @@ package co.edu.uniquindio.unitravel;
 
 import co.edu.uniquindio.unitravel.dto.HotelMayorCalificacionDTO;
 import co.edu.uniquindio.unitravel.entidades.*;
+import co.edu.uniquindio.unitravel.repositorios.CaracteristicaRepo;
 import co.edu.uniquindio.unitravel.servicios.AdministradorHotelServicio;
 import co.edu.uniquindio.unitravel.servicios.AdministradorServicio;
+import co.edu.uniquindio.unitravel.servicios.UnitravelServicio;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,16 @@ public class AdministradorHotelServicioTest {
 
     @Autowired
     private AdministradorServicio administradorServicio;
+
+    @Autowired
+    private final CaracteristicaRepo caracteristicaRepo;
+    @Autowired
+    private final UnitravelServicio unitravelServicio;
+
+    public AdministradorHotelServicioTest(CaracteristicaRepo caracteristicaRepo, UnitravelServicio unitravelServicio) {
+        this.caracteristicaRepo = caracteristicaRepo;
+        this.unitravelServicio = unitravelServicio;
+    }
 
 
     @Test
@@ -47,11 +59,11 @@ public class AdministradorHotelServicioTest {
     @Sql("classpath:dataset.sql")
     public void eliminarHotelTest() {
         try {
-            Hotel hotelEncontrado = administradorHotelServicio.obtenerHotel(1);
+            Hotel hotelEncontrado = unitravelServicio.obtenerHotel(1);
 
             administradorHotelServicio.eliminarHotel(hotelEncontrado.getCodigo());
 
-            Hotel buscado = administradorHotelServicio.obtenerHotel(1);
+            Hotel buscado = unitravelServicio.obtenerHotel(1);
 
             Assertions.assertNull(buscado);
         } catch (Exception e) {
@@ -64,11 +76,11 @@ public class AdministradorHotelServicioTest {
     public void actualizarHotelTest() {
 
         try {
-            Hotel hotelEncontrado = administradorHotelServicio.obtenerHotel(1);
+            Hotel hotelEncontrado = unitravelServicio.obtenerHotel(1);
             hotelEncontrado.setNombre("El castillo");
             administradorHotelServicio.modificarHotel(hotelEncontrado,hotelEncontrado.getCodigo());
 
-            Hotel hotelBuscado = administradorHotelServicio.obtenerHotel(1);
+            Hotel hotelBuscado = unitravelServicio.obtenerHotel(1);
 
             Assertions.assertEquals("El castillo",hotelBuscado.getNombre());
 
@@ -154,7 +166,7 @@ public class AdministradorHotelServicioTest {
         try {
             AdministradorHotel administradorHotel = administradorServicio.obtenerAdminHotel("4");
 
-            List<Hotel> lista = administradorHotelServicio.listarHoteles(administradorHotel.getCedula());
+            List<Hotel> lista = administradorHotelServicio.listarHotelesAdmin(administradorHotel.getCedula());
 
             lista.forEach(System.out::println);
 
@@ -169,7 +181,7 @@ public class AdministradorHotelServicioTest {
 
         try {
 
-            Hotel hotel = administradorHotelServicio.obtenerHotel(1);
+            Hotel hotel = unitravelServicio.obtenerHotel(1);
 
             Habitacion habitacion = new Habitacion(60.009, 2, hotel);
 
@@ -233,7 +245,7 @@ public class AdministradorHotelServicioTest {
     public void listarHabitacionesHotelTest() {
 
         try {
-            Hotel hotel = administradorHotelServicio.obtenerHotel(1);
+            Hotel hotel = unitravelServicio.obtenerHotel(1);
 
             List<Habitacion> lista = administradorHotelServicio.listarHabitacionesHotel(hotel.getCodigo());
 
@@ -324,5 +336,4 @@ public class AdministradorHotelServicioTest {
             throw new RuntimeException(e);
         }
     }
-
 }

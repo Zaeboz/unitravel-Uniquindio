@@ -1,6 +1,8 @@
 package co.edu.uniquindio.unitravel.entidades;
 
 import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import javax.validation.constraints.Positive;
@@ -51,13 +53,16 @@ public class Hotel implements Serializable {
     @ToString.Exclude
     private List<Comentario> comentarios;
 
-    @ManyToMany(mappedBy = "hoteles",cascade = CascadeType.ALL)
+    @ManyToMany
     @ToString.Exclude
     private List<Caracteristica> caracteristicas;
 
-    @OneToMany(mappedBy = "hotel",fetch=FetchType.EAGER,cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private List<Foto> imagenes;
+    @ElementCollection
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<String> imagenes = new ArrayList<String>();
+
+    @Lob
+    private String descripcion;
 
     public Hotel(String nombre, String direccion, String telefono, @NonNull int numEstrellas, AdministradorHotel administradorHotel, Ciudad ciudad) {
         this.nombre = nombre;
@@ -70,5 +75,12 @@ public class Hotel implements Serializable {
         this.comentarios = new ArrayList<>();
         this.caracteristicas = new ArrayList<>();
         this.imagenes = new ArrayList<>();
+    }
+
+    public String getImagenPrincipal() {
+        if (imagenes.size() > 0) {
+            return imagenes.get(0);
+        }
+        return "predeterminada.png";
     }
 }

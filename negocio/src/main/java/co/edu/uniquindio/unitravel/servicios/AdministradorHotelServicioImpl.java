@@ -3,6 +3,7 @@ package co.edu.uniquindio.unitravel.servicios;
 import co.edu.uniquindio.unitravel.dto.HotelMayorCalificacionDTO;
 import co.edu.uniquindio.unitravel.entidades.*;
 import co.edu.uniquindio.unitravel.repositorios.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,24 +18,21 @@ public class AdministradorHotelServicioImpl implements AdministradorHotelServici
     private final HabitacionRepo habitacionRepo;
     private final CamaRepo camaRepo;
     private final ComentarioRepo comentarioRepo;
-    private final CiudadRepo ciudadRepo;
-    private final FotoRepo fotoRepo;
+    @Autowired
+    private UnitravelServicio unitravelServicio;
 
-    public AdministradorHotelServicioImpl(HotelRepo hotelRepo, AdministradorHotelRepo administradorHotelRepo, HabitacionRepo habitacionRepo, CamaRepo camaRepo, ComentarioRepo comentarioRepo, CiudadRepo ciudadRepo, FotoRepo fotoRepo) {
+    public AdministradorHotelServicioImpl(HotelRepo hotelRepo, AdministradorHotelRepo administradorHotelRepo, HabitacionRepo habitacionRepo, CamaRepo camaRepo, ComentarioRepo comentarioRepo, CiudadRepo ciudadRepo) {
         this.hotelRepo = hotelRepo;
         this.administradorHotelRepo = administradorHotelRepo;
         this.habitacionRepo = habitacionRepo;
         this.camaRepo = camaRepo;
         this.comentarioRepo = comentarioRepo;
-        this.ciudadRepo = ciudadRepo;
-        this.fotoRepo = fotoRepo;
     }
 
 
     @Override
     public Hotel crearHotel(Hotel hotel) throws Exception {
 
-        List <Foto> fotos = new ArrayList<>();
         if(hotel.getCiudad() == null){
             throw new Exception("El hotel no tiene ciudad");
         }
@@ -47,18 +45,13 @@ public class AdministradorHotelServicioImpl implements AdministradorHotelServici
         if(hotel.getTelefono() == null){
             throw new Exception("El hotel no tiene telefono");
         }
-        for(Foto foto: hotel.getImagenes()){
-            foto.setHotel(hotel);
-            fotos.add(foto);
-        }
-        hotel.setImagenes(fotos);
         return hotelRepo.save(hotel);
     }
 
     @Override
     public void eliminarHotel(int id) throws Exception {
 
-        Hotel hotelEncontrado = obtenerHotel(id);
+        Hotel hotelEncontrado = unitravelServicio.obtenerHotel(id);
 
         if (hotelEncontrado!=null){
             hotelRepo.delete(hotelEncontrado);
@@ -70,7 +63,7 @@ public class AdministradorHotelServicioImpl implements AdministradorHotelServici
     @Override
     public void modificarHotel(Hotel hotel,int id) throws Exception {
 
-        Hotel hotelEncontrado = obtenerHotel(id);
+        Hotel hotelEncontrado = unitravelServicio.obtenerHotel(id);
 
         if (hotelEncontrado!=null){
             hotelRepo.save(hotelEncontrado);
@@ -80,19 +73,7 @@ public class AdministradorHotelServicioImpl implements AdministradorHotelServici
     }
 
     @Override
-    public Hotel obtenerHotel(int id) throws Exception {
-
-        Optional<Hotel> hotel = hotelRepo.findById(id);
-
-        if (hotel.isEmpty()){
-            throw new Exception("El hotel no existe");
-        }
-
-        return hotel.get();
-    }
-
-    @Override
-    public List<Hotel> listarHoteles(String idAdmin) {
+    public List<Hotel> listarHotelesAdmin(java.lang.String idAdmin) {
         return administradorHotelRepo.obtenerHotelesAdmin(idAdmin);
     }
 
@@ -107,9 +88,9 @@ public class AdministradorHotelServicioImpl implements AdministradorHotelServici
     }
 
     @Override
-    public String obtenerNombreCiudadHotel(int idHotel) throws Exception{
+    public java.lang.String obtenerNombreCiudadHotel(int idHotel) throws Exception{
 
-        String nombre = hotelRepo.obtenerNombreCiudad(idHotel);
+        java.lang.String nombre = hotelRepo.obtenerNombreCiudad(idHotel);
 
         if (nombre==null){
             throw new Exception("No es valida");
@@ -134,20 +115,20 @@ public class AdministradorHotelServicioImpl implements AdministradorHotelServici
     }
 
     @Override
-    public List<Hotel> listarHotelesPorCiudad(String nombreCiudad) {
+    public List<Hotel> listarHotelesPorCiudad(java.lang.String nombreCiudad) {
         return  hotelRepo.obtenerHotelesCiudad(nombreCiudad);
     }
 
     @Override
     public Habitacion crearHabitacion(Habitacion h) throws Exception {
 
-        Optional<Habitacion> habitacion = habitacionRepo.findById(h.getCodigo());
-        if(habitacion.isPresent()){
-            throw new Exception("La habitación ya existe");
+        if(h.getCapacidad() == 0){
+            throw new Exception("La habitación no tiene capacidad");
         }
-
+        if(h.getPrecio() == 0){
+            throw new Exception("La habitación no tiene precio");
+        }
         return habitacionRepo.save(h);
-
     }
 
     @Override
@@ -194,7 +175,7 @@ public class AdministradorHotelServicioImpl implements AdministradorHotelServici
     @Override
     public List<Habitacion> listarHabitacionesHotel(int idHotel) throws Exception {
 
-        Hotel hotel = obtenerHotel(idHotel);
+        Hotel hotel = unitravelServicio.obtenerHotel(idHotel);
         List<Habitacion> habitaciones = new ArrayList<>();
 
         if (hotel!=null){
@@ -272,21 +253,7 @@ public class AdministradorHotelServicioImpl implements AdministradorHotelServici
     }
 
     @Override
-    public Ciudad obtenerCiudad(int id) throws Exception {
-        return ciudadRepo.findById(id).orElse(null);
-    }
-
-    @Override
-    public AdministradorHotel obtenerAdminHotel(String codigo) throws Exception {
+    public AdministradorHotel obtenerAdminHotel(java.lang.String codigo) throws Exception {
         return administradorHotelRepo.findById(codigo).orElse(null);
-    }
-
-    @Override
-    public Foto guardarFoto(Foto f) throws Exception {
-
-        if(f.getUrl().equals("")){
-            throw new Exception("La foto no tiene url asociada");
-        }
-        return fotoRepo.save(f);
     }
 }

@@ -13,15 +13,13 @@ public interface AdministradorHotelServicio {
 
     void modificarHotel(Hotel hotel,int id) throws Exception;
 
-    Hotel obtenerHotel(int id) throws Exception;
-
-    List<Hotel> listarHoteles(String idAdmin);
+    List<Hotel> listarHotelesAdmin(java.lang.String idAdmin);
 
     List<Usuario> usuariosComentarios(int idHotel);
 
     List<Hotel> obtenerHotelesPorEstrellas(int estrellas);
 
-    String obtenerNombreCiudadHotel(int idHotel) throws Exception;
+    java.lang.String obtenerNombreCiudadHotel(int idHotel) throws Exception;
 
     int obtenerCantidadComentario(int idHotel);
 
@@ -29,7 +27,7 @@ public interface AdministradorHotelServicio {
 
     List<HotelMayorCalificacionDTO> obtenerHotelMayorCalificacion(int idCiudad);
 
-    List<Hotel> listarHotelesPorCiudad(String nombreCiudad);
+    List<Hotel> listarHotelesPorCiudad(java.lang.String nombreCiudad);
 
     Habitacion crearHabitacion(Habitacion h) throws Exception;
 
@@ -55,9 +53,5 @@ public interface AdministradorHotelServicio {
 
     List<Cama> listarCamasHabitacion(int idHabitacion) throws Exception;
 
-    Ciudad obtenerCiudad(int id) throws Exception;
-
-    AdministradorHotel obtenerAdminHotel(String codigo) throws Exception;
-
-    Foto guardarFoto(Foto f) throws Exception;
+    AdministradorHotel obtenerAdminHotel(java.lang.String codigo) throws Exception;
 }

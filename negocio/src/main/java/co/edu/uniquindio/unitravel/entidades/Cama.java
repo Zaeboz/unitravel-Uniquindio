@@ -23,9 +23,9 @@ public class Cama implements Serializable {
     @Column(nullable = false, length = 50)
     private String tipo;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "camas")
     @ToString.Exclude
-    private List<Habitacion> habitaciones;
+    private List<Habitacion> habitaciones = new ArrayList<>();
 
     public Cama(String tipo) {
         this.tipo = tipo;

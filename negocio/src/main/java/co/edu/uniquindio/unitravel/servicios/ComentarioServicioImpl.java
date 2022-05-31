@@ -5,6 +5,7 @@ import co.edu.uniquindio.unitravel.repositorios.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
@@ -22,13 +23,9 @@ public class ComentarioServicioImpl implements ComentarioServicio{
 
 
     @Override
-    public Comentario registrarComentario(Comentario c) throws Exception {
-       try {
-            c.setFecha_calificacion(LocalDate.now(ZoneId.of("America/Bogota")));
-           return comentarioRepo.save(c);
-       }catch (Exception e){
-           throw new Exception(e.getMessage());
-       }
+    public Comentario registrarComentario(Comentario c){
+        c.setFecha_calificacion(LocalDateTime.now());
+        return comentarioRepo.save(c);
 
     }
 
@@ -38,8 +35,8 @@ public class ComentarioServicioImpl implements ComentarioServicio{
         Comentario comentarioObtenido = obtenerComentario(codigoComentario);
 
         if(comentarioObtenido != null){
+            comentarioObtenido.setFecha_calificacion(LocalDateTime.now());
             comentarioObtenido.setComentario(c.getComentario());
-            comentarioObtenido.setFecha_calificacion(LocalDate.now(ZoneId.of("America/Bogota")));
             comentarioObtenido.setCalificacion(c.getCalificacion());
 
             comentarioRepo.save(comentarioObtenido);
@@ -81,7 +78,7 @@ public class ComentarioServicioImpl implements ComentarioServicio{
             throw new Exception("No se ha encontrado el comentario");
         }
 
-       return comentario.get();
+        return comentario.get();
     }
 
     @Override

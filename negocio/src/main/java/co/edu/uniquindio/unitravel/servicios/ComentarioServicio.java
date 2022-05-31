@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ComentarioServicio {
 
-    Comentario registrarComentario(Comentario c) throws  Exception;
+    Comentario registrarComentario(Comentario c);
 
     void actualizarComentario(Comentario c,int codigoComentario) throws  Exception;
 

@@ -58,7 +58,6 @@ public interface UsuarioServicio {
 
     List<Hotel> buscarHotelesCiudad(String nombreCiudad) throws Exception;
 
-
     List<Hotel> buscarHotelesNombre(String nombre);
 
     Habitacion buscarHabitacion(int codigo) throws Exception;
@@ -78,4 +77,6 @@ public interface UsuarioServicio {
     void modificarReservaHabitacion(ReservaHabitacion rh, Habitacion h) throws Exception;
 
     ReservaSilla registrarReservaSilla(int idReserva,Silla silla,String idVuelo) throws Exception;
+
+    List<Hotel> listarHoteles() ;
 }

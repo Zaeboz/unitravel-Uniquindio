@@ -5,6 +5,7 @@ import co.edu.uniquindio.unitravel.entidades.Hotel;
 import co.edu.uniquindio.unitravel.entidades.Usuario;
 import co.edu.uniquindio.unitravel.servicios.AdministradorHotelServicio;
 import co.edu.uniquindio.unitravel.servicios.ComentarioServicio;
+import co.edu.uniquindio.unitravel.servicios.UnitravelServicio;
 import co.edu.uniquindio.unitravel.servicios.UsuarioServicio;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,9 @@ public class ComentarioServicioTest {
     @Autowired
     private UsuarioServicio usuarioServicio;
 
+    @Autowired
+    private UnitravelServicio unitravelServicio;
+
     @Test
     @Sql("classpath:dataset.sql")
     public void registrarComentarioTest(){
@@ -38,7 +42,7 @@ public class ComentarioServicioTest {
             LocalDate date = LocalDate.parse("2020-01-08");
 
             Usuario usuario= usuarioServicio.obtenerUsuario("1");
-            Hotel hotel = administradorHotelServicio.obtenerHotel(1);
+            Hotel hotel = unitravelServicio.obtenerHotel(1);
 
             Comentario comentarioNuevo= new Comentario("Buen hotel",3,date,usuario,hotel);
 
@@ -112,7 +116,7 @@ public class ComentarioServicioTest {
     public void listarComentariosHotelTest(){
 
         try {
-            Hotel hotel = administradorHotelServicio.obtenerHotel(1);
+            Hotel hotel = unitravelServicio.obtenerHotel(1);
             List<Comentario> comentarios = comentarioServicio.obtenerComentariosHotel(hotel.getCodigo());
 
             comentarios.forEach(System.out::println);

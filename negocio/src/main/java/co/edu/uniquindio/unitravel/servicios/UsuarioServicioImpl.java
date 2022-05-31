@@ -9,6 +9,7 @@ import co.edu.uniquindio.unitravel.entidades.Usuario;
 import co.edu.uniquindio.unitravel.repositorios.CiudadRepo;
 import co.edu.uniquindio.unitravel.repositorios.HotelRepo;
 import co.edu.uniquindio.unitravel.repositorios.UsuarioRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import co.edu.uniquindio.unitravel.entidades.*;
 import co.edu.uniquindio.unitravel.repositorios.*;
@@ -30,6 +31,9 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     private final VueloRepo vueloRepo;
     private final ReservaSillaRepo reservaSillaRepo;
 
+    @Autowired
+    private UnitravelServicio unitravelServicio;
+
     public UsuarioServicioImpl(UsuarioRepo usuarioRepo, CiudadRepo ciudadRepo, ComentarioRepo comentarioRepo, ReservaRepo reservaRepo, HotelRepo hotelRepo, HabitacionRepo habitacionRepo, HistorialPuntosRepo historialPuntosRepo, ReservaHabitacionRepo reservaHabitacionRepo, VueloRepo vueloRepo, ReservaSillaRepo reservaSillaRepo) {
         this.usuarioRepo = usuarioRepo;
         this.ciudadRepo = ciudadRepo;
@@ -47,12 +51,12 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     public Usuario registrarUsuario(Usuario usuario) throws Exception {
 
         Usuario buscado = obtenerUsuario(usuario.getCedula());
-        if(buscado != null){
+        if (buscado != null) {
             throw new Exception("El usuario ya existe");
         }
 
         Usuario usuarioEmail = buscarPorEmail(usuario.getEmail());
-        if(usuarioEmail != null){
+        if (usuarioEmail != null) {
             throw new Exception("El correo del usaurio ya esta registrado");
         }
 
@@ -60,12 +64,12 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
-    public Usuario buscarPorEmail(String email){
+    public Usuario buscarPorEmail(String email) {
         return usuarioRepo.findByEmail(email).orElse(null);
     }
 
     @Override
-    public List<Usuario> listarPorNombre(String nombre){
+    public List<Usuario> listarPorNombre(String nombre) {
         return usuarioRepo.findAllByNombre(nombre);
     }
 
@@ -74,7 +78,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
         Usuario usuario = buscarPorEmail(email);
 
-        if (usuario== null){
+        if (usuario == null) {
             throw new Exception("El usuario no existe");
         }
 
@@ -96,7 +100,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
         Usuario usuario = obtenerUsuario(cedula);
 
-        if (usuario == null){
+        if (usuario == null) {
             throw new Exception("El usuario no existe");
         }
 
@@ -104,9 +108,9 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
-    public Usuario actualizarUsuario(Usuario usuario) throws Exception{
+    public Usuario actualizarUsuario(Usuario usuario) throws Exception {
         Usuario buscado = obtenerUsuario(usuario.getCedula());
-        if(buscado == null){
+        if (buscado == null) {
             throw new Exception("El usuario no existe");
         }
         return usuarioRepo.save(usuario);
@@ -117,8 +121,8 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
         Optional<Usuario> usuario = usuarioRepo.findById(codigo);
 
-        if (usuario.isEmpty()){
-            throw new Exception("El usuario no existe");
+        if (usuario.isEmpty()) {
+            return null;
         }
 
         return usuario.get();
@@ -130,7 +134,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
-    public List<Usuario> obtenerUsuariosCiudad(String nombreCiudad){
+    public List<Usuario> obtenerUsuariosCiudad(String nombreCiudad) {
         return ciudadRepo.obtenerCiudadUsuario(nombreCiudad);
     }
 
@@ -156,13 +160,13 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     @Override
     public Comentario registrarComentario(Comentario c) throws Exception {
         Usuario usuario = obtenerUsuario(c.getUsuario().getCedula());
-        if(usuario == null){
+        if (usuario == null) {
             throw new Exception("El usuario no existe");
         }
-        if(c.getComentario().isEmpty()){
+        if (c.getComentario().isEmpty()) {
             throw new Exception("El comentario no puede estar vacio");
         }
-        if(c.getCalificacion() < 0 || c.getCalificacion() >= 5){
+        if (c.getCalificacion() < 0 || c.getCalificacion() >= 5) {
             throw new Exception("La calificacion debe estar entre 0 y 5");
         }
         return comentarioRepo.save(c);
@@ -171,7 +175,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     @Override
     public Comentario actualizarComentario(Comentario c, int idComentario) throws Exception {
         Comentario comentario = obtenerComentario(idComentario);
-        if(comentario == null){
+        if (comentario == null) {
             throw new Exception("El comentario no existe");
         }
         return registrarComentario(c);
@@ -180,7 +184,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     @Override
     public void eliminarComentario(int id) throws Exception {
         Comentario comentario = obtenerComentario(id);
-        if(comentario == null){
+        if (comentario == null) {
             throw new Exception("El comentario no existe");
         }
         comentarioRepo.delete(comentario);
@@ -189,7 +193,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     @Override
     public Comentario obtenerComentario(int id) throws Exception {
         Comentario comentario = comentarioRepo.findById(id).orElse(null);
-        if(comentario == null){
+        if (comentario == null) {
             throw new Exception("El comentario no existe");
         }
         return comentario;
@@ -204,36 +208,36 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     public Reserva hacerReserva(Reserva r) throws Exception {
         Usuario usuario = obtenerUsuario(r.getUsuario().getCedula());
         Reserva reserva = obtenerReserva(r.getCodigo());
-        if(usuario == null){
+        if (usuario == null) {
             throw new Exception("El usuario no existe");
         }
-        if(r.getFechaFin().isAfter(r.getFechaInicio())){
+        if (r.getFechaFin().isAfter(r.getFechaInicio())) {
             throw new Exception("La fecha fin debe ser mayor a la fecha inicio");
         }
-        if(r.getFechaInicio().isBefore(LocalDate.now())){
+        if (r.getFechaInicio().isBefore(LocalDate.now())) {
             throw new Exception("La fecha inicio debe ser mayor o igual a la fecha actual");
         }
-        if(r.getFechaInicio().isAfter(r.getFechaFin())){
+        if (r.getFechaInicio().isAfter(r.getFechaFin())) {
             throw new Exception("La fecha inicio debe ser menor a la fecha fin");
         }
-        if(r.getCantidadPersonas()<= 0){
+        if (r.getCantidadPersonas() <= 0) {
             throw new Exception("La cantidad de personas debe ser mayor a 0");
         }
-        if(reserva != null){
+        if (reserva != null) {
             throw new Exception("La reserva ya existe");
         }
 
         Object[] totales = reservaRepo.obtenerTotalPorReserva(r.getUsuario().getCedula(), r.getCodigo());
         Double totalHotel = (Double) totales[0];
         double total;
-        if(totales[1] != null){
+        if (totales[1] != null) {
             double totalVuelo = (Double) totales[1];
-            total = (totalHotel + totalHotel*0.05) + totalVuelo +totalVuelo*0.05;
+            total = (totalHotel + totalHotel * 0.05) + totalVuelo + totalVuelo * 0.05;
         } else {
-            total = totalHotel + totalHotel*0.05;
+            total = totalHotel + totalHotel * 0.05;
         }
         assert false;
-        total = total*reserva.getCantidadPersonas();
+        total = total * reserva.getCantidadPersonas();
         assert false;
         reserva.setPrecioTotal(total);
         return reservaRepo.save(reserva);
@@ -241,15 +245,11 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
     @Override
     public List<Habitacion> listarHabitacionesDisponibles(LocalDate fechaInicio, LocalDate fechaFin, String ciudad) throws Exception {
-        Ciudad c = obtenerCiudad(ciudad);
-        if(c == null){
+        Ciudad c = unitravelServicio.obtenerCiudadNombre(ciudad);
+        if (c == null) {
             throw new Exception("La ciudad no existe");
         }
         return reservaRepo.obtenerReservaHabitaciones(fechaInicio, fechaFin, ciudad);
-    }
-
-    private Ciudad obtenerCiudad(String ciudad) {
-        return ciudadRepo.findByNombre(ciudad);
     }
 
     @Override
@@ -257,9 +257,9 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
         Reserva r = obtenerReserva(id);
 
-        if (r!=null){
+        if (r != null) {
             reservaRepo.delete(r);
-        }else{
+        } else {
             throw new Exception("La reserva no existe");
         }
     }
@@ -267,19 +267,19 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     @Override
     public Reserva modificarReserva(String cedula, Reserva r) throws Exception {
         Usuario usuario = obtenerUsuario(cedula);
-        if(usuario == null){
+        if (usuario == null) {
             throw new Exception("El usuario no existe");
         }
-        if(r.getFechaFin().isAfter(r.getFechaInicio())){
+        if (r.getFechaFin().isAfter(r.getFechaInicio())) {
             throw new Exception("La fecha fin debe ser mayor a la fecha inicio");
         }
-        if(r.getFechaInicio().isBefore(LocalDate.now())){
+        if (r.getFechaInicio().isBefore(LocalDate.now())) {
             throw new Exception("La fecha inicio debe ser mayor o igual a la fecha actual");
         }
-        if(r.getFechaInicio().isAfter(r.getFechaFin())){
+        if (r.getFechaInicio().isAfter(r.getFechaFin())) {
             throw new Exception("La fecha inicio debe ser menor a la fecha fin");
         }
-        if(r.getCantidadPersonas()<= 0){
+        if (r.getCantidadPersonas() <= 0) {
             throw new Exception("La cantidad de personas debe ser mayor a 0");
         }
 
@@ -291,7 +291,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
         Optional<Reserva> r = reservaRepo.findById(id);
 
-        if (r.isEmpty()){
+        if (r.isEmpty()) {
             throw new Exception("La reserva no existe");
         }
 
@@ -308,14 +308,14 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
         Ciudad ciudad = ciudadRepo.findByNombre(nombreCiudad);
 
-        if (ciudad==null){
+        if (ciudad == null) {
             throw new Exception("La ciudad no existe");
         }
         return hotelRepo.obtenerHotelesCiudad(ciudad.getNombre());
     }
 
     @Override
-    public List<Hotel> buscarHotelesNombre(String nombre){
+    public List<Hotel> buscarHotelesNombre(String nombre) {
 
         return hotelRepo.obtenerHotelesPorNombre(nombre);
     }
@@ -325,7 +325,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
         Optional<Habitacion> habitacion = habitacionRepo.findById(codigo);
 
-        if (habitacion.isEmpty()){
+        if (habitacion.isEmpty()) {
             throw new Exception("La habitación no existe");
         }
         return habitacion.get();
@@ -334,11 +334,11 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     @Override
     public List<HistorialPuntos> listarPuntosUsuario(String cedula) throws Exception {
         Usuario u = obtenerUsuario(cedula);
-        if(u == null){
+        if (u == null) {
             throw new Exception("El usuario no existe");
         }
         List<HistorialPuntos> puntos = historialPuntosRepo.findByCedula(cedula);
-        if (puntos.isEmpty()){
+        if (puntos.isEmpty()) {
             throw new Exception("El usuario no tiene puntos");
         }
         return puntos;
@@ -347,11 +347,11 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     @Override
     public List<HistorialPuntos> listarPuntosActivos(String cedula) throws Exception {
         Usuario u = obtenerUsuario(cedula);
-        if(u == null){
+        if (u == null) {
             throw new Exception("El usuario no existe");
         }
         List<HistorialPuntos> puntos = historialPuntosRepo.puntosDiponibles(u.getCedula());
-        if (puntos.isEmpty()){
+        if (puntos.isEmpty()) {
             throw new Exception("El usuario no tiene puntos");
         }
         return puntos;
@@ -360,11 +360,11 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     @Override
     public List<HistorialPuntos> listarPuntosVencidos(String cedula) throws Exception {
         Usuario u = obtenerUsuario(cedula);
-        if(u == null){
+        if (u == null) {
             throw new Exception("El usuario no existe");
         }
         List<HistorialPuntos> puntos = historialPuntosRepo.puntosVencidos(u.getCedula());
-        if (puntos.isEmpty()){
+        if (puntos.isEmpty()) {
             throw new Exception("El usuario no tiene puntos");
         }
         return puntos;
@@ -373,12 +373,12 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     @Override
     public HistorialPuntos agregarPuntos(String cedula, Reserva r) throws Exception {
         Usuario u = obtenerUsuario(cedula);
-        if(u == null){
+        if (u == null) {
             throw new Exception("El usuario no existe");
         }
 
-        int puntos = (int) (r.getPrecioTotal()*0.01);
-        HistorialPuntos hp = new HistorialPuntos(puntos,LocalDate.now(),LocalDate.now().plusDays(30),u,r);
+        int puntos = (int) (r.getPrecioTotal() * 0.01);
+        HistorialPuntos hp = new HistorialPuntos(puntos, LocalDate.now(), LocalDate.now().plusDays(30), u, r);
 
         return historialPuntosRepo.save(hp);
     }
@@ -386,7 +386,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     @Override
     public ReservaHabitacion obtenerReservaHabitacion(int id) throws Exception {
         Optional<ReservaHabitacion> r = reservaHabitacionRepo.findById(id);
-        if (r.isEmpty()){
+        if (r.isEmpty()) {
             throw new Exception("La reserva no existe");
         }
         return r.get();
@@ -395,12 +395,12 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     @Override
     public ReservaHabitacion reservarHabitacion(Reserva r, Habitacion h) throws Exception {
         Habitacion habitacionReservada = buscarHabitacion(h.getCodigo());
-        if(habitacionReservada == null){
+        if (habitacionReservada == null) {
             throw new Exception("La habitación no existe");
         }
-        int noches = r.getFechaFin().getDayOfYear()-r.getFechaInicio().getDayOfYear();
-        double precio = habitacionReservada.getPrecio()*noches;
-        ReservaHabitacion rh = new ReservaHabitacion(precio,r.getFechaInicio(),r.getFechaFin(),r,habitacionReservada);
+        int noches = r.getFechaFin().getDayOfYear() - r.getFechaInicio().getDayOfYear();
+        double precio = habitacionReservada.getPrecio() * noches;
+        ReservaHabitacion rh = new ReservaHabitacion(precio, r.getFechaInicio(), r.getFechaFin(), r, habitacionReservada);
 
         return reservaHabitacionRepo.save(rh);
     }
@@ -409,10 +409,10 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     public void modificarReservaHabitacion(ReservaHabitacion rh, Habitacion h) throws Exception {
         Habitacion habitacionReservada = buscarHabitacion(h.getCodigo());
         ReservaHabitacion reservaHabitacion = obtenerReservaHabitacion(rh.getCodigo());
-        if(habitacionReservada == null){
+        if (habitacionReservada == null) {
             throw new Exception("La habitación no existe");
         }
-        if(reservaHabitacion == null){
+        if (reservaHabitacion == null) {
             throw new Exception("La reserva no existe");
         }
         reservaHabitacion.setHabitacion(h);
@@ -420,28 +420,33 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
-    public ReservaSilla registrarReservaSilla(int idReserva,Silla silla,String idVuelo) throws Exception{
+    public ReservaSilla registrarReservaSilla(int idReserva, Silla silla, String idVuelo) throws Exception {
 
         Optional<Vuelo> v = vueloRepo.findById(idVuelo);
         Reserva r = obtenerReserva(idReserva);
 
-        if (r!=null){
-            if (r.getEstado().equals("Disponible")){
-                if (v.isEmpty()){
+        if (r != null) {
+            if (r.getEstado().equals("Disponible")) {
+                if (v.isEmpty()) {
                     throw new Exception("El vuelo no existe");
-                }else{
-                    if (v.get().getSillas().contains(silla)){
-                        ReservaSilla reservaSilla = new ReservaSilla(silla.getPrecio(),silla,r);
+                } else {
+                    if (v.get().getSillas().contains(silla)) {
+                        ReservaSilla reservaSilla = new ReservaSilla(silla.getPrecio(), silla, r);
                         return reservaSillaRepo.save(reservaSilla);
                     }
                 }
-            }else {
+            } else {
                 throw new Exception("La reserva no esta disponible");
             }
-        }else {
+        } else {
             throw new Exception("La reserva no existe");
         }
 
         return null;
+    }
+
+    @Override
+    public List<Hotel> listarHoteles() {
+        return hotelRepo.findAll();
     }
 }
