@@ -22,13 +22,19 @@ public class UnitravelServicioImpl implements UnitravelServicio {
     private final CamaRepo camasRepo;
     @Autowired
     private final HotelRepo hotelRepo;
+    @Autowired
+    private final AdministradorHotelRepo adminHoteRepo;
+    @Autowired
+    private final AdministradorRepo adminRepo;
 
-    public UnitravelServicioImpl(CiudadRepo ciudadRepo, UsuarioRepo usuarioRepo, CaracteristicaRepo caracteristicaRepo, CamaRepo camasRepo, HotelRepo hotelRepo) {
+    public UnitravelServicioImpl(CiudadRepo ciudadRepo, UsuarioRepo usuarioRepo, CaracteristicaRepo caracteristicaRepo, CamaRepo camasRepo, HotelRepo hotelRepo, AdministradorHotelRepo adminHoteRepo, AdministradorRepo adminRepo) {
         this.ciudadRepo = ciudadRepo;
         this.usuarioRepo = usuarioRepo;
         this.caracteristicaRepo = caracteristicaRepo;
         this.camasRepo = camasRepo;
         this.hotelRepo = hotelRepo;
+        this.adminHoteRepo = adminHoteRepo;
+        this.adminRepo = adminRepo;
     }
 
     @Override
@@ -52,12 +58,20 @@ public class UnitravelServicioImpl implements UnitravelServicio {
     }
 
     @Override
-    public Usuario validarLogin(String correo, String password) throws Exception {
-        Optional<Usuario> usuario = usuarioRepo.findByEmailAndPassword(correo, password);
-        if(usuario.isEmpty()){
-            throw new Exception("Los datos de autenticacion son incorrectos");
+    public Persona validarLogin(String correo, String password) throws Exception {
+        Persona usuario = usuarioRepo.findByEmailAndPassword(correo, password);
+
+        if (usuario == null){
+            usuario = adminHoteRepo.findByEmailAndPassword(correo, password);
         }
-        return usuario.get();
+        if (usuario == null){
+            usuario = adminRepo.findByEmailAndPassword(correo, password);
+        }
+        if (usuario == null){
+            throw new Exception("Los datos de auntenticacion son incorrectos");
+        }
+
+        return usuario;
     }
 
     @Override

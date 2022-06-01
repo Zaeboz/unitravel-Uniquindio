@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -23,6 +25,7 @@ public class Usuario extends Persona implements Serializable {
 
     @OneToMany(mappedBy = "usuario")
     @ToString.Exclude
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Telefono> telefonos ;
 
     @OneToMany(mappedBy = "usuario")

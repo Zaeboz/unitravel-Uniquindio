@@ -3,6 +3,7 @@ package co.edu.uniquindio.unitravel.repositorios;
 
 import co.edu.uniquindio.unitravel.entidades.AdministradorHotel;
 import co.edu.uniquindio.unitravel.entidades.Hotel;
+import co.edu.uniquindio.unitravel.entidades.Persona;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -17,5 +18,7 @@ public interface AdministradorHotelRepo extends JpaRepository<AdministradorHotel
 
     @Query("select h from Hotel h where h.administradorHotel.cedula =:cedulaAdmin")
     List<Hotel> obtenerHotelesAdmin(String cedulaAdmin);
+
+    Persona findByEmailAndPassword(String correo, String password);
 
 }

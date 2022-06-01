@@ -11,7 +11,7 @@ public interface UnitravelServicio {
 
     Ciudad obtenerCiudadNombre(String nombre);
 
-    Usuario validarLogin(String correo, String password) throws Exception;
+    Persona validarLogin(String correo, String password) throws Exception;
 
     List<Caracteristica> listarCaracteristicasHoteles();
 

@@ -2,6 +2,7 @@ package co.edu.uniquindio.unitravel.bean;
 
 import co.edu.uniquindio.unitravel.entidades.Comentario;
 import co.edu.uniquindio.unitravel.entidades.Hotel;
+import co.edu.uniquindio.unitravel.servicios.AdministradorHotelServicio;
 import co.edu.uniquindio.unitravel.servicios.ComentarioServicio;
 import co.edu.uniquindio.unitravel.servicios.UnitravelServicio;
 import co.edu.uniquindio.unitravel.servicios.UsuarioServicio;
@@ -41,8 +42,14 @@ public class DetalleHotelBean implements Serializable {
     @Autowired
     private UsuarioServicio usuarioServicio;
 
+    @Autowired
+    private AdministradorHotelServicio administradorHotelServicio;
+
     @Getter @Setter
     private List<Comentario> comentarios;
+
+    @Getter @Setter
+    private Integer calificacionPromedio;
 
     @PostConstruct
     public void init() {
@@ -52,6 +59,7 @@ public class DetalleHotelBean implements Serializable {
             try {
                 hotel = unitravelServicio.obtenerHotel(Integer.parseInt(codigoHotel));
                 comentarios = hotel.getComentarios();
+                calificacionPromedio = administradorHotelServicio.obtenerCalificacionPromedio(hotel.getCodigo());
             } catch (Exception e) {
                 e.printStackTrace();
             }

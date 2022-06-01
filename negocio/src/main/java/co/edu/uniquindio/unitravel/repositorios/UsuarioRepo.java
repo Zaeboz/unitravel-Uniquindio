@@ -2,6 +2,7 @@ package co.edu.uniquindio.unitravel.repositorios;
 
 import co.edu.uniquindio.unitravel.dto.ComentarioDTO;
 import co.edu.uniquindio.unitravel.dto.ReservasTotalesDTO;
+import co.edu.uniquindio.unitravel.entidades.Persona;
 import co.edu.uniquindio.unitravel.entidades.Reserva;
 import co.edu.uniquindio.unitravel.entidades.Telefono;
 import co.edu.uniquindio.unitravel.entidades.Usuario;
@@ -33,5 +34,5 @@ public interface UsuarioRepo extends JpaRepository<Usuario, String> {
 
     @Query("SELECT t from Telefono t left join t.usuario u where u.cedula = :cedula")
     List<Telefono> obtenerTelefonosUsuario(String cedula);
-    Optional<Usuario> findByEmailAndPassword(String correo, String password);
+    Persona findByEmailAndPassword(String correo, String password);
 }

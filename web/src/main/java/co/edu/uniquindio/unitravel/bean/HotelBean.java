@@ -96,7 +96,7 @@ public class HotelBean implements Serializable{
                     FacesContext.getCurrentInstance().addMessage("msj_bean", ms);
                 }
             }else{
-                FacesMessage ms = new FacesMessage(FacesMessage.SEVERITY_WARN, "Error", "El hotel debe tener al menos una habitación");
+                FacesMessage ms = new FacesMessage(FacesMessage.SEVERITY_WARN, "Error", "El hotel debe tener al menos una habitacion");
                 FacesContext.getCurrentInstance().addMessage("msj_bean", ms);
             }
         } catch (Exception e) {

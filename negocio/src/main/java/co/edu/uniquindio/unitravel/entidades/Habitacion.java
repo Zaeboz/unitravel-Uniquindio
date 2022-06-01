@@ -55,4 +55,11 @@ public class Habitacion implements Serializable{
         this.camas = new ArrayList<>();
         this.imagenes = new ArrayList<>();
     }
+
+    public String getImagenPrincipal() {
+        if (imagenes.size() > 0) {
+            return imagenes.get(0);
+        }
+        return "predeterminada.png";
+    }
 }
