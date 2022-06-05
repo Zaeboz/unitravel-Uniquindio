@@ -8,7 +8,11 @@ public interface AdministradorServicio {
 
     Administrador obtenerAdministradorEmail(String email) throws Exception;
 
-    AdministradorHotel registrarAdminHotel(AdministradorHotel a) throws Exception;
+    void registrarAdmin(Administrador a);
+
+    List<Administrador> listarAdmins();
+
+    void registrarAdminHotel(AdministradorHotel a);
 
     void modificarAdminHotel(AdministradorHotel a,String id) throws Exception;
 

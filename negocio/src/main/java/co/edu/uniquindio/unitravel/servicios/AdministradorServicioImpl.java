@@ -36,19 +36,19 @@ public class AdministradorServicioImpl implements AdministradorServicio{
     }
 
     @Override
-    public AdministradorHotel registrarAdminHotel(AdministradorHotel a) throws Exception {
+    public void registrarAdmin(Administrador a){
+        administradorRepo.save(a);
+    }
 
-        AdministradorHotel buscado = obtenerAdminHotel(a.getCedula());
-        if (buscado != null) {
-            throw new RuntimeException("El administrador ya existe");
-        }
+    @Override
+    public List<Administrador> listarAdmins() {
+        return administradorRepo.findAll();
+    }
 
-        Optional<AdministradorHotel> admEmail = administradorHotelRepo.findByEmail(a.getEmail());
-        if (admEmail.isPresent()) {
-            throw new Exception("El correo ya se encuentra registrado");
-        }
+    @Override
+    public void registrarAdminHotel(AdministradorHotel a){
 
-        return administradorHotelRepo.save(a);
+        administradorHotelRepo.save(a);
     }
 
     @Override

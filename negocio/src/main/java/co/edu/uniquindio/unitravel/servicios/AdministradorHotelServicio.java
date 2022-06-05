@@ -23,7 +23,7 @@ public interface AdministradorHotelServicio {
 
     int obtenerCantidadComentario(int idHotel);
 
-    int obtenerCalificacionPromedio(int idHotel);
+    int obtenerCalificacionPromedio(int idHotel) throws Exception;
 
     List<HotelMayorCalificacionDTO> obtenerHotelMayorCalificacion(int idCiudad);
 

@@ -29,9 +29,6 @@ public class Ciudad implements Serializable {
     @NotBlank(message = "El nombre de la ciudad no puede estar vacio")
     private String nombre;
 
-    @Column(nullable = false)
-    private String urlImagen;
-
     @OneToMany(mappedBy = "ciudad")
     @ToString.Exclude
     private List<Hotel> hoteles;

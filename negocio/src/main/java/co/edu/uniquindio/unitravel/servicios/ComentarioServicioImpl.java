@@ -4,9 +4,7 @@ import co.edu.uniquindio.unitravel.entidades.*;
 import co.edu.uniquindio.unitravel.repositorios.*;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,16 +14,25 @@ public class ComentarioServicioImpl implements ComentarioServicio{
     private final ComentarioRepo comentarioRepo;
     private final HotelRepo hotelRepo;
 
-    public ComentarioServicioImpl(ComentarioRepo comentarioRepo, HotelRepo hotelRepo) {
+    private final UsuarioRepo usuarioRepo;
+
+    public ComentarioServicioImpl(ComentarioRepo comentarioRepo, HotelRepo hotelRepo, UsuarioRepo usuarioRepo) {
         this.comentarioRepo = comentarioRepo;
         this.hotelRepo = hotelRepo;
+        this.usuarioRepo = usuarioRepo;
     }
 
 
     @Override
-    public Comentario registrarComentario(Comentario c){
+    public void ingresarComentario(Comentario c,Hotel h, Usuario u){
         c.setFecha_calificacion(LocalDateTime.now());
-        return comentarioRepo.save(c);
+        c.setHotel(h);
+        c.setUsuario(u);
+        h.getComentarios().add(c);
+        u.getComentarios().add(c);
+        comentarioRepo.save(c);
+        hotelRepo.save(h);
+        usuarioRepo.save(u);
 
     }
 

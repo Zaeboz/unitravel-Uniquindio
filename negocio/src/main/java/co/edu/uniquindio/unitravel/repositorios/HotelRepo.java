@@ -24,10 +24,10 @@ public interface HotelRepo extends JpaRepository<Hotel, Integer> {
     List<Hotel> obtenerHotelesCiudad(String nombreCiudad);
 
     @Query("SELECT COUNT(c) FROM Hotel h join h.comentarios c where h.codigo=:codigoH")
-    int obtenerCantidadComentarios(Integer codigoH);
+    Integer obtenerCantidadComentarios(int codigoH);
 
     @Query("select avg(c.calificacion) from Hotel h join h.comentarios c where h.codigo=:codigoH")
-    int obtenerCalificacionPromedio(Integer codigoH);
+    Integer obtenerCalificacionPromedio(int codigoH);
 
     @Query("select new co.edu.uniquindio.unitravel.dto.HotelMayorCalificacionDTO(h, avg(c.calificacion)) from Hotel h join h.comentarios c where h.ciudad.codigo =:idCiudad group by h.codigo order by avg(c.calificacion) desc ")
     List<HotelMayorCalificacionDTO> obtenerHotelMayorCalificacion(Integer idCiudad);

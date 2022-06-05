@@ -1,6 +1,9 @@
 package co.edu.uniquindio.unitravel.bean;
 
+import co.edu.uniquindio.unitravel.entidades.Administrador;
+import co.edu.uniquindio.unitravel.entidades.AdministradorHotel;
 import co.edu.uniquindio.unitravel.entidades.Persona;
+import co.edu.uniquindio.unitravel.entidades.Usuario;
 import co.edu.uniquindio.unitravel.servicios.UnitravelServicio;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +26,9 @@ public class SeguridadBean implements Serializable {
     private String email;
 
     @Getter @Setter
+    private String rol;
+
+    @Getter @Setter
     private String password;
 
     @Getter @Setter
@@ -35,8 +41,18 @@ public class SeguridadBean implements Serializable {
 
         try {
             persona = unitravelServicio.validarLogin(email, password);
-            autenticado = true;
+
+            if (persona instanceof Usuario){
+                rol="usuario";
+            }else if (persona instanceof Administrador){
+                rol="admin";
+            }else if (persona instanceof AdministradorHotel){
+                rol="adminHotel";
+            }
+
+            autenticado=true;
             return "/index?faces-redirect=true";
+
         } catch (Exception e) {
             FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage());
             FacesContext.getCurrentInstance().addMessage("login-bean", facesMessage);

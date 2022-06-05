@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -105,8 +106,20 @@ public class AdministradorHotelServicioImpl implements AdministradorHotelServici
     }
 
     @Override
-    public int obtenerCalificacionPromedio(int idHotel) {
-        return hotelRepo.obtenerCalificacionPromedio(idHotel);
+    public int obtenerCalificacionPromedio(int idHotel) throws Exception {
+
+        Integer calification;
+        Optional<Hotel> hotelEncontrado= hotelRepo.findById(idHotel);
+
+        if (hotelEncontrado.isPresent()){
+
+            calification = hotelRepo.obtenerCalificacionPromedio(hotelEncontrado.get().getCodigo());
+        }else{
+            throw new Exception("El hotel no fue encontrado");
+        }
+
+        return Objects.requireNonNullElse(calification, 0);
+
     }
 
     @Override

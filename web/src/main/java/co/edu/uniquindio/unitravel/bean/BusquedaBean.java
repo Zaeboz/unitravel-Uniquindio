@@ -35,8 +35,6 @@ public class BusquedaBean implements Serializable
     public void inicializar(){
         if(busquedaParam!=null && !busquedaParam.isEmpty()){
             hoteles=usuarioServicio.buscarHotelesNombre(busquedaParam);
-        }else{
-            hoteles=new ArrayList();
         }
     }
     public String buscar() {

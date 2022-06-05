@@ -5,69 +5,85 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xml:lang="en" lang="en">
 <ui:composition template="/WEB-INF/template.xhtml" >
     <ui:define name="title">#{detalleHotelBean.hotel.nombre}</ui:define>
     <ui:define name="content">
 
-        <div class="row">
+        <div class="container" style="width: 95%;margin-top: 5%">
+            <div class="row">
+                <div class="col">
+                    <div class="card p-3 text-center d-block" style="border: none">
+                        <p:galleria rendered="#{detalleHotelBean.hotel.imagenes.size() > 0}" value="#{detalleHotelBean.hotel.imagenes}" var="image" numVisible="5"
+                                    circular="true"
+                                    style="max-width: 640px;align-content: center;justify-content: center;text-align: center"
+                                    showThumbnails="false" showIndicators="true" changeItemOnIndicatorHover="true"
+                                    showIndicatorsOnItem="true">
+                            <p:graphicImage url="/uploads/#{image}" alt="#{image}"
+                                            style="width: 550px;height: 380px;display: block;justify-content: center;align-content: center"/>
+                        </p:galleria>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card p-3" style="box-shadow: 0 10px 12px rgba(0, 0, 0, 1);">
 
-            <div class="col-lg-7 col-md-1">
-                <div class="card p-3 text-center d-block">
-                    <p:galleria rendered="#{detalleHotelBean.hotel.imagenes.size() > 0}" value="#{detalleHotelBean.hotel.imagenes}" var="imagen"  thumbnailsPosition="left">
-                        <p:graphicImage url="/uploads/#{imagen}" alt="" title="" styleClass="rounded shadow"/>
+                        <div class="row">
+                            <div class="col">
+                                <h3 style="margin-top: 1.5%;color: #0E575D">#{detalleHotelBean.hotel.nombre}</h3>
+                            </div>
+                            <div class="col-4">
+                                <div class="row" style="margin-top: 5%">
+                                    <div class="col" style="text-align: right">
+                                        <a class="text-muted" href="#"><i class="pi pi-twitter icon-menu"></i></a>
+                                    </div>
+                                    <div class="col">
+                                        <a class="text-muted" href="#"><i class="pi pi-facebook icon-menu"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                        <f:facet name="thumbnail">
-                            <p:graphicImage url="/uploads/#{imagen}" alt="Imagen Description for #{imagen}" styleClass="rounded shadow"/>
-                        </f:facet>
-                    </p:galleria>
-                    <p:graphicImage rendered="#{detalleHotelBean.hotel.imagenes.size() == 0}" url="/resources/images/no-image.png" alt="Imagen Description for #{imagen}" styleClass="rounded shadow"/>
+                        <p:rating value="#{detalleHotelBean.hotel.numEstrellas}" readonly="true"/>
+                        <br/>
+                        <p class="mb-0"><b>Ciudad:</b> #{detalleHotelBean.hotel.ciudad.nombre}</p>
+                        <p class="mt-1 mb-0"><b>Administrador:</b> #{detalleHotelBean.hotel.administradorHotel.nombre}</p>
+
+                        <br/>
+                        <div>
+                            <p><b style="color: #0E575D">Caracteristicas:</b></p>
+                            <p:repeat value="#{detalleHotelBean.hotel.caracteristicas}" var="cat">
+                                <p:chip styleClass="bg-primary text-white" label="#{cat.descripcion}" style="background: #0E575D!important;border: 1px solid black"/>
+                            </p:repeat>
+                        </div>
+                        <div class="card p-1 mt-4" style="border: none">
+                            <p><i class="pi pi-book me-1"></i></p>
+                            <p class="mb-0"><b>Telefono:</b> #{detalleHotelBean.hotel.telefono}</p>
+                            <p class="mt-1 mb-0"><b>Direccion:</b> #{detalleHotelBean.hotel.direccion}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <div class="col-lg-5 col-md-1">
-                <div class="card p-3">
-                    <p:rating value="#{detalleHotelBean.calificacionPromedio}" readonly="true" stars="#{detalleHotelBean.calificacionPromedio}"/>
-                    <h2 class="mt-4 mb-0">#{detalleHotelBean.hotel.nombre}</h2>
-
-                    <hr/>
-
-                    <p class="mb-0"><b>Ciudad:</b>#{detalleHotelBean.hotel.ciudad.nombre}</p>
-                    <p class="mt-1 mb-0"><b>Administrador:</b>#{detalleHotelBean.hotel.administradorHotel.nombre}</p>
-
-                    <hr/>
-
-                    <div>
-                        <p><i class="pi pi-exclamation-circle me-1"></i> Caracteristicas: </p>
-                        <p:repeat value="#{detalleHotelBean.hotel.caracteristicas}" var="cat">
-                            <p:chip styleClass="bg-primary text-white" label="#{cat.descripcion}" />
-                        </p:repeat>
+        <div class="container" style="width: 95%;margin-top: 5%">
+            <div class="card p-3" style="width: 100%;border: none">
+                <div class="card-title">
+                    <h3 style="color: #0E575D">Descripción</h3>
+                    <div class="card-body">
+                        <h5>#{detalleHotelBean.hotel.descripcion}</h5>
                     </div>
-
-                    <div class="card p-3 mt-4">
-                        <p><i class="pi pi-book me-1"></i></p>
-                        <p class="mb-0"><b>Telefono:</b>#{detalleHotelBean.hotel.telefono}</p>
-                        <p class="mt-1 mb-0"><b>Direccion:</b>#{detalleHotelBean.hotel.direccion}</p>
-                    </div>
-
-                    <hr/>
-
-                    <div class="btn-redes">
-                        <p><i class="pi pi-share-alt me-1"></i> Compartir en redes: </p>
-                        <ul class="nav col-md-4 list-unstyled d-flex">
-                            <li class="me-3"><a class="text-muted" href="#"><i class="pi pi-twitter icon-menu"></i></a></li>
-                            <li><a class="text-muted" href="#"><i class="pi pi-facebook icon-menu"></i></a></li>
-                        </ul>
-                    </div>
-
                 </div>
             </div>
+        </div>
 
-            <p:panel header="Descripcion" styleClass="mt-3">
-                <h:outputText value="#{detalleHotelBean.hotel.descripcion}" escape="false"/>
-            </p:panel>
+        <div class="container" style="width: 95%;margin-top: 1%">
+            <div class="card p-3" style="width: 100%;border: none">
 
-            <p:panel header="Habitaciones" styleClass="mt-3">
+                <div class="card-title">
+                    <h3 style="color: #0E575D">Habitaciones</h3>
+                </div>
+
                 <div class="d-flex">
                     <p:repeat value="#{detalleHotelBean.hotel.habitaciones}" var="habitacion">
                         <div class="card border-primary m-4">
@@ -77,43 +93,92 @@
                         </div>
                         <hr class="m-0 mt-3"/>
                         <div class="card-body">
-                            <p class="card-text"><b>Capacidad: </b>${habitacion.capacidad}<i class="pi pi-users"></i></p>
-                            <p class="card-text"><b>Precio: </b>${habitacion.precio}<i class="pi pi-dollar"></i></p>
+                            <p class="card-text"><b>Capacidad: </b>${habitacion.capacidad} persona(s)</p>
+                            <p class="card-text"><b>Precio:</b> $${habitacion.precio}</p>
                             <div class="d-flex">
-                                <p class="card-text mb-0 me-0"><b>Camas: </b></p>
+                                <p class="card-text mb-0 me-0"><b>Camas:</b></p>
                                 <p:repeat value="#{habitacion.camas}" var="cama">
-                                    <p:tag styleClass="me-2" value="#{cama.tipo}"/>
+                                    <p:tag styleClass="me-2" value="#{cama.tipo}" style="margin-left: 5px;background: #0E575D!important;border: 0.5px solid black"/>
                                 </p:repeat>
                             </div>
                         </div>
                         <hr class="m-0"/>
                         <div class="card-body">
-                            <p>Caracteristicas: </p>
+                            <p><b>Caracteristicas:</b></p>
                             <p:repeat value="#{habitacion.caracteristicas}" var="caracteristica">
-                                <p:chip styleClass="me-2" label="#{caracteristica.descripcion}" />
+                                <p:chip styleClass="me-2" label="#{caracteristica.descripcion}" style="background: #0E575D!important;border: 0.5px solid black;color:white !important;"/>
                             </p:repeat>
                         </div>
                     </p:repeat>
                 </div>
-            </p:panel>
-
-            <p:panel header="Lista de comentarios" styleClass="mt-3" >
-                <p:dataList id="lista-c" value="#{detalleHotelBean.comentarios}" var="com">
-                    <p>#{com.comentario} - #{com.usuario.nombre}</p>
-                </p:dataList>
-            </p:panel>
-
-            <p:panel header="Hacer un comentario" styleClass="mt-3" >
-                <h:form id="crear-comentario">
-                    <h:panelGrid columns="2" cellpadding="3">
-                        <p:inputTextarea value="#{detalleHotelBean.nuevoComentario.comentario}" required="true" styleClass="comentario-usuario" />
-                        <p:rating value="#{detalleHotelBean.nuevoComentario.calificacion}" required="true"/>
-                    </h:panelGrid>
-                    <p:commandButton value="Comentar" icon="pi pi-comment" iconPos="left" update="@form, lista-c" styleClass="mt-4" action="#{detalleHotelBean.crearComentario}" />
-                    <p:growl for="msj-pregunta" showDetail="true" />
-                </h:form>
-            </p:panel>
+            </div>
         </div>
+
+        <h:form>
+            <div class="container" style="width: 95%;margin-top: 1%">
+                <div class="card p-3" style="width: 100%;border: none">
+                    <div class="card-title">
+                        <h4 style="color: #0E575D">Comentarios</h4>
+                    </div>
+
+                    <div class="card-body">
+                        <p:dataScroller id="comentarios_table" value="#{detalleHotelBean.comentarios}"
+                                        var="comentario" chunkSize="10"
+                                        mode="inline"
+                                        scrollHeight="300">
+
+                            <div class="product">
+                                <div class="product-list-item p-p-5">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <p:graphicImage value="resources/img/user2.png" height="55" width="55"/>
+                                        </div>
+                                        <div class="col">
+                                            <div class="product-list-detail">
+                                                <h6>#{comentario.usuario.nombre}</h6>
+                                                <h6>#{comentario.comentario}</h6>
+                                                <p:rating readonly="true" value="#{comentario.calificacion}"/>
+                                                <p:divider></p:divider>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </p:dataScroller>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container" style="width: 100%;padding: 0;min-height: 100%;margin-top: 2%" jsf:rendered="#{seguridadBean.autenticado and seguridadBean.rol == 'usuario'}">
+                <div class="card" style="border: none">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h4 style="color: #0E575D">Ingresa tu opinión</h4>
+                        </div>
+
+                        <div class="row" >
+                            <div class="col">
+                                <p:inputTextarea value="#{detalleHotelBean.nuevoComentario.comentario}" placeholder="Comentario" style="width: 100%"/>
+                            </div>
+                            <div class="col-4">
+                                <div class="container">
+                                    <div class="title">
+                                        <h4 style="color: #0E575D">Calificación</h4>
+                                    </div>
+                                    <div>
+                                        <p:rating value="#{detalleHotelBean.nuevoComentario.calificacion}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p:commandButton value="Registrar comentario"
+                                         action="#{detalleHotelBean.crearComentario}"
+                                         update="comentarios_table," style="background: #0E575D!important;margin-top: 2%;border-color: black!important;"/>
+                    </div>
+                </div>
+            </div>
+        </h:form>
     </ui:define>
 </ui:composition>
 </html>

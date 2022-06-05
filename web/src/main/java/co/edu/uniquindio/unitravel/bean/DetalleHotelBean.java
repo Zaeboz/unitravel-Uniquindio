@@ -2,6 +2,8 @@ package co.edu.uniquindio.unitravel.bean;
 
 import co.edu.uniquindio.unitravel.entidades.Comentario;
 import co.edu.uniquindio.unitravel.entidades.Hotel;
+import co.edu.uniquindio.unitravel.entidades.Persona;
+import co.edu.uniquindio.unitravel.entidades.Usuario;
 import co.edu.uniquindio.unitravel.servicios.AdministradorHotelServicio;
 import co.edu.uniquindio.unitravel.servicios.ComentarioServicio;
 import co.edu.uniquindio.unitravel.servicios.UnitravelServicio;
@@ -24,7 +26,7 @@ import java.util.List;
 @ViewScoped
 public class DetalleHotelBean implements Serializable {
 
-    @Value("#{param['hotel_id']}")
+    @Value("#{param['hotel']}")
     private String codigoHotel;
 
     @Getter @Setter
@@ -37,10 +39,9 @@ public class DetalleHotelBean implements Serializable {
     private UnitravelServicio unitravelServicio;
 
     @Autowired
-    private ComentarioServicio comentarioServicio;
-
-    @Autowired
     private UsuarioServicio usuarioServicio;
+    @Autowired
+    private ComentarioServicio comentarioServicio;
 
     @Autowired
     private AdministradorHotelServicio administradorHotelServicio;
@@ -50,6 +51,9 @@ public class DetalleHotelBean implements Serializable {
 
     @Getter @Setter
     private Integer calificacionPromedio;
+
+    @Value(value = "#{seguridadBean.persona}")
+    private Persona personaLogin;
 
     @PostConstruct
     public void init() {
@@ -69,14 +73,20 @@ public class DetalleHotelBean implements Serializable {
     public void crearComentario(){
 
         try {
-            nuevoComentario.setHotel(hotel);
-            nuevoComentario.setUsuario(usuarioServicio.obtenerUsuario("1"));
-            comentarioServicio.registrarComentario(nuevoComentario);
-            comentarios.add(nuevoComentario);
-            nuevoComentario = new Comentario();
 
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Comentario registrado", "El comentario se ha registrado correctamente");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            if (personaLogin!=null){
+                hotel.getComentarios().add(nuevoComentario);
+                nuevoComentario.setCodigo((int)(Math.random()*10+1));
+                usuarioServicio.registrarComentario(nuevoComentario);
+                hotel.getComentarios().add(nuevoComentario);
+                administradorHotelServicio.modificarHotel(hotel,hotel.getCodigo());
+                comentarios.add(nuevoComentario);
+                nuevoComentario = new Comentario();
+                calificacionPromedio = administradorHotelServicio.obtenerCalificacionPromedio(hotel.getCodigo());
+
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Comentario registrado", "El comentario se ha registrado correctamente");
+                FacesContext.getCurrentInstance().addMessage(null, message);
+            }
         } catch (Exception e) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage());
             FacesContext.getCurrentInstance().addMessage(null, message);

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// W3C // DTD XHTML 1.0 Transitional // EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<ui:composition template="/WEB-INF/template.xhtml" >
+    <ui:define name="title">Registro Hotel</ui:define>
+    <ui:define name="content">
+
+        <p:card styleClass="card"
+                style="margin-left: 30%; margin-right: 30%; margin-top: 2%; margin-bottom: 2%;border: 1px solid black; box-shadow: 0 10px 12px rgba(0, 0, 0, 1);">
+            <f:facet name="title">
+                <a style="color: #0E575D;margin-left: 33%">¡Regístra hoteles!</a>
+            </f:facet>
+            <h:form >
+
+                <div class="row">
+                    <div class="col-3">
+                        <p:outputLabel for="nombre_h" value="Nombre: "/>
+                    </div>
+                    <div class="col">
+                        <p:inputText id="nombre_h" type="text" value="#{hotelBean.hotel.nombre}" required="true" style="width: 90%;border: 1px solid black"/>
+                        <p:message for="nombre_h" />
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-3">
+                        <p:outputLabel for="descripcion_h" value="Descripcion   : "/>
+                    </div>
+                    <div class="col">
+                        <p:inputTextarea id="descripcion_h" type="text" value="#{hotelBean.hotel.descripcion}" required="true" style="width: 90%;border: 1px solid black"/>
+                        <p:message for="descripcion_h" />
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-3">
+                        <p:outputLabel for="direccion_h" value="Direccion: "/>
+                    </div>
+                    <div class="col">
+                        <p:inputText id="direccion_h" type="text" value="#{hotelBean.hotel.direccion}" required="true" style="width: 90%;border: 1px solid black"/>
+                        <p:message for="direccion_h" />
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-3">
+                        <p:outputLabel value="Ciudad " for="ciudad_h" />
+                    </div>
+                    <div class="col">
+                        <p:selectOneMenu id="ciudad_h" value="#{hotelBean.hotel.ciudad}" required="true" converter="#{ciudadConverter}" style="width: 90%;border: 1px solid black">
+                            <f:selectItem itemLabel="Seleccione una ciudad" noSelectionOption="true"/>
+                            <f:selectItems value="#{hotelBean.ciudades}" var="ciudad" itemLabel="#{ciudad.nombre}" itemValue="#{ciudad}"/>
+                        </p:selectOneMenu>
+                        <p:message for="ciudad_h" />
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-3">
+                        <p:outputLabel for="num_estrellas" value="Numero de estrellas: "/>
+                    </div>
+                    <div class="col">
+                        <p:inputText id="num_estrellas" type="number" value="#{hotelBean.hotel.numEstrellas}" required="true" style="width: 90%;border: 1px solid black"/>
+                        <p:message for="num_estrellas" />
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-3">
+                        <p:outputLabel for="tel_h" value="Telefono: "/>
+                    </div>
+                    <div class="col">
+                        <p:inputText id="tel_h" type="text" value="#{hotelBean.hotel.telefono}" required="true" style="width: 90%;border: 1px solid black"/>
+                        <p:message for="tel_h" />
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-3">
+                        <p:outputLabel for="imagenes_hotel" value="Imagenes: "/>
+                    </div>
+                    <div class="col">
+                        <p:fileUpload id="imagenes_hotel"
+                                      style="width: 90%;border: 1px solid black"
+                                      listener="#{hotelBean.subirImagenesHotel}" mode="advanced"
+                                      multiple="true" sizeLimit="1000000" fileLimit="5"
+                                      allowTypes="/(\.|\/)(gif|jpe?g|png)$/" required="true"/>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-4">
+                        <p:outputLabel value="Caracteristicas " for="caract_ho" />
+                    </div>
+                    <div class="col">
+                        <p:selectManyCheckbox id="caract_ho" value="#{hotelBean.hotel.caracteristicas}" required="true" converter="#{caracteristicasConverter}" style="width: 100%;">
+                            <f:selectItems value="#{hotelBean.caracteristicasHotel}" var="caract_ho" itemLabel="#{caract_ho.descripcion}" itemValue="#{caract_ho}"/>
+                        </p:selectManyCheckbox>
+                        <p:message for="caract_ho" />
+                    </div>
+                </div>
+                <br/>
+
+                <p:commandButton value="Adicionar habitacion" onclick="PF('crear_hab').show()" icon="pi pi-plus" style="background: #24C5C0;color: #0E575D;border-color: black !important;" />
+                <br/>
+                <br/>
+
+                <div style="text-align: center">
+                    <p:commandButton value="Crear Hotel" action="#{hotelBean.registrarHotel()}" update="@form" style="background: #24C5C0;color: #0E575D;border-color: black !important;"/>
+                    <p:growl for="msj_bean"  showDetail="true" />
+                </div>
+            </h:form>
+        </p:card>
+
+
+
+        <p:dialog widgetVar="crear_hab" modal="true" showEffect="fade" draggable="false" style="border: 1px solid black">
+
+            <div style="text-align: center">
+                <h4 style="color: #0E575D;">Registrar habitaciones</h4>
+            </div>
+            <br/>
+            <h:form>
+
+                <div class="row">
+                    <div class="col-4">
+                        <p:outputLabel for="capacidad_h" value="Capacidad: "/>
+                    </div>
+                    <div class="col">
+                        <p:inputText id="capacidad_h" type="text" value="#{hotelBean.habitacion.capacidad}" required="true" style="border: 1px solid black"/>
+                        <p:message for="capacidad_h" />
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-4">
+                        <p:outputLabel for="precio_h" value="Precio: "/>
+                    </div>
+                    <div class="col">
+                        <p:inputText id="precio_h" type="text" value="#{hotelBean.habitacion.precio}" required="true" style="border: 1px solid black"/>
+                        <p:message for="precio_h" />
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-4">
+                        <p:outputLabel value="Camas " for="camas" />
+                    </div>
+                    <div class="col">
+                        <p:selectManyCheckbox id="camas" value="#{hotelBean.habitacion.camas}" required="true" converter="#{camaConverter}">
+                            <f:selectItems value="#{hotelBean.camas}" var="cama" itemLabel="#{cama.tipo}" itemValue="#{cama}"/>
+                        </p:selectManyCheckbox>
+                        <p:message for="camas" />
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-4">
+                        <p:outputLabel value="Caracteristicas " for="caract_ha" />
+                    </div>
+                    <div class="col">
+                        <p:selectManyCheckbox id="caract_ha" value="#{hotelBean.habitacion.caracteristicas}" required="true" converter="#{caracteristicasConverter}">
+                            <f:selectItems value="#{hotelBean.caracteristicasHabitacion}" var="caract_ha" itemLabel="#{caract_ha.descripcion}" itemValue="#{caract_ha}"/>
+                        </p:selectManyCheckbox>
+                        <p:message for="caract_ha" />
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-4">
+                        <p:outputLabel for="imagenes_hab" value="Imagenes: " />
+                    </div>
+                    <div class="col">
+                        <p:fileUpload id="imagenes_hab" style="border: 1px solid black"
+                                      listener="#{hotelBean.subirImagenesHabitacion}" mode="advanced"
+                                      multiple="true" sizeLimit="1000000" fileLimit="5"
+                                      allowTypes="/(\.|\/)(gif|jpe?g|png)$/" required="true"/>
+                    </div>
+                </div>
+                <br/>
+
+                <div style="text-align: center">
+                    <p:commandButton value="Crear Habitacion" action="#{hotelBean.registrarHabitacion()}" update="@form"
+                                     style="background: #24C5C0;color: #0E575D;border-color: black !important;"/>
+                    <p:growl for="msj_bean"  showDetail="true" />
+                </div>
+            </h:form>
+
+        </p:dialog>
+    </ui:define>
+</ui:composition>
+</html>

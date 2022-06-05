@@ -16,13 +16,6 @@
     box-shadow: inset 0 0.5em 1.5em rgb(0 0 0 / 10%), inset 0 0.125em 0.5em rgb(0 0 0 / 15%);
 }
 
-.color-principal{
-    background-color: #712cf9;
-}
-
-.text-active{
-    color: #f7b600 !important;
-}
 
 #busqueda_h .ui-inputtext{
     width: 400px;
@@ -99,4 +92,31 @@ body .ui-dataview .ui-dataview-header, .ui-dataview-row.ui-g{
 
 .ui-linkbutton a{
     text-decoration: none;
+}
+
+#btn-login:hover {
+    background: white;
+    color: black;
+}
+
+#btn-registro:hover {
+    background: white;
+    color: black;
+}
+
+body .ui-dialog .ui-dialog-titlebar {
+    padding: 0 !important;
+}
+
+.product-item .product-item-content {
+    border: 1px solid var(--surface-d);
+    border-radius: 3px;
+    margin: .3rem;
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.product-item .product-image {
+    width: 50%;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
 }

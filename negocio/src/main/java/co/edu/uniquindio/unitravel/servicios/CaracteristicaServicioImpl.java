@@ -18,14 +18,9 @@ public class CaracteristicaServicioImpl implements CaracterirsticaServicio{
 
 
     @Override
-    public Caracteristica crearCaracteristica(Caracteristica c) throws Exception {
+    public void crearCaracteristica(Caracteristica c) {
 
-        Optional<Caracteristica> caract = caracteristicaRepo.findById(c.getCodigo());
-        if (caract.isPresent()){
-            throw new Exception("La característica a crear ya existe");
-        }
-
-        return caracteristicaRepo.save(c);
+         caracteristicaRepo.save(c);
     }
 
     @Override

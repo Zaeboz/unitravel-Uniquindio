@@ -20,10 +20,10 @@ import java.time.LocalDateTime;
 public class Comentario implements Serializable {
 
     @Id
-    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, length = 11, unique = true)
+    @EqualsAndHashCode.Include
     private Integer codigo;
-
     @Column(length = 500, nullable = false)
     @Size(max = 500, message = "El comentario no puede tener mas de 500 caracteres")
     @NotBlank(message = "El comentario no puede estar vacio")

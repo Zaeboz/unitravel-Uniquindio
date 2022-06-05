@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CaracterirsticaServicio {
 
-    Caracteristica crearCaracteristica(Caracteristica c) throws Exception;
+    void crearCaracteristica(Caracteristica c);
 
     void eliminarCaracteristica(int id) throws Exception;
 

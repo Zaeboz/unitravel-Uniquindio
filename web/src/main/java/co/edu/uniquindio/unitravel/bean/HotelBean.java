@@ -55,6 +55,9 @@ public class HotelBean implements Serializable{
     private UnitravelServicio unitravelServicio;
     private ArrayList<String> imagenesHabitacion;
 
+    @Value(value = "#{seguridadBean.persona}")
+    private Persona personaLogin;
+
     @PostConstruct
     public void incializar(){
         hotel = new Hotel();
@@ -75,22 +78,19 @@ public class HotelBean implements Serializable{
 
                 if (habitaciones.size() > 0) {
 
-                    AdministradorHotel administradorHotel = administradorHotelServicio.obtenerAdminHotel("4");
+                    AdministradorHotel administradorHotel = (AdministradorHotel) personaLogin;
 
                     hotel.setAdministradorHotel(administradorHotel);
                     hotel.setImagenes(imagenesHotel);
 
-                    //No se guardan las caracteristicas del hotel
                     Hotel h = administradorHotelServicio.crearHotel(hotel);
 
                     for (Habitacion habitacion : habitaciones) {
                         habitacion.setHotel(h);
-                        //No se guardan las caracteristicas de la habitacion
-                        //Tampoco se guardan las camas de la habitacion
                         administradorHotelServicio.crearHabitacion(habitacion);
                     }
 
-                    return "registro_exitoso?faces-redirect=true";
+                    return "index?faces-redirect=true";
                 } else {
                     FacesMessage ms = new FacesMessage(FacesMessage.SEVERITY_WARN, "Error", "Debe subir al menos una imagen");
                     FacesContext.getCurrentInstance().addMessage("msj_bean", ms);

@@ -38,11 +38,6 @@ public class InicioBean implements Serializable {
     @PostConstruct
     public void inicializar(){
         hoteles = usuarioServicio.listarHoteles();
-        /*try {
-            ciudades = ciudadServicio.ciudadesMasVisitadas();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }*/
         ciudades = administradorServicio.listarCiudades();
     }
 
@@ -51,6 +46,7 @@ public class InicioBean implements Serializable {
     }
 
     public String irDetalleHotel(String codigoHotel) {
-        return "detalle_hotel?faces-redirect=true&amp;hotel_id=" + codigoHotel;
+
+        return "/detalle_hotel?faces-redirect=true&amp;hotel=" + codigoHotel;
     }
 }

@@ -10,71 +10,69 @@
     <ui:define name="title">Inicio</ui:define>
     <ui:define name="content">
 
-        <div>
-            <h2 class="m-3">Ciudades recomendadas</h2>
-
-            <p:carousel value="#{inicioBean.ciudades}" var="ciudad" numVisible="3" circular="true" autoplayInterval="3000">
-                <div class="card m-2 item-ciudad">
-                    <a href="hoteles_destino.xhtml?ciudad=#{ciudad.nombre}">
-                        <div class="img-ciudad">
-                            <img src="#{ciudad.urlImagen}" alt="Imagen ciudad"/>
+        <div class="container" style="width: 95%;margin-top: 3%">
+            <div class="card" style="background: #0E575D;width: 100%;height: 200px;padding: 1%;border-radius: 30px">
+                <div class="card-body" style="margin-left: 5%">
+                    <div class="card-title">
+                        <h3 style="color: white">Bienvenidos a UniTravel</h3>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col">
+                            <h6 style="color: white">Destino</h6>
+                            <p:inputText styleClass="p-d-block" value="#{busquedaBean.busqueda}" placeholder="Ingresa el destino que deseas visitar"
+                                         style="width: 100%;border: 1px solid black"/>
                         </div>
-                        <p>#{ciudad.nombre}</p>
-                    </a>
+                        <div class="col-3">
+                            <p:commandButton styleClass="btn btn-outline-light btn-buscar" value="Buscar"
+                                             action="#{busquedaBean.buscar}" style="width: 50%;height: 41px;background: #24C5C0;margin-top: 11%;color: #0E575D;border-color: black!important;"/>
+                        </div>
+                        <div class="col-1">
+                            <img src="../resources/img/airplane.png" alt="" style="width: 100px;height: 100px;margin-top: -50%;margin-left: -120%"/>
+                        </div>
+                    </div>
                 </div>
-            </p:carousel>
-
-            <h2 class="m-3">Hoteles destacados</h2>
-            <h:form>
-
-                <p:dataView id="lista-h" var="hotel" value="#{inicioBean.hoteles}" listIcon="pi pi-bars" gridIcon="pi pi-th-large">
-
-                    <p:dataViewListItem>
-                        <div class="row d-flex m-5" >
-                            <div class="col-lg-2 col-md-1" style="text-align: center" >
-                                <img src="/uploads/#{hotel.imagenPrincipal}" class="imagen-hotel" alt="Imagen"/>
-                            </div>
-                            <div class="col-lg-8 col-md-1 align-self-center" >
-                                <p:outputPanel>
-                                    <h:panelGrid columns="2" cellpadding="5">
-                                        <h:outputText value="Nombre:" />
-                                        <h:outputText value="#{hotel.nombre}" style="font-weight:bold" />
-                                        <h:outputText value="Ciudad:" />
-                                        <h:outputText value="#{hotel.ciudad.nombre}" />
-                                        <h:outputText value="Características:" />
-                                        <p:repeat value="#{hotel.caracteristicas}" var="car">
-                                            <p:chip label="#{car.descripcion}" styleClass="me-2" />
-                                        </p:repeat>
-                                        <h:outputText value="Descripción:" />
-                                        <h:outputText value="#{hotel.descripcion}" />
-                                    </h:panelGrid>
-                                </p:outputPanel>
-                            </div>
-                            <div class="col-lg-2 col-md-1 align-self-center" >
-                                <p:commandButton value="Ver detalle" action="#{inicioBean.irDetalleHotel(hotel.codigo)}" styleClass="ui-button-raised" icon="pi pi-arrow-right" iconPos="right" />
-                            </div>
-                        </div>
-
-                    </p:dataViewListItem>
-
-                    <p:dataViewGridItem>
-
-                        <div class="card" >
-                            <img src="/uploads/#{hotel.imagenPrincipal}" class="card-img-top" alt="..." />
-                            <div class="card-body">
-                                <h5 class="card-title">#{hotel.nombre}</h5>
-                                <p class="card-text">#{hotel.ciudad.nombre}</p>
-                                <hr />
-                                <p:commandButton value="Ver detalle" action="#{inicioBean.irDetalleHotel(hotel.codigo)}" styleClass="ui-button-raised" icon="pi pi-arrow-right" iconPos="right" />
-                            </div>
-                        </div>
-
-                    </p:dataViewGridItem>
-
-                </p:dataView>
-
-            </h:form>
+            </div>
         </div>
+
+        <div class="container" style="width: 95%;margin-top: 3%">
+
+            <h4 style="color: #0E575D">Hoteles</h4>
+
+            <h6>A continuación te presentamos los diferentes hoteles en los que puedes reservar.</h6>
+
+           <div class="card" style="width: 100%;border: none">
+               <p:carousel value="#{inicioBean.hoteles}" var="hotel" numVisible="3" numScroll="3">
+
+
+                   <div class="card" style="width: 33.3%;height: 300px;margin-top: 3%">
+                       <div class="img" style="text-align: center">
+                           <h:form>
+                               <h:commandButton
+                                       style="position: fixed;width: 150px;height: 150px;border: none;background: transparent"
+                                       action="#{inicioBean.irDetalleHotel(hotel.codigo)}">
+                                   <img src="/uploads/#{hotel.imagenPrincipal}" alt="" style="width: 100%;height: 200px;"/>
+                               </h:commandButton>
+                           </h:form>
+                       </div>
+
+                        <div style="padding: 3%">
+                            <div class="text" style="margin-top: 1.5%">
+                                <div class="row" style="margin-top: 3%">
+                                    <div class="col">
+                                        <h5 class="p-mb-1" style="color: #0E575D">#{hotel.nombre}</h5>
+                                    </div>
+                                    <div class="col">
+                                        <p:rating value="#{hotel.numEstrellas}" readonly="true"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                   </div>
+               </p:carousel>
+           </div>
+        </div>
+
     </ui:define>
 </ui:composition>
 </html>
