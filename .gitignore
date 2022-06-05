@@ -19,6 +19,8 @@ build/
 .idea
 
 /bin
-/.gradle/
+/gradle
+/.gradle
+
 /negocio/src/main/resources/
 /negocio/src/test/resources/
