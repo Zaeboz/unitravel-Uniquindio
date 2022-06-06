@@ -5,7 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5cff773e-f026-421d-ae26-699751293364" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/negocio/build/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/negocio/build/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.1/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.1/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.1/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/negocio/build/libs/negocio-1.0-SNAPSHOT-plain.jar" beforeDir="false" afterPath="$PROJECT_DIR$/negocio/build/libs/negocio-1.0-SNAPSHOT-plain.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/negocio/build/resources/main/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/negocio/build/resources/main/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/build/resources/main/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/web/build/resources/main/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,7 +140,7 @@
       <workItem from="1654283651059" duration="27625000" />
       <workItem from="1654440655975" duration="2436000" />
       <workItem from="1654443988352" duration="4303000" />
-      <workItem from="1654469960566" duration="10983000" />
+      <workItem from="1654469960566" duration="11641000" />
     </task>
     <task id="LOCAL-00001" summary="Commit prueba">
       <created>1654480583069</created>
