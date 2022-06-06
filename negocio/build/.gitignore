@@ -19,7 +19,7 @@ build/
 ../../.idea
 
 /bin
-/gradle
+
 /.gradle
 
 /negocio/src/main/resources/
