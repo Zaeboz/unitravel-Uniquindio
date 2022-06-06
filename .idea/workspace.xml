@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5cff773e-f026-421d-ae26-699751293364" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/negocio/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/negocio/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,7 +132,7 @@
       <workItem from="1654283651059" duration="27625000" />
       <workItem from="1654440655975" duration="2436000" />
       <workItem from="1654443988352" duration="4303000" />
-      <workItem from="1654469960566" duration="9773000" />
+      <workItem from="1654469960566" duration="9962000" />
     </task>
     <task id="LOCAL-00001" summary="Commit prueba">
       <created>1654480583069</created>
