@@ -121,9 +121,9 @@ public class AdministradorHotelServicioTest {
     @Sql("classpath:dataset.sql")
     public void obtenerCalificacionPromedioTest() {
 
-        int calificacionPromedio = administradorHotelServicio.obtenerCalificacionPromedio(1);
+        //int calificacionPromedio = administradorHotelServicio.obtenerCalificacionPromedio(1);
 
-        System.out.println(calificacionPromedio);
+        //System.out.println(calificacionPromedio);
     }
 
     @Test
